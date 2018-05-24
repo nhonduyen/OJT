@@ -68,6 +68,37 @@ namespace OJT
             return DBManager<EMPLOYEE>.Execute(sql, new { ID = ID });
         }
 
+        public string Encode(string value)
+        {
+            var hash = System.Security.Cryptography.SHA1.Create();
+            var encoder = new System.Text.ASCIIEncoding();
+            var combined = encoder.GetBytes(value ?? "");
+            return BitConverter.ToString(hash.ComputeHash(combined)).ToLower().Replace("-", "");
+        }
+        public bool Login(string EMP_ID, string Password)
+        {
+            var sql = "SELECT ID,NAME,DEPARTMENT,ROLE FROM EMPLOYEE WHERE ID=@EMP_ID AND PASSWORD=@PASSWORD";
+            EMPLOYEE employee = DBManager<EMPLOYEE>.ExecuteReader(sql, new { EMP_ID = EMP_ID, PASSWORD = Password }).FirstOrDefault();
+            if (employee == null)
+                return false;
+            HttpContext.Current.Session["Username"] = employee.ID.Trim();
+            HttpContext.Current.Session["Name"] = employee.NAME.Trim();
+            HttpContext.Current.Session["Dept"] = employee.DEPARTMENT;
+            HttpContext.Current.Session["Role"] = employee.ROLE;
+            return true;
+        }
+
+        public int ChangePassword(string EmpId, string pass, string newpass)
+        {
+            var sql = "UPDATE EMPLOYEE SET PASSWORD=@NEWPASS WHERE ID=@EMP_ID AND PASSWORD=@PASS";
+            return DBManager<EMPLOYEE>.Execute(sql, new { NEWPASS = newpass, EMP_ID = EmpId, PASS = pass });
+        }
+        public int ResetPassword(string EMP_ID)
+        {
+            var password = this.Encode("123456");
+            var sql = "UPDATE EMPLOYEE SET PASSWORD=@PASSWORD WHERE ID=@EMP_ID";
+            return DBManager<EMPLOYEE>.Execute(sql, new { EMP_ID = EMP_ID, PASSWORD = password });
+        }
 
     }
 
