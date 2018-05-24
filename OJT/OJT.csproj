@@ -134,6 +134,8 @@
     <Compile Include="Models\EMPLOYEE.cs" />
     <Compile Include="Models\HISTORY.cs" />
     <Compile Include="Models\HIS_DETAIL.cs" />
+    <Compile Include="Models\Paging\DataTableResultSet.cs" />
+    <Compile Include="Models\Paging\DataTables.cs" />
     <Compile Include="Models\SUBJECT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
