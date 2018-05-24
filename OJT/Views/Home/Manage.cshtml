@@ -1,5 +1,58 @@
 ﻿@{
     ViewBag.Title = "Manage";
 }
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/index.js")"></script>
+}
+@Html.Hidden("hdUrl", Url.Action("Action", "Home"))
+<h4 class="page-header" style="margin: 10px;"><strong>@ViewBag.Title</strong></h4>
+<div class="row">
+    <div class="col-sm-8">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="from">Mentor:</label>
+                <input id="mentor" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="to">Mentee:</label>
+                <input id="mentee" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="to">Period:</label>
+                <select class="form-control" id="selPeriod">
+                    <option></option>
+                </select>
+            </div>
+            <button type="button" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Search</button>
 
-<h2>Manage</h2>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <button id="btnModify" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>Modify</button>
+        <button id="btnSave" class="btn btn-primary" type="button" data-action="0" data-emp=""><span class="glyphicon glyphicon-file"></span>Save</button>
+        <button id="btnExport" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>Export</button>
+    </div>
+
+</div>
+<div class="table-responsive">
+    <table id="tbMainDefault" class="table table-bordered">
+        <thead>
+            <tr class="tbheader">
+                <th style="vertical-align: middle;">#</th>
+                <th style="vertical-align: middle;">Period</th>
+                <th style="vertical-align: middle;">Em ID</th>
+                <th style="vertical-align: middle;">Workgroup</th>
+                <th style="vertical-align: middle;">Full Name</th>
+                <th style="vertical-align: middle;">Status</th>
+
+            </tr>
+
+
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
