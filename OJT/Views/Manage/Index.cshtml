@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Employee";
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/employee.js")"></script>
+}
+@Html.Hidden("hdUrl", Url.Action("Action", "Manage"))
+<h4 class="page-header" style="margin: 10px;">@ViewBag.Title</h4>
+<div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+        <button id="btnRegEmp" class="btn btn-primary" type="button" data-action="0"><span class="glyphicon glyphicon-file"></span>New</button>
+        <button id="btnModify" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>Modify</button>
+        @*        <button id="btnDel" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Delete</button>*@
+        <button id="btnReset" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-wrench"></span>Reset Password</button>
+    </div>
+</div>
+<div class="table-responsive">
+    <table id="tbMainDefault" class="table table-bordered">
+        <thead>
+            <tr class="tbheader">
+                <th>#</th>
+                <th>Picture</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Workgroup</th>
+                <th>Role</th>
+            </tr>
+
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<!-- Modal Register Visit -->
+<div id="mdRegCus" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Modify Employee</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmRegEmp" data-action="0" role="form">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="tdleft">
+                                        <label>Emp.Id</label></td>
+                                    <td>
+                                        <input type="text" class="form-control" id="txtEmpId" maxlength="6" required="required" />
+                                    </td>
+                                    <td class="tdleft">
+                                        <label>Name</label></td>
+                                    <td>
+                                        <input type="text" class="form-control" id="txtEmpName" required="required" />
+                                    </td>
+
+
+                                </tr>
+
+                                <tr>
+                                    <td class="tdleft">
+                                        <label>Dept</label></td>
+                                    <td>
+                                        <select class="form-control" id="selDept">
+                                            <option></option>
+                                            <option value="HR">HR</option>
+                                            <option value="IT">IT</option>
+                                            <option value="Marketing">Marketing</option>
+                                        </select>
+                                    </td>
+                                    <td class="tdleft">
+                                        <label>
+                                            Picture
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="file" name="fileToUpload" id="img" accept="image/gif, image/jpeg, image/png"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="tdleft">
+                                        <label>
+                                            Role
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" id="selRole">
+                                            <option value="0">Mentee</option>
+                                            <option value="1">Mentor</option>
+                                            <option value="2">Manager</option>
+                                            <option value="3">HR</option>
+                                        </select>
+                                    </td>
+                                    <td class="tdleft">
+                                        <label></label>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button id="btnSave" class="btn btn-primary" type="submit" data-action="0" data-emp=""><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
+                            <button id="btnDelete" class="btn btn-danger" type="button" data-action="0" data-emp=""><span class="glyphicon glyphicon-remove"></span>Delete</button>
+                        </div>
+                        <div class="col-md-8"></div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
