@@ -33,22 +33,15 @@
         });
         return false;
     });
-    $("#tbMainDefault").on('click', 'tr', function (e) {
-        if (!$(this).parent("thead").is('thead')) {
-            $("tr").removeClass("success");
-            $(this).addClass("success");
-            if (!$(e.target).is('#tbMainDefault td input:checkbox')) {
-                $(this).find('input:checkbox').trigger('click');
-            }
-        }
-    });
-    $("#tbMainDefault").on('change', '.ckb', function () {
-        var group = ":checkbox[class='" + $(this).attr("class") + "']";
-        if ($(this).is(':checked')) {
-            $(group).not($(this)).attr("checked", false);
+    $('#btnAssign').click(function () {
 
-        }
+        $("#mdAssign").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        return false;
     });
+   
     $('#btnReset').click(function () {
         if ($("input:checkbox:checked").length > 0) {
             var id = $("#tbMainDefault tr").find("input[type='checkbox']:checked").attr('id');

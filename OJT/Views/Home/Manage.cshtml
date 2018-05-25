@@ -21,6 +21,10 @@
             <div class="form-group">
                 <label for="to">Period:</label>
                 <select class="form-control" id="selPeriod">
+                    @foreach (var item in ViewBag.COURSE)
+                    {
+                        <option value="@item.ID">@item.NAME.Trim()</option>
+                    }
                     <option></option>
                 </select>
             </div>

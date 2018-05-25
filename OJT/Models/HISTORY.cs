@@ -10,7 +10,7 @@ namespace OJT
         public int ID { get; set; }
         public int COURSE_ID { get; set; }
         public string EMP_ID { get; set; }
-        public int APPROVE { get; set; }
+        public string MENTOR { get; set; }
         public int SCORE { get; set; }
         public string RESULT_LEVEL { get; set; }
 
@@ -19,7 +19,6 @@ namespace OJT
             this.ID = ID;
             this.COURSE_ID = COURSE_ID;
             this.EMP_ID = EMP_ID;
-            this.APPROVE = APPROVE;
             this.SCORE = SCORE;
             this.RESULT_LEVEL = RESULT_LEVEL;
         }
@@ -32,6 +31,13 @@ namespace OJT
             sql +=" WHERE ID=@ID";
 
             return DBManager<HISTORY>.ExecuteReader(sql, new { ID = ID});
+        }
+
+        public virtual HISTORY GetLastId(int COURSE_ID, string EMP_ID, string MENTOR)
+        {
+            var sql = "SELECT ID FROM HISTORY WHERE COURSE_ID=@COURSE_ID AND EMP_ID=@EMP_ID AND MENTOR=@MENTOR";
+
+            return DBManager<HISTORY>.ExecuteReader(sql, new { MENTOR = MENTOR, COURSE_ID = COURSE_ID, EMP_ID = EMP_ID }).FirstOrDefault();
         }
 
         public virtual List<HISTORY> SelectPaging(int start=0, int end=10)
@@ -47,17 +53,24 @@ namespace OJT
             return (int) DBManager<HISTORY>.ExecuteScalar(sql);
         }
 
-        public virtual int Insert(int COURSE_ID,string EMP_ID,int APPROVE,int SCORE,string RESULT_LEVEL)
+        public virtual int Insert(int COURSE_ID, string EMP_ID, string MENTOR, int SCORE=0, string RESULT_LEVEL="")
         {
             var sql = "INSERT INTO HISTORY(COURSE_ID,EMP_ID,APPROVE,SCORE,RESULT_LEVEL) VALUES(@COURSE_ID,@EMP_ID,@APPROVE,@SCORE,@RESULT_LEVEL)";
-            return DBManager<HISTORY>.Execute(sql, new { COURSE_ID = COURSE_ID,EMP_ID = EMP_ID,APPROVE = APPROVE,SCORE = SCORE,RESULT_LEVEL = RESULT_LEVEL});
+            return DBManager<HISTORY>.Execute(sql, new { COURSE_ID = COURSE_ID, EMP_ID = EMP_ID, MENTOR = MENTOR, SCORE = SCORE, RESULT_LEVEL = RESULT_LEVEL });
         }
 
-        public virtual int Update(int ID, int COURSE_ID, string EMP_ID, int APPROVE, int SCORE, string RESULT_LEVEL)
+        public virtual int Update(int ID, int COURSE_ID, string EMP_ID, int MENTOR, int SCORE, string RESULT_LEVEL)
         {
-            var sql = "UPDATE HISTORY SET COURSE_ID=@COURSE_ID,EMP_ID=@EMP_ID,APPROVE=@APPROVE,SCORE=@SCORE,RESULT_LEVEL=@RESULT_LEVEL WHERE ID=@ID";
+            var sql = "UPDATE HISTORY SET COURSE_ID=@COURSE_ID,EMP_ID=@EMP_ID,MENTOR=@MENTOR,SCORE=@SCORE,RESULT_LEVEL=@RESULT_LEVEL WHERE ID=@ID";
 
-            return DBManager<HISTORY>.Execute(sql,  new { ID = ID,COURSE_ID = COURSE_ID,EMP_ID = EMP_ID,APPROVE = APPROVE,SCORE = SCORE,RESULT_LEVEL = RESULT_LEVEL});
+            return DBManager<HISTORY>.Execute(sql, new { ID = ID, COURSE_ID = COURSE_ID, EMP_ID = EMP_ID, MENTOR = MENTOR, SCORE = SCORE, RESULT_LEVEL = RESULT_LEVEL });
+        }
+
+        public virtual int Update(int ID, int SCORE, string RESULT_LEVEL)
+        {
+            var sql = "UPDATE HISTORY SET SCORE=@SCORE,RESULT_LEVEL=@RESULT_LEVEL WHERE ID=@ID";
+
+            return DBManager<HISTORY>.Execute(sql, new { ID = ID,SCORE = SCORE, RESULT_LEVEL = RESULT_LEVEL });
         }
 
         public virtual int Delete(int ID=0)

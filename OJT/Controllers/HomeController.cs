@@ -13,6 +13,9 @@ namespace OJT.Controllers
 
         public ActionResult Index()
         {
+            COURSE course = new COURSE();
+            List<COURSE> courses = course.Select();
+            ViewBag.COURSE = courses;
             return View();
         }
 
@@ -23,6 +26,9 @@ namespace OJT.Controllers
 
         public ActionResult Manage()
         {
+            COURSE course = new COURSE();
+            List<COURSE> courses = course.Select();
+            ViewBag.COURSE = courses;
             return View();
         }
 

@@ -13,6 +13,9 @@ namespace OJT.Controllers
 
         public ActionResult Index()
         {
+            COURSE course = new COURSE();
+            List<COURSE> courses = course.Select();
+            ViewBag.COURSE = courses;
             return View();
         }
 
@@ -20,7 +23,15 @@ namespace OJT.Controllers
         public ActionResult InsertCourse(string Name, string From, string To)
         {
             COURSE course = new COURSE();
-            TempData["return"] = course.Insert(From, To, Name);
+            var result = course.Insert(From, To, Name);
+            if (result > 0)
+            {
+                TempData["return"] = "Insert Course successfully";
+            }
+            else
+            {
+                TempData["return"] = "Insert Course Fail";
+            }
             return RedirectToAction("Index", "Manage");
         }
 
@@ -29,15 +40,31 @@ namespace OJT.Controllers
         {
             Subjects = Subjects.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
             SUBJECT sbj = new SUBJECT();
-
+            var result = 0;
             foreach (var subject in Subjects)
             {
                 if (!string.IsNullOrWhiteSpace(subject))
                 {
-                    TempData["return"] = sbj.Insert(subject);
+                    result = sbj.Insert(subject);
                 }
             }
-           
+            if (result > 0)
+            {
+                TempData["return"] = "Insert subject successfully";
+            }
+            else
+            {
+                TempData["return"] = "Insert subject fail";
+            }
+            return RedirectToAction("Index", "Manage");
+        }
+
+        [HttpPost]
+        public ActionResult Assign()
+        {
+            COURSE course = new COURSE();
+            List<COURSE> courses = course.Select();
+            ViewBag.COURSE = courses;
             return RedirectToAction("Index", "Manage");
         }
     }
