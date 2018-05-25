@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Employee";
+    ViewBag.Title = "Management";
 }
 @section Scripts
 {
@@ -7,15 +7,33 @@
 }
 @Html.Hidden("hdUrl", Url.Action("Action", "Manage"))
 <h4 class="page-header" style="margin: 10px;">@ViewBag.Title</h4>
+@if (TempData["return"] != null)
+{
+    if (Convert.ToInt32(TempData["return"]) > 0)
+    {
+    <text>
+    <div class="alert alert-success">
+        <strong>Success!</strong> Course has beed added.
+    </div>
+    </text>
+    }
+    else
+    {
+    <text>
+    <div class="alert alert-danger">
+        <strong>Fail!</strong>
+    </div>
+    </text>
+    }
+}
+
 <div class="row">
-    <div class="col-md-6">
-    </div>
-    <div class="col-md-6">
-        <button id="btnRegEmp" class="btn btn-primary" type="button" data-action="0"><span class="glyphicon glyphicon-file"></span>New</button>
-        <button id="btnModify" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>Modify</button>
-        @*        <button id="btnDel" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Delete</button>*@
-        <button id="btnReset" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-wrench"></span>Reset Password</button>
-    </div>
+    <button id="btnRegEmp" class="btn btn-primary" type="button" data-action="0"><span class="glyphicon glyphicon-file"></span>New</button>
+    <button id="btnModify" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>Modify</button>
+    @*        <button id="btnDel" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Delete</button>*@
+    <button id="btnReset" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-wrench"></span>Reset Password</button>
+    <button id="btnAddCourse" class="btn btn-primary" type="button" data-action="0"><span class="glyphicon glyphicon-file"></span>Add Course</button>
+    <button id="btnAddSubject" class="btn btn-primary" type="button" data-action="0"><span class="glyphicon glyphicon-file"></span>Add Subject</button>
 </div>
 <div class="table-responsive">
     <table id="tbMainDefault" class="table table-bordered">
@@ -82,7 +100,7 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <input type="file" name="fileToUpload" id="img" accept="image/gif, image/jpeg, image/png"/>
+                                        <input type="file" name="fileToUpload" id="img" accept="image/gif, image/jpeg, image/png" />
                                     </td>
 
                                 </tr>
@@ -114,6 +132,107 @@
                         <div class="col-md-4">
                             <button id="btnSave" class="btn btn-primary" type="submit" data-action="0" data-emp=""><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
                             <button id="btnDelete" class="btn btn-danger" type="button" data-action="0" data-emp=""><span class="glyphicon glyphicon-remove"></span>Delete</button>
+                        </div>
+                        <div class="col-md-8"></div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="mdAddCourse" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Add Course</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmAddCourse" role="form" action="@Url.Action("InsertCourse", "Manage")" method="post">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="tdleft">
+                                        <label>Course Name</label></td>
+                                    <td>
+                                        <input type="text" class="form-control" id="txtCourseName" name="Name" />
+                                    </td>
+                                    <td class="tdleft">
+                                        <label>From</label></td>
+                                    <td>
+                                        <input type="text" class="form-control" id="txtFrom" name="From" required="required" />
+                                    </td>
+                                    <td class="tdleft">
+                                        <label>To</label></td>
+                                    <td>
+                                        <input type="text" class="form-control" id="txtTo" name="To" required="required" />
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
+                        </div>
+                        <div class="col-md-8"></div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="mdAddSubject" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Add Course</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmAddSubject" role="form" action="@Url.Action("InsertSubject", "Manage")" method="post">
+
+                    <div class="table-responsive">
+                        <table id="tbSubject" class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="tdleft">
+                                        <label>Subject</label></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" id="txtSubjectName" name="Subjects" class="form-control">
+                                            <div class="input-group-btn">
+                                                <button id="btnAdd" class="btn btn-primary" type="button">Add</button>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
                         </div>
                         <div class="col-md-8"></div>
                     </div>

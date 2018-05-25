@@ -154,6 +154,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\employee.js" />
+    <Content Include="Scripts\Include\bootbox.min.js" />
     <Content Include="Scripts\Include\bootstrap-datepicker.js" />
     <Content Include="Scripts\Include\bootstrap.min.js" />
     <Content Include="Scripts\Include\dataTables.bootstrap.js" />
@@ -168,6 +169,7 @@
     <Content Include="Scripts\Include\modernizr-3.5.0.min.js" />
     <Content Include="Scripts\Include\moment.min.js" />
     <Content Include="Scripts\Include\plugins.js" />
+    <Content Include="Scripts\Include\smoke.js" />
     <Content Include="Scripts\login.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

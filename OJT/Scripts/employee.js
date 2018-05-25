@@ -1,11 +1,33 @@
 ﻿$(document).ready(function () {
     $('#lemployee').addClass('active');
-    //$('#selCus').selectize();
+    $('#txtFrom,#txtTo')
+    .datepicker({
+        format: 'yyyy-mm',
+        viewMode: 'months'
+    }).on('changeDate', function (ev) {
+        $(this).datepicker('hide');
+    });
     $('#btnRegEmp').click(function () {
         $('#frmRegEmp').attr('data-action', 0);
         $('#frmRegEmp')[0].reset();
         $("#tbCus tbody").empty();
         $("#mdRegCus").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        return false;
+    });
+    $('#btnAddCourse').click(function () {
+      
+        $("#mdAddCourse").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        return false;
+    });
+    $('#btnAddSubject').click(function () {
+
+        $("#mdAddSubject").modal({
             backdrop: 'static',
             keyboard: false
         });
@@ -62,84 +84,29 @@
         }
         return false;
     });
-    $('#btnDelete').click(function () {
-        var cus = [];
-        $.each($(".ck"), function () {
-            if ($(this).is(':checked')) {
-                cus.push($(this).attr('data-id'));
-            }
-        });
-       
-        var cfm = confirm('Are you sure you want to remove these customers?');
-        if (cfm) {
-            $.ajax({
-                url: $('#hdUrl').val().replace("Action", "DeleteCustomer"),
-                data: JSON.stringify({
-                    ID: $('#txtEmpId').val(),
-                    CUS_ID: cus
-                }),
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                crossBrowser: true,
-                success: function (data, status) {
-                    if (data > 0) {
-                        GetCusByEmpId($('#txtEmpId').val());
-                        tbEmp.ajax.reload();
-
-                    }
-                    else {
-                        bootbox.alert('Delete fail');
-                    }
-                    return false;
-                },
-                error: function (xhr, status, error) {
-                    bootbox.alert("Error! " + xhr.status);
-                },
-            });
+  
+    $('#btnAdd').click(function () {
+        var value = $.trim($('#txtSubjectName').val());
+        if (value) {
+            var html = "<tr>" +
+                                       " <td class='tdleft'>" +
+                                           " <label>Subject</label></td>" +
+                                        "<td>" +
+                                           " <div class='input-group'>" +
+                                                "<input type='text'  name='Subjects' class='form-control' value='" + value + "'>" +
+                                                "<div class='input-group-btn'>" +
+                                                    "<button class='btn btn-danger btnRemove' type='button'>Remove</button>" +
+                                               " </div>" +
+                                            "</div>" +
+                                        "</td>" +
+                                   " </tr>";
+            $('#tbSubject tbody').append(html);
         }
+        $('#txtSubjectName').val('');
         return false;
     });
-    $('#btnAdd').click(function () {
-        var id = $('#selCus').val();
-        var emp_id = $.trim($('#txtEmpId').val());
-        $.each($(".cus"), function () {
-            if (id == $.trim($(this).text())) {
-                bootbox.alert('Customer exists! ' + id);
-                return false;
-            }
-        });
-        if (emp_id) {
-            $.ajax({
-                url: $('#hdUrl').val().replace("Action", "InsertEmpCus"),
-                data: JSON.stringify({
-                    ID: emp_id,
-                    CUS_ID: id,
-                    NAME: $('#txtEmpName').val()
-                }),
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                crossBrowser: true,
-                success: function (data, status) {
-                    if (data > 0) {
-                        GetCusByEmpId(emp_id);
-                        tbEmp.ajax.reload();
-
-                    }
-                    else {
-                        bootbox.alert('Delete fail');
-                    }
-                    return false;
-                },
-                error: function (xhr, status, error) {
-                    bootbox.alert("Error! " + xhr.status);
-                },
-            });
-        }
-        else {
-            alert('Please enter employee id');
-        }
+    $('#tbSubject').on('click', '.btnRemove', function () {
+        $(this).closest('tr').remove();
         return false;
     });
 

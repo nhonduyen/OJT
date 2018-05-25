@@ -45,6 +45,7 @@ namespace OJT
             return DBManager<SUBJECT>.Execute(sql, new { NAME = NAME});
         }
 
+      
         public virtual int Update(int ID, string NAME)
         {
             var sql = "UPDATE SUBJECT SET NAME=@NAME WHERE ID=@ID";
