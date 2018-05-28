@@ -38,7 +38,7 @@ namespace OJT
 
         public virtual int GetCount()
         {
-            var sql = "SELECT COUNT(1) AS CNT FROM COURSE;";
+            var sql = "SELECT COUNT(1) AS CNT FROM COURSE ";
             return (int)DBManager<COURSE>.ExecuteScalar(sql);
         }
 
@@ -74,6 +74,30 @@ namespace OJT
             return DBManager<COURSE>.Execute(sql, new { ID = ID });
         }
 
+        public virtual int GetLastestCourse()
+        {
+            var sql = "SELECT TOP 1 ID FROM COURSE ORDER BY TO_MONTH DESC";
+            COURSE course = DBManager<COURSE>.ExecuteReader(sql).FirstOrDefault();
+            return course != null ? course.ID : 0;
+        }
+
+        public virtual List<dynamic> GetCourseByID(int ID, int start = 0, int end = 10)
+        {
+            var sql = string.Format(@"SELECT * FROM(SELECT ROW_NUMBER() OVER (order by C.id) AS ROWNUM, E.*, C.NAME as COURSE,
+(SELECT TOP 1 NAME FROM EMPLOYEE WHERE ID=H.MENTOR) AS TEACHER 
+FROM COURSE AS C LEFT JOIN HISTORY AS H ON C.ID=H.COURSE_ID LEFT JOIN EMPLOYEE AS E ON H.EMP_ID=E.ID
+WHERE C.ID=@ID
+) as u WHERE  RowNum >= @start   AND RowNum < @end ORDER BY RowNum;");
+
+            return DBManager<dynamic>.ExecuteDynamic(sql, new {ID=ID, start = start, end = end });
+        }
+        public virtual int GetCount(int ID = 0)
+        {
+            var sql = "SELECT COUNT(1) AS CNT FROM COURSE AS C LEFT JOIN HISTORY AS H ON C.ID=H.COURSE_ID LEFT JOIN EMPLOYEE AS E ON H.EMP_ID=E.ID  ";
+         
+                sql += " WHERE C.ID=@ID";
+            return (int)DBManager<COURSE>.ExecuteScalar(sql, new { ID = ID });
+        }
 
     }
 

@@ -5,7 +5,7 @@
 {
     <script src="@Url.Content("~/Scripts/employee.js")"></script>
 }
-@Html.Hidden("hdUrl", Url.Action("Action", "Manage"))
+@Html.Hidden("hdUrl", Url.Action("Action", "Ajax"))
 <h4 class="page-header" style="margin: 10px;">@ViewBag.Title</h4>
 @if (@TempData["return"] != null)
 {
@@ -15,21 +15,62 @@
     </div>
    
 }
+<h5>Course</h5>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="to">Period:</label>
+                <select class="form-control" id="selPeriod1">
+                    @foreach (var item in ViewBag.COURSE)
+                    {
+                        <option value="@item.ID">@item.NAME.Trim()</option>
+                    }
+                    <option></option>
+                </select>
+            </div>
+            <button type="button" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Search</button>
 
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <button id="btnAddCourse" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-file"></span>Add Course</button>
+        <button id="btnAddSubject" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-file"></span>Add Subject</button>
+    </div>
+
+</div>
+
+<div class="table-responsive">
+    <table id="tbCourse" class="table table-bordered">
+        <thead>
+            <tr class="tbheader">
+                <th style="max-width:105px;">Picture</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Workgroup</th>
+                <th>Course</th>
+                <th>Mentor</th>
+            </tr>
+
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<h5>Employee List</h5>
 <div class="row">
     <button id="btnRegEmp" class="btn btn-primary" type="button" data-action="0"><span class="glyphicon glyphicon-file"></span>New</button>
     <button id="btnModify" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>Modify</button>
     <button id="btnReset" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-wrench"></span>Reset Password</button>
-    <button id="btnAddCourse" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-file"></span>Add Course</button>
-    <button id="btnAddSubject" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-file"></span>Add Subject</button>
     <button id="btnAssign" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-check"></span>Assign</button>
 </div>
 <div class="table-responsive">
     <table id="tbMainDefault" class="table table-bordered">
         <thead>
             <tr class="tbheader">
-                <th>#</th>
-                <th>Picture</th>
+                <th style="max-width: 6px;">#</th>
+                <th style="max-width:105px;">Picture</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Workgroup</th>
@@ -78,9 +119,10 @@
                                     <td>
                                         <select class="form-control" id="selDept">
                                             <option></option>
-                                            <option value="HR">HR</option>
-                                            <option value="IT">IT</option>
-                                            <option value="Marketing">Marketing</option>
+                                            @foreach (var item in ViewBag.DEPT)
+                                            {
+                                                <option value="@item.DEPARTMENT.Trim()">@item.DEPARTMENT.Trim()</option>
+                                            }
                                         </select>
                                     </td>
                                     <td class="tdleft">
@@ -101,8 +143,7 @@
                                     </td>
                                     <td>
                                         <select class="form-control" id="selRole">
-                                            <option value="0">Mentee</option>
-                                            <option value="1">Mentor</option>
+                                            <option value="0"></option>
                                             <option value="2">Manager</option>
                                             <option value="3">HR</option>
                                         </select>
@@ -192,7 +233,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Add Course</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Add Subject</h4>
             </div>
             <div class="modal-body">
                 <form id="frmAddSubject" role="form" action="@Url.Action("InsertSubject", "Manage")" method="post">
@@ -240,7 +281,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Add Course</h4>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Assign</h4>
             </div>
             <div class="modal-body">
                 <form id="frmAssign" role="form" action="@Url.Action("Assign", "Manage")" method="post">
@@ -275,7 +316,7 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
+                            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-floppy-disk"></span>Submit</button>
                         </div>
                         <div class="col-md-8"></div>
                     </div>

@@ -100,6 +100,12 @@ namespace OJT
             return DBManager<EMPLOYEE>.Execute(sql, new { EMP_ID = EMP_ID, PASSWORD = password });
         }
 
+        public virtual List<EMPLOYEE> GetDepartment()
+        {
+            var sql = "SELECT DISTINCT(DEPARTMENT) FROM EMPLOYEE WHERE DEPARTMENT IS NOT NULL AND DEPARTMENT <> ''";
+            return DBManager<EMPLOYEE>.ExecuteReader(sql);
+        }
+
     }
 
 }

@@ -13,6 +13,9 @@ namespace OJT.Controllers
 
         public ActionResult Index()
         {
+            EMPLOYEE EM = new EMPLOYEE();
+            var dept =EM.GetDepartment();
+            ViewBag.DEPT = dept;
             COURSE course = new COURSE();
             List<COURSE> courses = course.Select();
             ViewBag.COURSE = courses;

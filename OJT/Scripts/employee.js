@@ -34,14 +34,53 @@
         return false;
     });
     $('#btnAssign').click(function () {
-
-        $("#mdAssign").modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        if ($("input:checkbox:checked").length > 0) {
+            $("#mdAssign").modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+        else {
+            bootbox.alert("Please select employee");
+        }
         return false;
     });
-   
+    $('#frmAssign').submit(function () {
+        var MENTOR = $.trim($('#txtMentor').val());
+        var COURSE_ID = $.trim($('#selPeriod').val());
+        var ids = [];
+        $("input:checkbox:checked").each(function () {
+            ids.push($(this).attr('id'));
+        });
+        if (MENTOR && COURSE_ID && ids.length > 0) {
+            $.ajax({
+                url: $('#hdUrl').val().replace("Action", "Assign"),
+                data: JSON.stringify({
+                    MENTOR: MENTOR,
+                    COURSE_ID: COURSE_ID,
+                    IDS: ids
+                }),
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                crossBrowser: true,
+                success: function (data, status) {
+                    if (data > 0) {
+                        tbCourse.ajax.reload();
+                        alert(status);
+                    }
+                    else {
+                        bootbox.alert('fail');
+                    }
+                    return false;
+                },
+                error: function (xhr, status, error) {
+                    bootbox.alert("Error! " + xhr.status);
+                },
+            });
+        }
+        return false;
+    });
     $('#btnReset').click(function () {
         if ($("input:checkbox:checked").length > 0) {
             var id = $("#tbMainDefault tr").find("input[type='checkbox']:checked").attr('id');
@@ -102,7 +141,28 @@
         $(this).closest('tr').remove();
         return false;
     });
+    $('#btnSearch').on('click', function () {
+        tbCourse.draw();
+        return false;
+    });
+    var tbCourse = $('#tbCourse').DataTable(
+          {
+              sort: false,
+              "processing": true,
+              "serverSide": true,
+              "searching": true,
+              ajax: {
+                  type: "POST",
+                  contentType: "application/json",
+                  url: $('#hdUrl').val().replace("Action", "GetCourseById"),
+                  data: function (d) {
+                      // note: d is created by datatable, the structure of d is the same with DataTableParameters model above
 
+                      return JSON.stringify({ dataTableParameters: d, ID: $('#selPeriod1').val() });
+                  }
+              }
+
+          });
     var tbEmp = $('#tbMainDefault').DataTable(
           {
               sort: false,

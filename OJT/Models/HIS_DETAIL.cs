@@ -8,8 +8,7 @@ namespace OJT
     public class HIS_DETAIL
     {
         public int ID { get; set; }
-        public string EMP_ID { get; set; }
-        public int COURSE_ID { get; set; }
+        public int HIS_ID { get; set; }
         public int SUB_ID { get; set; }
         public string STATUS { get; set; }
         public string SUB_CONTENT { get; set; }
@@ -28,8 +27,7 @@ namespace OJT
         public HIS_DETAIL(int ID, string EMP_ID, int COURSE_ID, int SUB_ID, string STATUS, string SUB_CONTENT, string SUB_LEVEL, DateTime START_DT, DateTime END_DT, string APPROVE, string OUTCOME_TEMPLATE, string OUTCOME_RESULT, DateTime REC_START_DT, DateTime REC_END_DT, DateTime TEST_TIME)
         {
             this.ID = ID;
-            this.EMP_ID = EMP_ID;
-            this.COURSE_ID = COURSE_ID;
+       
             this.SUB_ID = SUB_ID;
             this.STATUS = STATUS;
             this.SUB_CONTENT = SUB_CONTENT;
@@ -73,17 +71,17 @@ namespace OJT
             return DBManager<HIS_DETAIL>.Execute(sql, new { EMP_ID = EMP_ID,COURSE_ID = COURSE_ID,SUB_ID = SUB_ID,STATUS = STATUS,SUB_CONTENT = SUB_CONTENT,SUB_LEVEL = SUB_LEVEL,START_DT = START_DT,END_DT = END_DT,APPROVE = APPROVE,OUTCOME_TEMPLATE = OUTCOME_TEMPLATE,OUTCOME_RESULT = OUTCOME_RESULT,REC_START_DT = REC_START_DT,REC_END_DT = REC_END_DT,TEST_TIME = TEST_TIME});
         }
 
-        public virtual int Insert(string EMP_ID, int COURSE_ID)
+        public virtual int Insert(int HIS_ID, string APPROVE="NO")
         {
-            var sql = "INSERT INTO HIS_DETAIL(EMP_ID,COURSE_ID) VALUES(@EMP_ID,@COURSE_ID)";
-            return DBManager<HIS_DETAIL>.Execute(sql, new { EMP_ID = EMP_ID, COURSE_ID = COURSE_ID});
+            var sql = "INSERT INTO HIS_DETAIL(HIS_ID,APPROVE) VALUES(@HIS_ID,@APPROVE)";
+            return DBManager<HIS_DETAIL>.Execute(sql, new { HIS_ID = HIS_ID, APPROVE = APPROVE });
         }
 
-        public virtual int Update(int ID, string EMP_ID, int COURSE_ID, int SUB_ID, string STATUS, string SUB_CONTENT, string SUB_LEVEL, DateTime START_DT, DateTime END_DT, string APPROVE, string OUTCOME_TEMPLATE, string OUTCOME_RESULT, DateTime REC_START_DT, DateTime REC_END_DT, DateTime TEST_TIME)
+        public virtual int Update(int ID, int SUB_ID, string STATUS, string SUB_CONTENT, string SUB_LEVEL, DateTime START_DT, DateTime END_DT, string APPROVE, string OUTCOME_TEMPLATE, string OUTCOME_RESULT, DateTime REC_START_DT, DateTime REC_END_DT, DateTime TEST_TIME)
         {
-            var sql = "UPDATE HIS_DETAIL SET EMP_ID=@EMP_ID,COURSE_ID=@COURSE_ID,SUB_ID=@SUB_ID,STATUS=@STATUS,SUB_CONTENT=@SUB_CONTENT,SUB_LEVEL=@SUB_LEVEL,START_DT=@START_DT,END_DT=@END_DT,APPROVE=@APPROVE,OUTCOME_TEMPLATE=@OUTCOME_TEMPLATE,OUTCOME_RESULT=@OUTCOME_RESULT,REC_START_DT=@REC_START_DT,REC_END_DT=@REC_END_DT,TEST_TIME=@TEST_TIME WHERE ID=@ID";
+            var sql = "UPDATE HIS_DETAIL SET SUB_ID=@SUB_ID,STATUS=@STATUS,SUB_CONTENT=@SUB_CONTENT,SUB_LEVEL=@SUB_LEVEL,START_DT=@START_DT,END_DT=@END_DT,APPROVE=@APPROVE,OUTCOME_TEMPLATE=@OUTCOME_TEMPLATE,OUTCOME_RESULT=@OUTCOME_RESULT,REC_START_DT=@REC_START_DT,REC_END_DT=@REC_END_DT,TEST_TIME=@TEST_TIME WHERE ID=@ID";
 
-            return DBManager<HIS_DETAIL>.Execute(sql,  new { ID = ID,EMP_ID = EMP_ID,COURSE_ID = COURSE_ID,SUB_ID = SUB_ID,STATUS = STATUS,SUB_CONTENT = SUB_CONTENT,SUB_LEVEL = SUB_LEVEL,START_DT = START_DT,END_DT = END_DT,APPROVE = APPROVE,OUTCOME_TEMPLATE = OUTCOME_TEMPLATE,OUTCOME_RESULT = OUTCOME_RESULT,REC_START_DT = REC_START_DT,REC_END_DT = REC_END_DT,TEST_TIME = TEST_TIME});
+            return DBManager<HIS_DETAIL>.Execute(sql,  new { ID = ID,SUB_ID = SUB_ID,STATUS = STATUS,SUB_CONTENT = SUB_CONTENT,SUB_LEVEL = SUB_LEVEL,START_DT = START_DT,END_DT = END_DT,APPROVE = APPROVE,OUTCOME_TEMPLATE = OUTCOME_TEMPLATE,OUTCOME_RESULT = OUTCOME_RESULT,REC_START_DT = REC_START_DT,REC_END_DT = REC_END_DT,TEST_TIME = TEST_TIME});
         }
 
         public virtual int UpdateByMentor(int ID,string STATUS, string SUB_CONTENT, string SUB_LEVEL, DateTime START_DT, DateTime END_DT)

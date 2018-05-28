@@ -53,10 +53,10 @@ namespace OJT
             return (int) DBManager<HISTORY>.ExecuteScalar(sql);
         }
 
-        public virtual int Insert(int COURSE_ID, string EMP_ID, string MENTOR, int SCORE=0, string RESULT_LEVEL="")
+        public virtual int Insert(int COURSE_ID, string EMP_ID, string MENTOR)
         {
-            var sql = "INSERT INTO HISTORY(COURSE_ID,EMP_ID,APPROVE,SCORE,RESULT_LEVEL) VALUES(@COURSE_ID,@EMP_ID,@APPROVE,@SCORE,@RESULT_LEVEL)";
-            return DBManager<HISTORY>.Execute(sql, new { COURSE_ID = COURSE_ID, EMP_ID = EMP_ID, MENTOR = MENTOR, SCORE = SCORE, RESULT_LEVEL = RESULT_LEVEL });
+            var sql = "INSERT INTO HISTORY(COURSE_ID,EMP_ID,MENTOR) VALUES(@COURSE_ID,@EMP_ID,@MENTOR)";
+            return DBManager<HISTORY>.Execute(sql, new { COURSE_ID = COURSE_ID, EMP_ID = EMP_ID, MENTOR = MENTOR});
         }
 
         public virtual int Update(int ID, int COURSE_ID, string EMP_ID, int MENTOR, int SCORE, string RESULT_LEVEL)
