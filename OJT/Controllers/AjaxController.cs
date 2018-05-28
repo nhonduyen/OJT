@@ -77,10 +77,12 @@ namespace OJT.Controllers
             var result = 0;
             HISTORY his = new HISTORY();
             HIS_DETAIL detail = new HIS_DETAIL();
+            EMPLOYEE em = new EMPLOYEE();
             foreach (var id in IDS)
             {
                 HISTORY last = his.GetLastId(COURSE_ID, id, MENTOR);
-                if (last == null)
+                int isMentor = em.IsMentor(COURSE_ID, id);
+                if (last == null && isMentor == 0)
                 {
                     result = his.Insert(COURSE_ID, id, MENTOR);
                     if (result > 0)
@@ -98,6 +100,22 @@ namespace OJT.Controllers
             }
             return Json(result);
 
+        }
+
+        [HttpPost]
+        public JsonResult ResetPassword(string ID)
+        {
+            EMPLOYEE employeeManager = new EMPLOYEE();
+            int result = employeeManager.ResetPassword(ID);
+            return Json(result);
+        }
+        [HttpPost]
+        public JsonResult GetEmployeeById(string ID)
+        {
+
+            EMPLOYEE employeeManager = new EMPLOYEE();
+            var idea = employeeManager.Select(ID).FirstOrDefault();
+            return Json(idea);
         }
     }
 }

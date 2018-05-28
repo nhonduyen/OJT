@@ -46,6 +46,7 @@
         return false;
     });
     $('#frmAssign').submit(function () {
+        $('#lblName').val('');
         var MENTOR = $.trim($('#txtMentor').val());
         var COURSE_ID = $.trim($('#selPeriod').val());
         var ids = [];
@@ -85,7 +86,7 @@
         if ($("input:checkbox:checked").length > 0) {
             var id = $("#tbMainDefault tr").find("input[type='checkbox']:checked").attr('id');
            
-            if (id) {
+            if (id && confirm('Are you sure you want to reset this user\'s password?')) {
                 $.ajax({
                     url: $('#hdUrl').val().replace("Action", "ResetPassword"),
                     data: JSON.stringify({
@@ -181,69 +182,36 @@
               }
 
           });
-    $('#btnDel').click(function () {
-        if ($("input:checkbox:checked").length > 0) {
-            var id = $("#tbMainDefault tr").find("input[type='checkbox']:checked").attr('id');
-            var cfm = confirm("Are you sure you want to delete this employee?");
-            if (cfm) {
-                $.ajax({
-                    url: $('#hdUrl').val().replace("Action", "Delete"),
-                    data: JSON.stringify({
-                        ID: id
-                    }),
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    crossBrowser: true,
-                    success: function (data, status) {
-                        if (data > 0) {
-                            tbEmp.ajax.reload();
-                            bootbox.alert(status);
-                        }
-                        else {
-                            bootbox.alert('Delete fail');
-                        }
-                        return false;
-                    },
-                    error: function (xhr, status, error) {
-                        bootbox.alert("Error! " + xhr.status);
-                    },
-                });
-            }
-        }
-        else {
-            bootbox.alert("Please select a row");
-        }
-        return false;
-    });
+   
     $("#btnModify").click(function () {
         if ($("input:checkbox:checked").length > 0) {
             $("h4").html("<span class='glyphicon glyphicon-edit'></span> MODIFY EMPLOYEE");
             var id = $("#tbMainDefault tr").find("input[type='checkbox']:checked").attr('id');
-            $('#frmRegEmp').attr('data-action', 1);
+            //  $('#frmRegEmp').attr('data-action', 1);
+            $('#StudentId').val('1');
             $('#frmRegEmp')[0].reset();
             $("#tbCus tbody").empty();
             if (id) {
-                GetCusByEmpId(id);
-               
+                // GetCusByEmpId(id);
+
                 $.ajax({
                     url: $('#hdUrl').val().replace("Action", "GetEmployeeById"),
                     data: JSON.stringify({
                         ID: id
+
                     }),
                     type: 'POST',
                     dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
                     crossBrowser: true,
                     success: function (data, status) {
-                        if (data.length > 0) {
-                            $('#txtEmpId').val($.trim(data[0].EMP_ID));
-                            $('#txtEmpName').val($.trim(data[0].EMP_NAME));
-                            $('#selDept').val($.trim(data[0].EMP_DEPT));
-                            $('#txtEmail').val($.trim(data[0].EMP_EMAIL));
-                            $('#txtMobile').val($.trim(data[0].EMP_MOBILE));
-                            $('#selRole').val($.trim(data[0].ROLE));
-                          
+                        if (data.ID != null) {
+                            $('#txtEmpId').val($.trim(data.ID));
+                            $('#txtEmpName').val($.trim(data.NAME));
+                            $('#selDept').val($.trim(data.DEPARTMENT));
+                            //$('#img').val($.trim(data.PICTURE));                          
+                            $('#selRole').val($.trim(data.ROLE));
+
                         }
                     },
                     error: function (xhr, status, error) {
@@ -261,122 +229,28 @@
         }
         return false;
     });
-    $('#frmRegEmp').submit(function (e) {
-        e.preventDefault();
-        if ($('#frmRegEmp').smkValidate()) {
-            var id = $.trim($('#txtEmpId').val());
-            var action = $('#frmRegEmp').attr('data-action');
-            var emp = {
-                EMP_ID: id,
-                EMP_NAME: $.trim($('#txtEmpName').val()),
-                EMP_DEPT: $.trim($('#selDept').val()),
-                EMP_EMAIL: $.trim($('#txtEmail').val()),
-                EMP_MOBILE: $.trim($('#txtMobile').val()),
-                ROLE: $.trim($('#selRole').val())
-              
-            };
-           
-            if (emp.EMP_ID) {
-                $.ajax({
-                    url: $('#hdUrl').val().replace("Action", "InsertUpdateEmployee"),
-                    data: JSON.stringify({
-                        EMP: emp,
-                        ACTION: action
-                    }),
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    crossBrowser: true,
-                    success: function (data, status) {
-                        bootbox.alert(status);
-                        tbEmp.ajax.reload();
-                        $('#mdRegCus').modal('hide');
-                        return false;
-                    },
-                    error: function (xhr, status, error) {
-                        bootbox.alert("Error! " + xhr.status);
-                    },
-                });
-            }
-        }
-        else {
-            bootbox.alert('Invalid field');
-        }
-
-        return false;
-    });
-    $('#tbEmp').on('click', '.btnRemove', function () {
-        $(this).closest('tr').remove();
-        return false;
-    });
-    $('#btnAdd').click(function () {
-        var sex = $('#selSex').val();
-        var option = (sex == "Male") ? '<option value="Male" selected="selected">Male</option><option value="Female">Female</option>' : '<option value="Male">Male</option><option value="Female" selected="selected">Female</option>';
-        var append = $(' <tr class="contact" data-id="">'
-
-                                   + ' <td colspan="2">'
-                                    + '    <input type="text" class="form-control person" value="' + $.trim($('#txtPerson').val()) + '" />'
-                                    + '</td>'
-                                    + '<td>'
-                                     + '   <input type="text" class="form-control dob" value="' + $.trim($('#txtBirthday').val()) + '" />'
-                                    + '</td>'
-                                    + '<td>'
-                                     + '   <input type="text" class="form-control pos" value="' + $.trim($('#txtPos').val()) + '"/>'
-                                    + '</td>'
-                                    + '<td>'
-                                     + '  <input type="text" class="form-control mobile" value="' + $.trim($('#txtMobile').val()) + '"/>'
-
-                                    + '</td>'
-                                    + '<td>'
-                                      + '   <input type="email" class="form-control email" value="' + $.trim($('#txtEmail').val()) + '"/>'
-                                    + '</td>'
-                                    + '<td colspan="4">'
-                                       + ' <div class="input-group">'
-                                            + '<select class="form-control sex">'
-                                              + option
-                                            + '</select>'
-                                            + '<span class="input-group-btn">'
-                                               + ' <button class="btn btn-danger btnRemove" type="button">'
-                                                 + '   <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>'
-                                                + '</button>'
-                                            + '</span>'
-                                        + '</div>'
-                                    + '</td>'
-
-                                + '</tr>').insertAfter('#trAdd');
-
-        $('.dob')
-                       .datepicker({
-                           format: 'yyyy-mm-dd'
-                       }).on('changeDate', function (ev) {
-                           $(this).datepicker('hide');
-                       });
-        return false;
-    });
-    function GetCusByEmpId(id) {
-        $("#tbCus tbody").empty();
-        $.ajax({
-            url: $('#hdUrl').val().replace("Action", "GetCustomerById"),
-            data: JSON.stringify({
-                ID: id
-            }),
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            crossBrowser: true,
-            success: function (data, status) {
-                if (data.length > 0) {
-                    for (var i = 0; i < data.length; i++) {
-                        $("#tbCus tbody").append('<tr><td><input type="checkbox" class="ck" data-id="'+data[i].ID+'" /></td><td class="cus">' + data[i].ID + '</td><td>' + data[i].NAME + '</td><td>' + data[i].CLASS + '</td></tr>');
-
+    $('#txtMentor').change(function () {
+        if ($(this).val()) {
+            $.ajax({
+                url: $('#hdUrl').val().replace("Action", "GetEmployeeById"),
+                data: JSON.stringify({
+                    ID: $(this).val()
+                }),
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                crossBrowser: true,
+                success: function (data, status) {
+                    if (data.ID != null) {
+                        $('#lblName').val($.trim(data.NAME));
                     }
-                }
-
-                return false;
-            },
-            error: function (xhr, status, error) {
-                bootbox.alert("Error! " + xhr.status);
-            },
-        });
-    }
+                },
+                error: function (xhr, status, error) {
+                    bootbox.alert("Error! " + xhr.status);
+                },
+            });
+        }
+        return false;
+    });
+   
 });

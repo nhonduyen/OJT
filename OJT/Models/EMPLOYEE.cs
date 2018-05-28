@@ -25,10 +25,10 @@ namespace OJT
         }
         public EMPLOYEE() { }
 
-        public virtual List<EMPLOYEE> Select(int ID=0)
+        public virtual List<EMPLOYEE> Select(string ID="")
         {
             var sql = "SELECT * FROM EMPLOYEE ";
-            if (ID == 0) return DBManager<EMPLOYEE>.ExecuteReader(sql);
+            if (string.IsNullOrWhiteSpace(ID)) return DBManager<EMPLOYEE>.ExecuteReader(sql);
             sql +=" WHERE ID=@ID";
 
             return DBManager<EMPLOYEE>.ExecuteReader(sql, new { ID = ID});
@@ -47,17 +47,24 @@ namespace OJT
             return (int) DBManager<EMPLOYEE>.ExecuteScalar(sql);
         }
 
-        public virtual int Insert(string NAME,string DEPARTMENT,string PICTURE,int ROLE,string PASSWORD)
+        public virtual int Insert(string ID, string NAME,string DEPARTMENT,string PICTURE,int ROLE,string PASSWORD)
         {
-            var sql = "INSERT INTO EMPLOYEE(NAME,DEPARTMENT,PICTURE,ROLE,PASSWORD) VALUES(@NAME,@DEPARTMENT,@PICTURE,@ROLE,@PASSWORD)";
-            return DBManager<EMPLOYEE>.Execute(sql, new { NAME = NAME,DEPARTMENT = DEPARTMENT,PICTURE = PICTURE,ROLE = ROLE,PASSWORD = PASSWORD});
+            var sql = "INSERT INTO EMPLOYEE(ID, NAME,DEPARTMENT,PICTURE,ROLE,PASSWORD) VALUES(@ID,@NAME,@DEPARTMENT,@PICTURE,@ROLE,@PASSWORD)";
+            return DBManager<EMPLOYEE>.Execute(sql, new { ID=ID, NAME = NAME,DEPARTMENT = DEPARTMENT,PICTURE = PICTURE,ROLE = ROLE,PASSWORD = PASSWORD});
         }
 
-        public virtual int Update(string ID, string NAME, string DEPARTMENT, string PICTURE, int ROLE, string PASSWORD)
+        public virtual int Update(string ID, string NAME, string DEPARTMENT, string PICTURE, int ROLE)
         {
-            var sql = "UPDATE EMPLOYEE SET NAME=@NAME,DEPARTMENT=@DEPARTMENT,PICTURE=@PICTURE,ROLE=@ROLE,PASSWORD=@PASSWORD WHERE ID=@ID";
+            var sql = "UPDATE EMPLOYEE SET NAME=@NAME,DEPARTMENT=@DEPARTMENT,PICTURE=@PICTURE,ROLE=@ROLE WHERE ID=@ID";
 
-            return DBManager<EMPLOYEE>.Execute(sql,  new { ID = ID,NAME = NAME,DEPARTMENT = DEPARTMENT,PICTURE = PICTURE,ROLE = ROLE,PASSWORD = PASSWORD});
+            return DBManager<EMPLOYEE>.Execute(sql,  new { ID = ID,NAME = NAME,DEPARTMENT = DEPARTMENT,PICTURE = PICTURE,ROLE = ROLE});
+        }
+
+        public virtual int Update(string ID, string NAME, string DEPARTMENT, int ROLE)
+        {
+            var sql = "UPDATE EMPLOYEE SET NAME=@NAME,DEPARTMENT=@DEPARTMENT,ROLE=@ROLE WHERE ID=@ID";
+
+            return DBManager<EMPLOYEE>.Execute(sql, new { ID = ID, NAME = NAME, DEPARTMENT = DEPARTMENT, ROLE = ROLE });
         }
 
         public virtual int Delete(int ID=0)
@@ -106,6 +113,12 @@ namespace OJT
             return DBManager<EMPLOYEE>.ExecuteReader(sql);
         }
 
+        public int IsMentor(int COURSE_ID, string ID)
+        {
+            var sql = "SELECT TOP 1 ID FROM HISTORY WHERE COURSE_ID=@COURSE_ID AND MENTOR=@ID";
+            HISTORY his = DBManager<HISTORY>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID , ID=ID }).FirstOrDefault();
+            return his == null ? 0 : 1;
+        }
     }
 
 }

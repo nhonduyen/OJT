@@ -93,8 +93,8 @@
                 <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Modify Employee</h4>
             </div>
             <div class="modal-body">
-                <form id="frmRegEmp" data-action="0" role="form">
-
+                <form id="frmRegEmp" data-action="0" role="form" method="post" action="@Url.Action("InsertUpdateEmployee","Manage")" enctype="multipart/form-data">
+                      <input id="StudentId" name="Mode" type="hidden" value="0" />
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tbody>
@@ -102,12 +102,12 @@
                                     <td class="tdleft">
                                         <label>Emp.Id</label></td>
                                     <td>
-                                        <input type="text" class="form-control" id="txtEmpId" maxlength="6" required="required" />
+                                        <input type="text" class="form-control" id="txtEmpId" name="ID" maxlength="6" required="required" />
                                     </td>
                                     <td class="tdleft">
                                         <label>Name</label></td>
                                     <td>
-                                        <input type="text" class="form-control" id="txtEmpName" required="required" />
+                                        <input type="text" class="form-control" id="txtEmpName" name="NAME" required="required" />
                                     </td>
 
 
@@ -117,7 +117,7 @@
                                     <td class="tdleft">
                                         <label>Dept</label></td>
                                     <td>
-                                        <select class="form-control" id="selDept">
+                                        <select class="form-control" id="selDept" name="DEPARTMENT">
                                             <option></option>
                                             @foreach (var item in ViewBag.DEPT)
                                             {
@@ -142,7 +142,7 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <select class="form-control" id="selRole">
+                                        <select class="form-control" id="selRole" name="ROLE">
                                             <option value="0"></option>
                                             <option value="2">Manager</option>
                                             <option value="3">HR</option>
@@ -160,8 +160,8 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            <button id="btnSave" class="btn btn-primary" type="submit" data-action="0" data-emp=""><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
-                            <button id="btnDelete" class="btn btn-danger" type="button" data-action="0" data-emp=""><span class="glyphicon glyphicon-remove"></span>Delete</button>
+                            <button id="btnSave" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
+                     
                         </div>
                         <div class="col-md-8"></div>
                     </div>
@@ -295,6 +295,14 @@
                                     <td>
                                         <input type="text" class="form-control" id="txtMentor" name="Mentor" required="required" maxlength="6" />
                                     </td>
+                                     <td class="tdleft">
+                                        <label>Name</label></td>
+                                    <td>
+                                         <input type="text" class="form-control" id="lblName" name="Mentor" />
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
                                     <td class="tdleft">
                                         <label>Course</label></td>
                                     <td>
@@ -307,8 +315,9 @@
 
                                         </select>
                                     </td>
+                                    <td class="tdleft"></td>
+                                    <td></td>
                                 </tr>
-
                             </tbody>
                         </table>
 
