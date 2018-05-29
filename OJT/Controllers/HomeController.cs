@@ -11,16 +11,19 @@ namespace OJT.Controllers
         //
         // GET: /Home/
 
-        public ActionResult Index()
+        public ActionResult Index(int COURSE_ID=0, string MENTOR="", string EMP_ID="")
         {
             HISTORY his = new HISTORY();
             COURSE course = new COURSE();
+            EMPLOYEE em = new EMPLOYEE();
             List<COURSE> courses = course.Select();
             var lstHis = his.GetHistory();
             var cntHis = his.CountHistory();
             ViewBag.COURSE = courses;
             ViewBag.HIS = lstHis;
             ViewBag.CNT = cntHis;
+            ViewBag.MENTORS = em.GetListMentor(COURSE_ID);
+            ViewBag.MENTEES = em.GetListMentee(COURSE_ID, MENTOR);
             return View();
         }
 
@@ -29,11 +32,14 @@ namespace OJT.Controllers
             return View();
         }
 
-        public ActionResult Manage()
+        public ActionResult Manage(int COURSE_ID = 0, string MENTOR = "", string EMP_ID = "")
         {
+            EMPLOYEE em = new EMPLOYEE();
             COURSE course = new COURSE();
             List<COURSE> courses = course.Select();
             ViewBag.COURSE = courses;
+            ViewBag.MENTORS = em.GetListMentor(COURSE_ID);
+            ViewBag.MENTEES = em.GetListMentee(COURSE_ID, MENTOR);
             return View();
         }
 

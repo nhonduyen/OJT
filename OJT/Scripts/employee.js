@@ -69,6 +69,8 @@
                     if (data > 0) {
                         tbCourse.ajax.reload();
                         alert(status);
+                        $('#frmAssign')[0].reset();
+                        $("#mdAssign").modal('hide');
                     }
                     else {
                         bootbox.alert('fail');

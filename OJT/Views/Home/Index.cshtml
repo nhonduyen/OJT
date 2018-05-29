@@ -1,5 +1,8 @@
 ﻿@{
     ViewBag.Title = "MAIN";
+    var MENTOR = Request.QueryString["MENTOR"];
+    var EMP_ID = Request.QueryString["EMP_ID"];
+    var COURSE_ID = Request.QueryString["COURSE_ID"];
 }
 @section Scripts
 {
@@ -9,28 +12,46 @@
 <h4 class="page-header" style="margin: 10px;"><strong>Main</strong></h4>
 <div class="row">
     <div class="col-sm-8">
-        <div class="form-inline">
+        <form class="form-inline">
             <div class="form-group">
                 <label for="from">Mentor:</label>
-                <input id="mentor" type="text" class="form-control">
+                <select class="form-control" id="mentor" name="MENTOR">
+                    <option></option>
+                    @foreach (var item in ViewBag.MENTORS)
+                    {
+                        <text>
+                        <option value="@item.ID" @(MENTOR == item.ID ? "selected" : "")>@item.NAME.Trim()</option>
+                        </text>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label for="to">Mentee:</label>
-                <input id="mentee" type="text" class="form-control">
+                <select class="form-control" id="mentee" name="EMP_ID">
+                    <option></option>
+                    @foreach (var item in ViewBag.MENTEES)
+                    {
+                        <text>
+                        <option value="@item.ID" @(EMP_ID == item.ID ? "selected" : "")>@item.NAME.Trim()</option>
+                        </text>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label for="to">Period:</label>
-                <select class="form-control" id="selPeriod">
+                <select class="form-control" id="selPeriod" name="COURSE_ID">
+                    <option></option>
                     @foreach (var item in ViewBag.COURSE)
                     {
-                        <option value="@item.ID">@item.NAME.Trim()</option>
+                        <text>
+                        <option value="@item.ID" @((COURSE_ID != null && Convert.ToInt32(COURSE_ID) == item.ID) ? "selected" : "")>@item.NAME.Trim()</option>
+                        </text>
                     }
-                    <option></option>
                 </select>
             </div>
-            <button type="button" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Search</button>
+            <button type="submit" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Search</button>
 
-        </div>
+        </form>
     </div>
 
     <div class="col-sm-4">
@@ -87,21 +108,21 @@
                     <td rowspan="@his.CNT_EMP">@his.EMP_NAME.Trim()</td>
                     <td rowspan="@his.CNT_EMP">@his.DEPARTMENT.Trim()</td>
                     <td rowspan="@his.CNT_COURSE">@his.PERIOD.Trim()</td>
-                    <td>@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
-                    <td>@his.SUB_ID</td>
-                    <td>@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
-                    <td>@(his.START_DT == null ? "" : his.START_DT.ToString())</td>
-                    <td>@(his.END_DT == null ? "" : his.END_DT.ToString())</td>
-                    <td>@his.APPROVE.Trim()</td>
-                    <td></td>
-                    <td></td>
-                    <td>@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString())</td>
-                    <td>@(his.REC_END_DT == null ? "" : his.REC_END_DT.Trim())</td>
-                    <td>@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
-                    <td>@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
-                    <td>@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString())</td>
-                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;">@his.SCORE</td>
-                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@his.SUB_ID</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.START_DT == null ? "" : his.START_DT.ToString())</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.END_DT == null ? "" : his.END_DT.ToString())</td>
+                    <td data-id="@his.ID">@his.APPROVE.Trim()</td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID"></td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID"></td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID">@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString())</td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID">@(his.REC_END_DT == null ? "" : his.REC_END_DT.Trim())</td>
+                    <td data-id="@his.HIS_ID" data-emp="@his.EMP_ID">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
+                    <td data-id="@his.HIS_ID">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
+                    <td data-id="@his.ID">@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString())</td>
+                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
+                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                 </tr>
                 </text>
              
@@ -114,19 +135,19 @@
                     {
                         <td rowspan="@his1.CNT_COURSE">@his1.PERIOD.Trim()</td>
                     }
-                    <td>@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
-                    <td>@his1.SUB_ID</td>
-                    <td>@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
-                    <td>@(his1.START_DT == null ? "" : his1.START_DT.ToString())</td>
-                    <td>@(his1.END_DT == null ? "" : his1.END_DT.ToString())</td>
-                    <td>@his1.APPROVE.Trim()</td>
-                    <td></td>
-                    <td></td>
-                    <td>@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString())</td>
-                    <td>@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.Trim())</td>
-                    <td>@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
-                    <td>@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
-                    <td>@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@his1.SUB_ID</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.START_DT == null ? "" : his1.START_DT.ToString())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.END_DT == null ? "" : his1.END_DT.ToString())</td>
+                    <td data-id="@his1.ID">@his1.APPROVE.Trim()</td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID"></td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID"></td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID">@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID">@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.Trim())</td>
+                    <td data-id="@his1.HIS_ID">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
+                    <td data-id="@his1.HIS_ID">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
+                    <td data-id="@his1.ID">@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString())</td>
                 </tr>
                 </text>
                 }

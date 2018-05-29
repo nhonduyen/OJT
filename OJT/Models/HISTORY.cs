@@ -81,13 +81,15 @@ namespace OJT
             return DBManager<HISTORY>.Execute(sql, new { ID = ID });
         }
 
-        public List<dynamic> GetHistory()
+        public List<dynamic> GetHistory(string mentor="", string mentee="", int period=0, int page=0, int numPerPage=10)
         {
+            var start = (page - 1) * numPerPage + 1;
+            var end = start + numPerPage - 1;
             var sql = string.Format(@"
 SELECT
 (SELECT COUNT(1) FROM HIS_DETAIL AS D1 WHERE D1.EMP_ID=H.EMP_ID GROUP BY D1.EMP_ID) AS CNT_EMP,
 (SELECT COUNT(1) FROM HIS_DETAIL AS D1 WHERE D1.EMP_ID=H.EMP_ID AND D1.COURSE_ID=H.COURSE_ID GROUP BY D1.COURSE_ID) AS CNT_COURSE,
-E.ID AS EMP_ID, E.NAME AS EMP_NAME, PICTURE,DEPARTMENT,
+E.NAME AS EMP_NAME, PICTURE,DEPARTMENT,H.MENTOR,
 C.NAME AS PERIOD, SCORE,RESULT_LEVEL,D.*
 FROM COURSE AS C
 INNER JOIN HISTORY AS H ON C.ID=H.COURSE_ID

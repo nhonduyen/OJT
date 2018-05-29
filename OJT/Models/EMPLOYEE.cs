@@ -25,39 +25,39 @@ namespace OJT
         }
         public EMPLOYEE() { }
 
-        public virtual List<EMPLOYEE> Select(string ID="")
+        public virtual List<EMPLOYEE> Select(string ID = "")
         {
             var sql = "SELECT * FROM EMPLOYEE ";
             if (string.IsNullOrWhiteSpace(ID)) return DBManager<EMPLOYEE>.ExecuteReader(sql);
-            sql +=" WHERE ID=@ID";
+            sql += " WHERE ID=@ID";
 
-            return DBManager<EMPLOYEE>.ExecuteReader(sql, new { ID = ID});
+            return DBManager<EMPLOYEE>.ExecuteReader(sql, new { ID = ID });
         }
 
-        public virtual List<EMPLOYEE> SelectPaging(int start=0, int end=10)
+        public virtual List<EMPLOYEE> SelectPaging(int start = 0, int end = 10)
         {
             var sql = "SELECT * FROM(SELECT ROW_NUMBER() OVER (order by id) AS ROWNUM, * FROM EMPLOYEE) as u  WHERE   RowNum >= @start   AND RowNum < @end ORDER BY RowNum;";
 
-            return DBManager<EMPLOYEE>.ExecuteReader(sql, new { start=start, end = end});
+            return DBManager<EMPLOYEE>.ExecuteReader(sql, new { start = start, end = end });
         }
 
         public virtual int GetCount()
         {
             var sql = "SELECT COUNT(1) AS CNT FROM EMPLOYEE;";
-            return (int) DBManager<EMPLOYEE>.ExecuteScalar(sql);
+            return (int)DBManager<EMPLOYEE>.ExecuteScalar(sql);
         }
 
-        public virtual int Insert(string ID, string NAME,string DEPARTMENT,string PICTURE,int ROLE,string PASSWORD)
+        public virtual int Insert(string ID, string NAME, string DEPARTMENT, string PICTURE, int ROLE, string PASSWORD)
         {
             var sql = "INSERT INTO EMPLOYEE(ID, NAME,DEPARTMENT,PICTURE,ROLE,PASSWORD) VALUES(@ID,@NAME,@DEPARTMENT,@PICTURE,@ROLE,@PASSWORD)";
-            return DBManager<EMPLOYEE>.Execute(sql, new { ID=ID, NAME = NAME,DEPARTMENT = DEPARTMENT,PICTURE = PICTURE,ROLE = ROLE,PASSWORD = PASSWORD});
+            return DBManager<EMPLOYEE>.Execute(sql, new { ID = ID, NAME = NAME, DEPARTMENT = DEPARTMENT, PICTURE = PICTURE, ROLE = ROLE, PASSWORD = PASSWORD });
         }
 
         public virtual int Update(string ID, string NAME, string DEPARTMENT, string PICTURE, int ROLE)
         {
             var sql = "UPDATE EMPLOYEE SET NAME=@NAME,DEPARTMENT=@DEPARTMENT,PICTURE=@PICTURE,ROLE=@ROLE WHERE ID=@ID";
 
-            return DBManager<EMPLOYEE>.Execute(sql,  new { ID = ID,NAME = NAME,DEPARTMENT = DEPARTMENT,PICTURE = PICTURE,ROLE = ROLE});
+            return DBManager<EMPLOYEE>.Execute(sql, new { ID = ID, NAME = NAME, DEPARTMENT = DEPARTMENT, PICTURE = PICTURE, ROLE = ROLE });
         }
 
         public virtual int Update(string ID, string NAME, string DEPARTMENT, int ROLE)
@@ -67,7 +67,7 @@ namespace OJT
             return DBManager<EMPLOYEE>.Execute(sql, new { ID = ID, NAME = NAME, DEPARTMENT = DEPARTMENT, ROLE = ROLE });
         }
 
-        public virtual int Delete(int ID=0)
+        public virtual int Delete(int ID = 0)
         {
             var sql = "DELETE FROM EMPLOYEE ";
             if (ID == 0) return DBManager<EMPLOYEE>.Execute(sql);
@@ -116,7 +116,7 @@ namespace OJT
         public int IsMentor(int COURSE_ID, string ID)
         {
             var sql = "SELECT TOP 1 ID FROM HISTORY WHERE COURSE_ID=@COURSE_ID AND MENTOR=@ID";
-            HISTORY his = DBManager<HISTORY>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID , ID=ID }).FirstOrDefault();
+            HISTORY his = DBManager<HISTORY>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID, ID = ID }).FirstOrDefault();
             return his == null ? 0 : 1;
         }
 
@@ -130,6 +130,27 @@ namespace OJT
         {
             var sql = "SELECT COUNT(1) AS CNT FROM EMPLOYEE WHERE ID LIKE @KEY +'%' OR NAME LIKE '%' +@KEY+ '%' OR DEPARTMENT LIKE '%' +@KEY+ '%';";
             return (int)DBManager<EMPLOYEE>.ExecuteScalar(sql, new { KEY = Key });
+        }
+
+        public List<EMPLOYEE> GetListMentor(int COURSE_ID = 0)
+        {
+            var sql = "SELECT ID,NAME FROM EMPLOYEE WHERE ID IN (SELECT DISTINCT(MENTOR) FROM HISTORY WHERE @COURSE_ID=0 OR COURSE_ID=@COURSE_ID)";
+            return DBManager<EMPLOYEE>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID });
+        }
+
+        public List<EMPLOYEE> GetListMentee(int COURSE_ID = 0, string MENTOR = "")
+        {
+            var sql = string.Format(@"
+SELECT ID,NAME FROM EMPLOYEE WHERE ID IN (SELECT DISTINCT(EMP_ID) FROM HISTORY WHERE (@COURSE_ID=0 OR COURSE_ID=@COURSE_ID)
+AND (@MENTOR='' OR MENTOR=@MENTOR) 
+)
+");
+            return DBManager<EMPLOYEE>.ExecuteReader(sql, new
+            {
+                COURSE_ID = COURSE_ID,
+                MENTOR = MENTOR,
+               
+            });
         }
     }
 

@@ -99,7 +99,7 @@ namespace OJT.Controllers
                         {
                             for (int i = 0; i < 5; i++)
                             {
-                                result = detail.Insert(last.ID,COURSE_ID, id);
+                                result = detail.Insert(last.ID,COURSE_ID, id,MENTOR);
                             }
                         }
                     }
