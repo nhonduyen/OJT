@@ -75,8 +75,8 @@
         <tbody>
             @for (int i = 0; i < ViewBag.HIS.Count; i++)
             {
-                int count = ViewBag.HIS[i].CNT_COURSE;
-                var cntCourse = count / ViewBag.HIS[i].CNT_COURSE;
+                int count = ViewBag.HIS[i].CNT_EMP;
+                var cntCourse = ViewBag.HIS[i].CNT_COURSE;
                 var his = ViewBag.HIS[i];
                 <text>
                 <tr>
@@ -100,8 +100,8 @@
                     <td>@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
                     <td>@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
                     <td>@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString())</td>
-                    <td rowspan="@his.CNT_EMP">@his.SCORE</td>
-                    <td rowspan="@his.CNT_EMP">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;">@his.SCORE</td>
+                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                 </tr>
                 </text>
              
@@ -110,7 +110,10 @@
                     var his1 = ViewBag.HIS[j];
                 <text>
                 <tr>
-
+                    @if (j % cntCourse == 0)
+                    {
+                        <td rowspan="@his1.CNT_COURSE">@his1.PERIOD.Trim()</td>
+                    }
                     <td>@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
                     <td>@his1.SUB_ID</td>
                     <td>@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
@@ -127,7 +130,7 @@
                 </tr>
                 </text>
                 }
-                i = i + count - 1;
+                i += count - 1;
             }
 
         </tbody>
