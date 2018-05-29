@@ -9,6 +9,8 @@ namespace OJT
     {
         public int ID { get; set; }
         public int HIS_ID { get; set; }
+        public int COURSE_ID { get; set; }
+        public string EMP_ID { get; set; }
         public int SUB_ID { get; set; }
         public string STATUS { get; set; }
         public string SUB_CONTENT { get; set; }
@@ -71,10 +73,10 @@ namespace OJT
             return DBManager<HIS_DETAIL>.Execute(sql, new { EMP_ID = EMP_ID,COURSE_ID = COURSE_ID,SUB_ID = SUB_ID,STATUS = STATUS,SUB_CONTENT = SUB_CONTENT,SUB_LEVEL = SUB_LEVEL,START_DT = START_DT,END_DT = END_DT,APPROVE = APPROVE,OUTCOME_TEMPLATE = OUTCOME_TEMPLATE,OUTCOME_RESULT = OUTCOME_RESULT,REC_START_DT = REC_START_DT,REC_END_DT = REC_END_DT,TEST_TIME = TEST_TIME});
         }
 
-        public virtual int Insert(int HIS_ID, string APPROVE="NO")
+        public virtual int Insert(int HIS_ID, int COURSE_ID, string EMP_ID, string APPROVE="NO")
         {
-            var sql = "INSERT INTO HIS_DETAIL(HIS_ID,APPROVE) VALUES(@HIS_ID,@APPROVE)";
-            return DBManager<HIS_DETAIL>.Execute(sql, new { HIS_ID = HIS_ID, APPROVE = APPROVE });
+            var sql = "INSERT INTO HIS_DETAIL(HIS_ID,APPROVE,COURSE_ID,EMP_ID) VALUES(@HIS_ID,@APPROVE,@COURSE_ID,@EMP_ID)";
+            return DBManager<HIS_DETAIL>.Execute(sql, new { HIS_ID = HIS_ID, APPROVE = APPROVE, COURSE_ID = COURSE_ID, EMP_ID = EMP_ID });
         }
 
         public virtual int Update(int ID, int SUB_ID, string STATUS, string SUB_CONTENT, string SUB_LEVEL, DateTime START_DT, DateTime END_DT, string APPROVE, string OUTCOME_TEMPLATE, string OUTCOME_RESULT, DateTime REC_START_DT, DateTime REC_END_DT, DateTime TEST_TIME)

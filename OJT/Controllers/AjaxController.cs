@@ -15,13 +15,20 @@ namespace OJT.Controllers
         public JsonResult GetEmployee(DataTableParameters dataTableParameters)
         {
             EMPLOYEE em = new EMPLOYEE();
-
+            var lst = new List<EMPLOYEE>();
             var resultSet = new DataTableResultSet();
             resultSet.draw = dataTableParameters.Draw;
-            var lst = em.SelectPaging( dataTableParameters.Start + 1,
-                dataTableParameters.Start + dataTableParameters.Length + 1);
-            resultSet.recordsTotal = resultSet.recordsFiltered = em.GetCount();
-
+            if (!string.IsNullOrWhiteSpace(dataTableParameters.Search.Value))
+            {
+                lst = em.Search(dataTableParameters.Search.Value);
+                resultSet.recordsTotal = resultSet.recordsFiltered = em.GetSearchCount(dataTableParameters.Search.Value);
+            }
+            else
+            {
+                lst = em.SelectPaging(dataTableParameters.Start + 1,
+                    dataTableParameters.Start + dataTableParameters.Length + 1);
+                resultSet.recordsTotal = resultSet.recordsFiltered = em.GetCount();
+            }
             foreach (var i in lst)
             {
                 string role = "";
@@ -60,7 +67,7 @@ namespace OJT.Controllers
 
                 columns.Add("<img src='" + i.PICTURE + "' class='img-rounded' height='100' width='100' alt='X' />");
                 columns.Add(i.EMP_ID == null ? "" : i.EMP_ID.Trim());
-                columns.Add(i.NAME == null ? "" : i.NAME.Trim());
+                columns.Add(i.EMP_NAME == null ? "" : i.EMP_NAME.Trim());
                 columns.Add(i.DEPARTMENT == null ? "" : i.DEPARTMENT.Trim());
                 columns.Add(i.COURSE.Trim());
                 columns.Add(i.TEACHER == null ? "" : i.TEACHER.Trim());
@@ -92,7 +99,7 @@ namespace OJT.Controllers
                         {
                             for (int i = 0; i < 5; i++)
                             {
-                                result = detail.Insert(last.ID);
+                                result = detail.Insert(last.ID,COURSE_ID, id);
                             }
                         }
                     }

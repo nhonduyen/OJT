@@ -13,9 +13,14 @@ namespace OJT.Controllers
 
         public ActionResult Index()
         {
+            HISTORY his = new HISTORY();
             COURSE course = new COURSE();
             List<COURSE> courses = course.Select();
+            var lstHis = his.GetHistory();
+            var cntHis = his.CountHistory();
             ViewBag.COURSE = courses;
+            ViewBag.HIS = lstHis;
+            ViewBag.CNT = cntHis;
             return View();
         }
 

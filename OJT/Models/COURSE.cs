@@ -83,7 +83,7 @@ namespace OJT
 
         public virtual List<dynamic> GetCourseByID(int ID, int start = 0, int end = 10)
         {
-            var sql = string.Format(@"SELECT * FROM(SELECT ROW_NUMBER() OVER (order by C.id) AS ROWNUM, E.*, C.NAME as COURSE,
+            var sql = string.Format(@"SELECT * FROM(SELECT ROW_NUMBER() OVER (order by C.id) AS ROWNUM, H.*, C.NAME as COURSE, E.NAME as EMP_NAME,DEPARTMENT,
 (SELECT TOP 1 NAME FROM EMPLOYEE WHERE ID=H.MENTOR) AS TEACHER 
 FROM COURSE AS C LEFT JOIN HISTORY AS H ON C.ID=H.COURSE_ID LEFT JOIN EMPLOYEE AS E ON H.EMP_ID=E.ID
 WHERE C.ID=@ID

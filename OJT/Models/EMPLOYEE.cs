@@ -119,6 +119,18 @@ namespace OJT
             HISTORY his = DBManager<HISTORY>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID , ID=ID }).FirstOrDefault();
             return his == null ? 0 : 1;
         }
+
+        public List<EMPLOYEE> Search(string Key, int start = 0, int end = 10)
+        {
+            var sql = "SELECT * FROM(SELECT ROW_NUMBER() OVER (order by ID) AS ROWNUM, * FROM EMPLOYEE WHERE ID LIKE @KEY +'%' OR NAME LIKE '%' +@KEY+ '%' OR DEPARTMENT LIKE '%' +@KEY+ '%') as u  WHERE   RowNum >= @start   AND RowNum < @end ORDER BY RowNum;";
+
+            return DBManager<EMPLOYEE>.ExecuteReader(sql, new { KEY = Key, start = start, end = end });
+        }
+        public int GetSearchCount(string Key)
+        {
+            var sql = "SELECT COUNT(1) AS CNT FROM EMPLOYEE WHERE ID LIKE @KEY +'%' OR NAME LIKE '%' +@KEY+ '%' OR DEPARTMENT LIKE '%' +@KEY+ '%';";
+            return (int)DBManager<EMPLOYEE>.ExecuteScalar(sql, new { KEY = Key });
+        }
     }
 
 }
