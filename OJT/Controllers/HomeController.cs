@@ -11,19 +11,31 @@ namespace OJT.Controllers
         //
         // GET: /Home/
 
-        public ActionResult Index(int COURSE_ID=0, string MENTOR="", string EMP_ID="")
+        public ActionResult Index(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
         {
             HISTORY his = new HISTORY();
             COURSE course = new COURSE();
             EMPLOYEE em = new EMPLOYEE();
             List<COURSE> courses = course.Select();
-            var lstHis = his.GetHistory();
-            var cntHis = his.CountHistory();
+            if (COURSE_ID == -1)
+            {
+                if (course != null && courses.Count > 0)
+                {
+                    COURSE_ID = courses[0].ID;
+                }
+                else
+                {
+                    COURSE_ID = 0;
+                }
+            }
+            var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID);
+            //var cntHis = his.CountHistory(MENTOR, EMP_ID, COURSE_ID);
             ViewBag.COURSE = courses;
             ViewBag.HIS = lstHis;
-            ViewBag.CNT = cntHis;
+            //ViewBag.CNT = cntHis;
             ViewBag.MENTORS = em.GetListMentor(COURSE_ID);
             ViewBag.MENTEES = em.GetListMentee(COURSE_ID, MENTOR);
+            ViewBag.SELECT_COURSE = COURSE_ID;
             return View();
         }
 
@@ -64,7 +76,7 @@ namespace OJT.Controllers
             var message = result > 0 ? "Success" : "Fail";
             return RedirectToAction("ChangePassword", new { success = result, message = message });
         }
-      
+
         [HttpPost]
         public ActionResult Signin(string username, string password)
         {

@@ -23,8 +23,8 @@ namespace OJT
         public virtual List<COURSE> Select(int ID = 0)
         {
             var sql = "SELECT * FROM COURSE ";
-            if (ID == 0) return DBManager<COURSE>.ExecuteReader(sql + "ORDER BY TO_MONTH DESC");
-            sql += " WHERE ID=@ID ORDER BY TO_MONTH DESC";
+            if (ID == 0) return DBManager<COURSE>.ExecuteReader(sql + "ORDER BY ID DESC");
+            sql += " WHERE ID=@ID";
 
             return DBManager<COURSE>.ExecuteReader(sql, new { ID = ID });
         }

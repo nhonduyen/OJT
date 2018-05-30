@@ -154,6 +154,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\employee.js" />
+    <Content Include="Scripts\home.js" />
     <Content Include="Scripts\Include\bootbox.min.js" />
     <Content Include="Scripts\Include\bootstrap-datepicker.js" />
     <Content Include="Scripts\Include\bootstrap.min.js" />

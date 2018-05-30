@@ -2,13 +2,13 @@
     ViewBag.Title = "MAIN";
     var MENTOR = Request.QueryString["MENTOR"];
     var EMP_ID = Request.QueryString["EMP_ID"];
-    var COURSE_ID = Request.QueryString["COURSE_ID"];
 }
 @section Scripts
 {
     <script src="@Url.Content("~/Scripts/index.js")"></script>
 }
 @Html.Hidden("hdUrl", Url.Action("Action", "Home"))
+<input type="hidden" id="user" value="@Session["Username"]" data-role="@Session["Role"]" data-dept="@Session["Dept"]" />
 <h4 class="page-header" style="margin: 10px;"><strong>Main</strong></h4>
 <div class="row">
     <div class="col-sm-8">
@@ -40,11 +40,11 @@
             <div class="form-group">
                 <label for="to">Period:</label>
                 <select class="form-control" id="selPeriod" name="COURSE_ID">
-                    <option></option>
+                    <option value="0"></option>
                     @foreach (var item in ViewBag.COURSE)
                     {
                         <text>
-                        <option value="@item.ID" @((COURSE_ID != null && Convert.ToInt32(COURSE_ID) == item.ID) ? "selected" : "")>@item.NAME.Trim()</option>
+                        <option value="@item.ID" @((ViewBag.SELECT_COURSE != null && Convert.ToInt32(ViewBag.SELECT_COURSE) == item.ID) ? "selected" : "")>@item.NAME.Trim()</option>
                         </text>
                     }
                 </select>
@@ -96,6 +96,7 @@
         <tbody>
             @for (int i = 0; i < ViewBag.HIS.Count; i++)
             {
+                var step = i;
                 int count = ViewBag.HIS[i].CNT_EMP;
                 var cntCourse = ViewBag.HIS[i].CNT_COURSE;
                 var his = ViewBag.HIS[i];
@@ -125,10 +126,12 @@
                     <td rowspan="@his.CNT_EMP" style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                 </tr>
                 </text>
-             
+              
                 for (int j = 1; j < count; j++)
                 {
-                    var his1 = ViewBag.HIS[j];
+                    step++;
+                    var his1 = ViewBag.HIS[step];
+                       
                 <text>
                 <tr>
                     @if (j % cntCourse == 0)
@@ -150,11 +153,12 @@
                     <td data-id="@his1.ID">@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString())</td>
                 </tr>
                 </text>
+                
                 }
+               
                 i += count - 1;
             }
 
         </tbody>
     </table>
 </div>
-
