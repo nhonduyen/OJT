@@ -7,7 +7,7 @@
 {
     <script src="@Url.Content("~/Scripts/home.js")"></script>
 }
-@Html.Hidden("hdUrl", Url.Action("Action", "Home"))
+@Html.Hidden("hdUrl", Url.Action("Action", "Ajax"))
 <input type="hidden" id="user" value="@Session["Username"]" data-role="@Session["Role"]" data-dept="@Session["Dept"]" />
 <h4 class="page-header" style="margin: 10px;"><strong>Main</strong></h4>
 <div class="row">
@@ -109,8 +109,8 @@
                     <td rowspan="@his.CNT_EMP">@his.EMP_NAME.Trim()</td>
                     <td rowspan="@his.CNT_EMP">@his.DEPARTMENT.Trim()</td>
                     <td rowspan="@his.CNT_COURSE">@his.PERIOD.Trim()</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@his.SUB_ID</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="status">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" data-sid="@his.SUB_ID" class="subject">@his.SUB_ID</td>
                     <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
                     <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.START_DT == null ? "" : his.START_DT.ToString())</td>
                     <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.END_DT == null ? "" : his.END_DT.ToString())</td>
@@ -138,8 +138,8 @@
                     {
                         <td rowspan="@his1.CNT_COURSE">@his1.PERIOD.Trim()</td>
                     }
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@his1.SUB_ID</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="status">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" data-sid="@his1.SUB_ID">@his1.SUB_ID</td>
                     <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
                     <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.START_DT == null ? "" : his1.START_DT.ToString())</td>
                     <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.END_DT == null ? "" : his1.END_DT.ToString())</td>

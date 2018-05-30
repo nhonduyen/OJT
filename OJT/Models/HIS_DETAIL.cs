@@ -87,6 +87,13 @@ namespace OJT
             });
         }
 
+        public virtual int Update(int ID, string COLUMN, string VALUE)
+        {
+            var sql =string.Format(@"UPDATE HIS_DETAIL SET {0}=@VALUE WHERE ID=@ID", COLUMN);
+
+            return DBManager<HIS_DETAIL>.Execute(sql, new { ID = ID, VALUE = VALUE});
+        }
+
         public virtual int Update(int ID, int SUB_ID, string STATUS, string SUB_CONTENT, string SUB_LEVEL, DateTime START_DT, DateTime END_DT, string APPROVE, string OUTCOME_TEMPLATE, string OUTCOME_RESULT, DateTime REC_START_DT, DateTime REC_END_DT, DateTime TEST_TIME)
         {
             var sql = "UPDATE HIS_DETAIL SET SUB_ID=@SUB_ID,STATUS=@STATUS,SUB_CONTENT=@SUB_CONTENT,SUB_LEVEL=@SUB_LEVEL,START_DT=@START_DT,END_DT=@END_DT,APPROVE=@APPROVE,OUTCOME_TEMPLATE=@OUTCOME_TEMPLATE,OUTCOME_RESULT=@OUTCOME_RESULT,REC_START_DT=@REC_START_DT,REC_END_DT=@REC_END_DT,TEST_TIME=@TEST_TIME WHERE ID=@ID";

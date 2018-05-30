@@ -124,5 +124,21 @@ namespace OJT.Controllers
             var idea = employeeManager.Select(ID).FirstOrDefault();
             return Json(idea);
         }
+
+        [HttpPost]
+        public JsonResult GetSubject()
+        {
+            SUBJECT subject = new SUBJECT();
+            var results = subject.Select();
+            return Json(results);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateDetail(int ID, string COLUMN, string VALUE)
+        {
+            HIS_DETAIL his = new HIS_DETAIL();
+            var result = his.Update(ID, COLUMN, VALUE);
+            return Json(result);
+        }
     }
 }
