@@ -5,7 +5,7 @@
 }
 @section Scripts
 {
-    <script src="@Url.Content("~/Scripts/index.js")"></script>
+    <script src="@Url.Content("~/Scripts/home.js")"></script>
 }
 @Html.Hidden("hdUrl", Url.Action("Action", "Home"))
 <input type="hidden" id="user" value="@Session["Username"]" data-role="@Session["Role"]" data-dept="@Session["Dept"]" />
