@@ -140,5 +140,13 @@ namespace OJT.Controllers
             var result = his.Update(ID, COLUMN, VALUE);
             return Json(result);
         }
+
+        [HttpPost]
+        public JsonResult UpdateHistory(int ID, string COLUMN, string VALUE)
+        {
+            HISTORY his = new HISTORY();
+            var result = his.Update(ID, COLUMN, VALUE);
+            return Json(result);
+        }
     }
 }

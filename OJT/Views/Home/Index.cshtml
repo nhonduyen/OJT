@@ -50,14 +50,15 @@
                 </select>
             </div>
             <button type="submit" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Search</button>
-
+            <button id="btnExport" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>Export</button>
         </form>
     </div>
 
-    <div class="col-sm-4">
-        <button id="btnModify" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>Modify</button>
-        <button id="btnSave" class="btn btn-primary" type="button" data-action="0" data-emp=""><span class="glyphicon glyphicon-file"></span>Save</button>
-        <button id="btnExport" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>Export</button>
+    <div class="col-sm-4" style="max-height: 30px;">
+        <div class="alert alert-info" style="display: none;" id="noti">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong id="message"></strong>
+        </div>
     </div>
 
 </div>
@@ -70,12 +71,12 @@
                 <th rowspan="2" style="white-space: nowrap; vertical-align: middle;">Full Name</th>
                 <th rowspan="2" style="vertical-align: middle;">Workgroup</th>
                 <th rowspan="2" style="vertical-align: middle;">Period</th>
-                <th colspan="5" style="vertical-align: middle;">OJT Plan</th>
+                <th colspan="5" style="vertical-align: middle; text-align: center;">OJT Plan</th>
                 <th rowspan="2" style="vertical-align: middle;">Approval Status</th>
-                <th colspan="4" style="vertical-align: middle;">Training Record</th>
+                <th colspan="4" style="vertical-align: middle; text-align: center;">Training Record</th>
                 <th rowspan="2" style="vertical-align: middle;">Comment By Manager</th>
                 <th rowspan="2" style="vertical-align: middle;">Comment By HR</th>
-                <th colspan="3" style="vertical-align: middle;">Evaluation Result</th>
+                <th colspan="3" style="vertical-align: middle; text-align: center;">Evaluation Result</th>
             </tr>
             <tr>
                 <th style="vertical-align: middle;">Current Status</th>
@@ -109,21 +110,29 @@
                     <td rowspan="@his.CNT_EMP">@his.EMP_NAME.Trim()</td>
                     <td rowspan="@his.CNT_EMP">@his.DEPARTMENT.Trim()</td>
                     <td rowspan="@his.CNT_COURSE">@his.PERIOD.Trim()</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="status">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" data-sid="@his.SUB_ID" class="subject">@his.SUB_ID</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.START_DT == null ? "" : his.START_DT.ToString())</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR">@(his.END_DT == null ? "" : his.END_DT.ToString())</td>
-                    <td data-id="@his.ID">@his.APPROVE.Trim()</td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID"></td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID"></td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID">@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString())</td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID">@(his.REC_END_DT == null ? "" : his.REC_END_DT.Trim())</td>
-                    <td data-id="@his.HIS_ID" data-emp="@his.EMP_ID">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
-                    <td data-id="@his.HIS_ID">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
-                    <td data-id="@his.ID">@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString())</td>
-                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
-                    <td rowspan="@his.CNT_EMP" style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="STATUS">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" data-sid="@his.SUB_ID" class="SUB_ID">@(his.SUBJECT == null ? "" : his.SUBJECT)</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="SUB_LEVEL">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="START_DT">@(his.START_DT == null ? "" : his.START_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="END_DT">@(his.END_DT == null ? "" : his.END_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his.ID" class="APPROVE">@his.APPROVE.Trim()</td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                        </a>
+                        &nbsp;
+                        <a href="#">
+                            <span class="glyphicon glyphicon-cloud-upload"></span>
+                        </a>
+                    </td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID"><a href="#" class="activity"><span class="badge">@his.ACTIVITY</span></a></td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_START_DT">@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_END_DT">@(his.REC_END_DT == null ? "" : his.REC_END_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his.HIS_ID" data-did="@his.ID" data-emp="@his.EMP_ID" class="MANAGER_CMT">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
+                    <td data-id="@his.HIS_ID" data-did="@his.ID" class="HR_CMT">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
+                    <td data-id="@his.ID" class="TEST_TIME">@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString("yyyy-MM-dd"))</td>
+                    <td rowspan="@his.CNT_EMP" class="SCORE" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
+                    <td rowspan="@his.CNT_EMP" class="RESULT_LEVEL" style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                 </tr>
                 </text>
               
@@ -138,27 +147,58 @@
                     {
                         <td rowspan="@his1.CNT_COURSE">@his1.PERIOD.Trim()</td>
                     }
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="status">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" data-sid="@his1.SUB_ID">@his1.SUB_ID</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.START_DT == null ? "" : his1.START_DT.ToString())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR">@(his1.END_DT == null ? "" : his1.END_DT.ToString())</td>
-                    <td data-id="@his1.ID">@his1.APPROVE.Trim()</td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID"></td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID"></td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID">@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID">@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.Trim())</td>
-                    <td data-id="@his1.HIS_ID">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
-                    <td data-id="@his1.HIS_ID">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
-                    <td data-id="@his1.ID">@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="STATUS">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" data-sid="@his1.SUB_ID" class="SUB_ID">@(his1.SUBJECT == null ? "" : his1.SUBJECT)</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="SUB_LEVEL">@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="START_DT">@(his1.START_DT == null ? "" : his1.START_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="END_DT">@(his1.END_DT == null ? "" : his1.END_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his1.ID" class="APPROVE">@his1.APPROVE.Trim()</td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                        </a>
+                        &nbsp;
+                        <a href="#" class="uploadfile">
+                            <span class="glyphicon glyphicon-cloud-upload"></span>
+                        </a>
+                    </td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID"><a href="#" class="activity"><span class="badge">@his1.ACTIVITY</span></a></td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_START_DT">@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_END_DT">@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.Trim("yyyy-MM-dd"))</td>
+                    <td data-id="@his1.HIS_ID" class="MANAGER_CMT">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
+                    <td data-id="@his1.HIS_ID" class="HR_CMT">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
+                    <td data-id="@his1.ID" class="TEST_TIME">@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</td>
                 </tr>
                 </text>
                 
                 }
-               
+
                 i += count - 1;
             }
 
         </tbody>
     </table>
+</div>
+<div id="mdCMT" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Comment</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCMT" role="form" data-id="" data-class="">
+                    <div class="form-group">
+                        <label class="sr-only" for="email">Comment:</label>
+                        <textarea class="form-control" id="txtCmt" required="required"></textarea>
+                    </div>
+                    <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
 </div>

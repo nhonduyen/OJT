@@ -186,7 +186,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
-    <Folder Include="Upload\" />
+    <Folder Include="Upload\Download\" />
+    <Folder Include="Upload\IMG\" />
+    <Folder Include="Upload\Template\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -217,9 +219,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Manage\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\test.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -74,7 +74,7 @@ namespace OJT
             return DBManager<HIS_DETAIL>.Execute(sql, new { EMP_ID = EMP_ID, COURSE_ID = COURSE_ID, SUB_ID = SUB_ID, STATUS = STATUS, SUB_CONTENT = SUB_CONTENT, SUB_LEVEL = SUB_LEVEL, START_DT = START_DT, END_DT = END_DT, APPROVE = APPROVE, OUTCOME_TEMPLATE = OUTCOME_TEMPLATE, OUTCOME_RESULT = OUTCOME_RESULT, REC_START_DT = REC_START_DT, REC_END_DT = REC_END_DT, TEST_TIME = TEST_TIME });
         }
 
-        public virtual int Insert(int HIS_ID, int COURSE_ID, string EMP_ID, string MENTOR, string APPROVE = "NO")
+        public virtual int Insert(int HIS_ID, int COURSE_ID, string EMP_ID, string MENTOR, string APPROVE = "Unconfirmed")
         {
             var sql = "INSERT INTO HIS_DETAIL(HIS_ID,APPROVE,COURSE_ID,EMP_ID,MENTOR) VALUES(@HIS_ID,@APPROVE,@COURSE_ID,@EMP_ID,@MENTOR)";
             return DBManager<HIS_DETAIL>.Execute(sql, new
