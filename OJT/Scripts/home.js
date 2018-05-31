@@ -4,6 +4,19 @@
     var status = ["Low", "High", "Medium"];
     var level = ["Beginer", "Intermediate", "Advanced"];
     var subjects = [];
+    $('.datepicker')
+ .datepicker({
+     format: 'yyyy-mm-dd'
+ }).on('changeDate', function (ev) {
+     $(this).datepicker('hide');
+     var id = $(this).parent().attr('data-id');
+     var column = $(this).parent().attr('class');
+     var value = $(this).val();
+     saveDetail(id, column, value, $(this));
+     $(this).siblings().text(value);
+     $('span').show();
+     $('.datepicker').hide();
+ });
     $.ajax({
         url: $('#hdUrl').val().replace("Action", "GetSubject"),
         data: JSON.stringify({
@@ -34,41 +47,54 @@
 
 
     $('.STATUS').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
         updateVal($(this), $(this).text(), status);
         return false;
     });
     $('.SUB_ID').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
         updateVal($(this), $(this).text(), subjects);
         return false;
     });
     $('.SUB_LEVEL').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
         updateVal($(this), $(this).text(), level);
         return false;
     });
     $('.APPROVE').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
         updateVal($(this), $(this).text(), approve);
         return false;
     });
+
     $('.START_DT,.END_DT,.REC_START_DT,.REC_END_DT,.TEST_TIME').dblclick(function () {
-        //updateValDate($(this), $(this).text());
-        //updateValDate($(this));
-        $('.thVal1')
-   .datepicker({
-       format: 'yyyy-mm-dd'
-   });
+        $('.datepicker').hide();
+        $('span').show();
+        $(this).find('.datepicker').val($(this).find('span').text());
+        $(this).find('.datepicker').show();
+        $(this).find('span').hide();
         return false;
     });
     $('.RESULT_LEVEL').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
         updateVal($(this), $(this).text(), status);
         return false;
     });
     $('.SCORE').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
         updateVal1($(this), $(this).text(), status);
         return false;
-    }); 
+    });
     $('.HR_CMT, .MANAGER_CMT').dblclick(function () {
+      
         $('#frmCMT').attr('data-id', $(this).attr('data-did'));
-        $('#frmCMT').attr('data-class',$(this).attr('class'));
+        $('#frmCMT').attr('data-class', $(this).attr('class'));
         $('#frmCMT')[0].reset();
         $('#txtCmt').val($(this).text());
         $("#mdCMT").modal({
@@ -132,6 +158,7 @@
         return false;
     }
     function updateVal(currentEle, value, data) {
+        value = $.trim(value);
         var html = "";
         if (typeof data[0] == "string") {
             for (var i = 0; i < data.length; i++) {
@@ -167,11 +194,11 @@
             if ($(currentEle).attr('class') == 'SUB_ID') {
                 changeSubject();
             }
-           
+
         });
     }
     function updateVal1(currentEle, value) {
-        $(currentEle).html('<input type="number" class="thScore" value="'+value+'" style="max-width:30px;" />');
+        $(currentEle).html('<input type="text" class="thScore" value="' + value + '" style="max-width:30px;" />');
         $(".thScore").focus();
         $(".thScore").keyup(function (event) {
             if (event.keyCode == 13) {
@@ -212,7 +239,7 @@
                 else {
                     $('#noti').hide();
                     $('#message').text("Save " + status);
-       
+
                     $("#noti").fadeTo(2000, 500).slideUp(500, function () {
                         $("#noti").slideUp(500);
                     });

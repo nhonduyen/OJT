@@ -113,8 +113,8 @@
                     <td data-id="@his.ID" data-mentor="@his.MENTOR" class="STATUS">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
                     <td data-id="@his.ID" data-mentor="@his.MENTOR" data-sid="@his.SUB_ID" class="SUB_ID">@(his.SUBJECT == null ? "" : his.SUBJECT)</td>
                     <td data-id="@his.ID" data-mentor="@his.MENTOR" class="SUB_LEVEL">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="START_DT">@(his.START_DT == null ? "" : his.START_DT.ToString("yyyy-MM-dd"))</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="END_DT">@(his.END_DT == null ? "" : his.END_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="START_DT"><span>@(his.START_DT == null ? "" : his.START_DT.ToString("yyyy-MM-dd"))</span> <input type="text" class="datepicker" value="@(his.START_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his.START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="END_DT"><span>@(his.END_DT == null ? "" : his.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.END_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td data-id="@his.ID" class="APPROVE">@his.APPROVE.Trim()</td>
                     <td data-id="@his.ID" data-emp="@his.EMP_ID">
                         <a href="#">
@@ -126,11 +126,11 @@
                         </a>
                     </td>
                     <td data-id="@his.ID" data-emp="@his.EMP_ID"><a href="#" class="activity"><span class="badge">@his.ACTIVITY</span></a></td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_START_DT">@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString("yyyy-MM-dd"))</td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_END_DT">@(his.REC_END_DT == null ? "" : his.REC_END_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_START_DT"><span>@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_START_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_END_DT"><span>@(his.REC_END_DT == null ? "" : his.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_END_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td data-id="@his.HIS_ID" data-did="@his.ID" data-emp="@his.EMP_ID" class="MANAGER_CMT">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
                     <td data-id="@his.HIS_ID" data-did="@his.ID" class="HR_CMT">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
-                    <td data-id="@his.ID" class="TEST_TIME">@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his.ID" class="TEST_TIME"><span>@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.TEST_TIME == null ? DateTime.Now.ToString("yyyy-MM-dd") : his.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td rowspan="@his.CNT_EMP" class="SCORE" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
                     <td rowspan="@his.CNT_EMP" class="RESULT_LEVEL" style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                 </tr>
@@ -150,8 +150,8 @@
                     <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="STATUS">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
                     <td data-id="@his1.ID" data-emp="@his1.MENTOR" data-sid="@his1.SUB_ID" class="SUB_ID">@(his1.SUBJECT == null ? "" : his1.SUBJECT)</td>
                     <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="SUB_LEVEL">@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="START_DT">@(his1.START_DT == null ? "" : his1.START_DT.ToString("yyyy-MM-dd"))</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="END_DT">@(his1.END_DT == null ? "" : his1.END_DT.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="START_DT"><span>@(his1.START_DT == null ? "" : his1.START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.START_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his.START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="END_DT"><span>@(his1.END_DT == null ? "" : his1.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.END_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td data-id="@his1.ID" class="APPROVE">@his1.APPROVE.Trim()</td>
                     <td data-id="@his1.ID" data-emp="@his1.EMP_ID">
                         <a href="#">
@@ -163,11 +163,11 @@
                         </a>
                     </td>
                     <td data-id="@his1.ID" data-emp="@his1.EMP_ID"><a href="#" class="activity"><span class="badge">@his1.ACTIVITY</span></a></td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_START_DT">@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString("yyyy-MM-dd"))</td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_END_DT">@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.Trim("yyyy-MM-dd"))</td>
-                    <td data-id="@his1.HIS_ID" class="MANAGER_CMT">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
-                    <td data-id="@his1.HIS_ID" class="HR_CMT">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
-                    <td data-id="@his1.ID" class="TEST_TIME">@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_START_DT"><span>@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_START_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his1.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_END_DT"><span>@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_END_DT == null ? DateTime.Now.ToString("yyyy-MM-dd") : his1.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td data-id="@his1.HIS_ID" data-did="@his1.ID" class="MANAGER_CMT">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
+                    <td data-id="@his1.HIS_ID" data-did="@his1.ID" class="HR_CMT">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
+                    <td data-id="@his1.ID" class="TEST_TIME"><span>@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.TEST_TIME == null ? DateTime.Now.ToString("yyyy-MM-dd") : his1.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                 </tr>
                 </text>
                 
