@@ -153,7 +153,7 @@
         $('.datepicker').hide();
         $('span').show();
         var emp_id = $('#username').val();
-        if (emp_id == $(this).attr('data-mentor')) {
+        if (emp_id == $(this).attr('data-emp')) {
             $(this).find('.datepicker').val($(this).find('span').text());
             $(this).find('.datepicker').show();
             $(this).find('span').hide();
