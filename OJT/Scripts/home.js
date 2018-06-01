@@ -85,8 +85,8 @@
                             row = "";
                         }
                     }
-                  
-                   
+
+
                     return false;
                 },
                 error: function (xhr, status, error) {
@@ -103,46 +103,93 @@
     $('.STATUS').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
-        updateVal($(this), $(this).text(), status);
+        var emp_id = $('#username').val();
+        if (emp_id == $(this).attr('data-mentor')) {
+            updateVal($(this), $(this).text(), status);
+        }
         return false;
     });
     $('.SUB_ID').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
-        updateVal($(this), $(this).text(), subjects);
+        var emp_id = $('#username').val();
+        if (emp_id == $(this).attr('data-mentor')) {
+            updateVal($(this), $(this).text(), subjects);
+        }
         return false;
     });
     $('.SUB_LEVEL').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
-        updateVal($(this), $(this).text(), level);
+        var emp_id = $('#username').val();
+        if (emp_id == $(this).attr('data-mentor')) {
+            updateVal($(this), $(this).text(), level);
+        }
         return false;
     });
     $('.APPROVE').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
-        updateVal($(this), $(this).text(), approve);
+        var dep = $('#username').attr('data-dept');
+        var role = $('#username').attr('data-role');
+        if (role == 2 && dep == $(this).attr('data-dept')) {
+            updateVal($(this), $(this).text(), approve);
+        }
         return false;
     });
 
-    $('.START_DT,.END_DT,.REC_START_DT,.REC_END_DT,.TEST_TIME').dblclick(function () {
+    $('.START_DT,.END_DT').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
-        $(this).find('.datepicker').val($(this).find('span').text());
-        $(this).find('.datepicker').show();
-        $(this).find('span').hide();
+        var emp_id = $('#username').val();
+        if (emp_id == $(this).attr('data-mentor')) {
+            $(this).find('.datepicker').val($(this).find('span').text());
+            $(this).find('.datepicker').show();
+            $(this).find('span').hide();
+        }
+        return false;
+    });
+    $('.REC_START_DT,.REC_END_DT').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
+        var emp_id = $('#username').val();
+        if (emp_id == $(this).attr('data-mentor')) {
+            $(this).find('.datepicker').val($(this).find('span').text());
+            $(this).find('.datepicker').show();
+            $(this).find('span').hide();
+        }
+        return false;
+    });
+    $('.TEST_TIME').dblclick(function () {
+        $('.datepicker').hide();
+        $('span').show();
+        var dep = $('#username').attr('data-dept');
+        var role = $('#username').attr('data-role');
+        if (role == 2 && dep == $(this).attr('data-dept')) {
+            $(this).find('.datepicker').val($(this).find('span').text());
+            $(this).find('.datepicker').show();
+            $(this).find('span').hide();
+        }
         return false;
     });
     $('.RESULT_LEVEL').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
-        updateVal($(this), $(this).text(), status);
+        var dep = $('#username').attr('data-dept');
+        var role = $('#username').attr('data-role');
+        if (role == 2 && dep == $(this).attr('data-dept')) {
+            updateVal($(this), $(this).text(), status);
+        }
         return false;
     });
     $('.SCORE').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
-        updateVal1($(this), $(this).text(), status);
+        var dep = $('#username').attr('data-dept');
+        var role = $('#username').attr('data-role');
+        if (role == 2 && dep == $(this).attr('data-dept')) {
+            updateVal1($(this), $(this).text(), status);
+        }
         return false;
     });
     $('.HR_CMT, .MANAGER_CMT').dblclick(function () {
@@ -150,18 +197,30 @@
         $('#frmCMT').attr('data-class', $(this).attr('class'));
         $('#frmCMT')[0].reset();
         $('#txtCmt').val($(this).text());
-        $("#mdCMT").modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        var dep = $('#username').attr('data-dept');
+        var role = $('#username').attr('data-role');
+        if ($(this).attr('class') == 'MANAGER_CMT' && role == 2 && dep == $(this).attr('data-dept')) {
+            $("#mdCMT").modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+        if ($(this).attr('class') == 'HR_CMT' && role == 3) {
+            $("#mdCMT").modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
         return false;
     });
     $('.uploadfile').click(function () {
-        $('#hdUpload').val($(this).parent().attr('data-id'));
-        $("#mdUpload").modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        if ($(this).parent().attr('data-emp') == $('#username').val()) {
+            $('#hdUpload').val($(this).parent().attr('data-id'));
+            $("#mdUpload").modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
         return false;
     });
 

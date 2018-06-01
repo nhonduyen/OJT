@@ -113,11 +113,18 @@ namespace OJT
             return DBManager<EMPLOYEE>.ExecuteReader(sql);
         }
 
-        public int IsMentor(int COURSE_ID, string ID)
+        public int IsMentor(int COURSE_ID, string MENTOR)
         {
-            var sql = "SELECT TOP 1 ID FROM HISTORY WHERE COURSE_ID=@COURSE_ID AND MENTOR=@ID";
-            HISTORY his = DBManager<HISTORY>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID, ID = ID }).FirstOrDefault();
+            var sql = "SELECT TOP 1 ID FROM HISTORY WHERE COURSE_ID=@COURSE_ID AND MENTOR=@MENTOR";
+            HISTORY his = DBManager<HISTORY>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID, MENTOR = MENTOR }).FirstOrDefault();
             return his == null ? 0 : 1;
+        }
+
+        public int IsMentee(int COURSE_ID, string ID)
+        {
+            var sql = "SELECT TOP 1 ID FROM HISTORY WHERE COURSE_ID=@COURSE_ID AND EMP_ID=@ID";
+            HISTORY his = DBManager<HISTORY>.ExecuteReader(sql, new { COURSE_ID = COURSE_ID, ID = ID }).FirstOrDefault();
+            return his == null ? 0: 1;
         }
 
         public List<EMPLOYEE> Search(string Key, int start = 0, int end = 10)

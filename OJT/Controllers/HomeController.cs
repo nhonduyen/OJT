@@ -14,6 +14,8 @@ namespace OJT.Controllers
 
         public ActionResult Index(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
         {
+            if (Session["Username"] == null)
+               return RedirectToAction("Login", "Home");
             HISTORY his = new HISTORY();
             COURSE course = new COURSE();
             EMPLOYEE em = new EMPLOYEE();
@@ -29,11 +31,31 @@ namespace OJT.Controllers
                     COURSE_ID = 0;
                 }
             }
+            if (Convert.ToInt32(Session["Role"].ToString()) == 0)
+            {
+                var isMentee = em.IsMentee(COURSE_ID, Session["Username"].ToString());
+                var isMentor = em.IsMentor(COURSE_ID, Session["Username"].ToString());
+                if (isMentee == 1 && string.IsNullOrWhiteSpace(EMP_ID))
+                {
+                    EMP_ID = Session["Username"].ToString();
+                    MENTOR = em.GetListMentor(COURSE_ID).FirstOrDefault().ID;
+                }
+                else if (isMentor == 1 && string.IsNullOrWhiteSpace(MENTOR))
+                {
+                    MENTOR = Session["Username"].ToString();
+                }
+                else
+                {
+                    EMP_ID = "0";
+                    MENTOR = "0";
+                }
+            }
+           
             var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID);
-            //var cntHis = his.CountHistory(MENTOR, EMP_ID, COURSE_ID);
+ 
             ViewBag.COURSE = courses;
             ViewBag.HIS = lstHis;
-            //ViewBag.CNT = cntHis;
+
             ViewBag.MENTORS = em.GetListMentor(COURSE_ID);
             ViewBag.MENTEES = em.GetListMentee(COURSE_ID, MENTOR);
             ViewBag.SELECT_COURSE = COURSE_ID;
@@ -47,6 +69,8 @@ namespace OJT.Controllers
 
         public ActionResult Manage(int COURSE_ID = 0, string MENTOR = "", string EMP_ID = "")
         {
+            if (Session["Username"] == null)
+                RedirectToAction("Login", "Home");
             EMPLOYEE em = new EMPLOYEE();
             COURSE course = new COURSE();
             List<COURSE> courses = course.Select();
