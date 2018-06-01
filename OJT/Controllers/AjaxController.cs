@@ -148,5 +148,13 @@ namespace OJT.Controllers
             var result = his.Update(ID, COLUMN, VALUE);
             return Json(result);
         }
+
+        [HttpPost]
+        public JsonResult GetActivityImg(int ID)
+        {
+            ACTIVITY_IMG act = new ACTIVITY_IMG();
+            var result = act.Select(ID);
+            return Json(result);
+        }
     }
 }

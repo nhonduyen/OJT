@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -95,5 +96,73 @@ namespace OJT.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase OUTCOME_RESULT, int ID)
+        {
+            var allowedExtensions = new[] { ".ppt", ".pptx" };
+            var ext = Path.GetExtension(OUTCOME_RESULT.FileName).ToLower();
+            if (!allowedExtensions.Contains(ext))
+            {
+                TempData["message"] = "Upload fail. Please select ppt/pptx file";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+            HIS_DETAIL detail = new HIS_DETAIL();
+            var mypath = "~/Upload/File/" + ID.ToString();
+            var path = Server.MapPath(mypath);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            DirectoryInfo di = new DirectoryInfo(path);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            string savedFileName = Path.Combine(path, Path.GetFileName(OUTCOME_RESULT.FileName));
+            OUTCOME_RESULT.SaveAs(savedFileName);
+            string fileName = Path.GetFileName(OUTCOME_RESULT.FileName);
+
+            var result = detail.Update(ID, "OUTCOME_RESULT", mypath+"/"+fileName);
+            if (result > 0)
+                TempData["message"] = "Upload success";
+            else
+                TempData["message"] = "Upload fail";
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        [HttpPost]
+        public ActionResult UploadImg()
+        {
+            ACTIVITY_IMG act = new ACTIVITY_IMG();
+            var result = 0;
+            int ID = Convert.ToInt32(Request["ID"]);
+            var mypath = "~/Upload/IMG/" + ID.ToString();
+            var path = Server.MapPath(mypath);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            for (int i = 0; i < Request.Files.Count; i++ )
+            {
+                HttpPostedFileBase file = Request.Files[i];
+                if (file.ContentLength == 0)
+                {
+                    //Repeated upload file be skipped .
+                    continue;
+                }
+                string savedFileName = Path.Combine(path, Path.GetFileName(file.FileName));
+                file.SaveAs(savedFileName);
+                string fileName = Path.GetFileName(file.FileName);
+                result = act.Insert(ID, fileName);
+            }
+            if (result > 0)
+                TempData["message"] = "Upload success";
+            else
+                TempData["message"] = "Upload fail";
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        public FileResult Download(string url)
+        {
+            var path = Server.MapPath(url);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
+            string fileName = Path.GetFileName(path);
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
     }
 }

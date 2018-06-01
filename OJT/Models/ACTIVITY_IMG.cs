@@ -21,7 +21,7 @@ namespace OJT
         {
             var sql = "SELECT * FROM ACTIVITY_IMG ";
             if (ID == 0) return DBManager<ACTIVITY_IMG>.ExecuteReader(sql);
-            sql +=" WHERE ID=@ID";
+            sql += " WHERE DETAIL_ID=@ID";
 
             return DBManager<ACTIVITY_IMG>.ExecuteReader(sql, new { ID = ID});
         }

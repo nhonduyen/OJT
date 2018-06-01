@@ -162,15 +162,10 @@
     <Content Include="Scripts\Include\ie10-viewport-bug-workaround.js" />
     <Content Include="Scripts\Include\jquery-1.11.3.min.js" />
     <Content Include="Scripts\Include\jquery.dataTables.min.js" />
-    <Content Include="Scripts\Include\jquery.fileupload-ui.js" />
-    <Content Include="Scripts\Include\jquery.fileupload.js" />
-    <Content Include="Scripts\Include\jquery.iframe-transport.js" />
-    <Content Include="Scripts\Include\jquery.ui.widget.js" />
     <Content Include="Scripts\Include\jquery.xdr-transport.js" />
     <Content Include="Scripts\Include\modernizr-3.5.0.min.js" />
     <Content Include="Scripts\Include\moment.min.js" />
     <Content Include="Scripts\Include\plugins.js" />
-    <Content Include="Scripts\Include\smoke.js" />
     <Content Include="Scripts\login.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -186,7 +181,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
-    <Folder Include="Upload\Download\" />
+    <Folder Include="Upload\File\" />
     <Folder Include="Upload\IMG\" />
     <Folder Include="Upload\Template\" />
   </ItemGroup>

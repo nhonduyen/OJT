@@ -45,7 +45,61 @@
         },
     });
 
-
+    $('.activity').click(function () {
+        var id = $(this).parent().attr('data-id');
+        var num = $(this).find('.badge').text();
+        var src = $('#img-content').attr('data-url') + id;
+        $('#img-content').html('');
+        $('#hdUploadImg').val(id);
+        if (parseInt(num) > 0) {
+            $.ajax({
+                url: $('#hdUrl').val().replace("Action", "GetActivityImg"),
+                data: JSON.stringify({
+                    ID: id
+                }),
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                crossBrowser: true,
+                success: function (data, status) {
+                    var html = '';
+                    var row = "";
+                    var count = 0;
+                    var remain = data.length;
+                    for (var i = 0; i < data.length; i++) {
+                        count++;
+                        remain--;
+                        row += '<a href="#" class="col-sm-4">' +
+                       '<img src="' + src + "/" + $.trim(data[i].IMG_URL) + '" width="280" height="300" class="img-fluid">' +
+                   '</a>';
+                        if (count % 3 == 0) {
+                            html += '<div class="row" style="margin-top:5px;">' + row + '</div>';
+                            $('#img-content').append(html);
+                            html = "";
+                            row = "";
+                        }
+                        else if (remain == 0) {
+                            html += '<div class="row" style="margin-top:5px;">' + row + '</div>';
+                            $('#img-content').append(html);
+                            html = "";
+                            row = "";
+                        }
+                    }
+                  
+                   
+                    return false;
+                },
+                error: function (xhr, status, error) {
+                    bootbox.alert("Error! " + xhr.status);
+                },
+            });
+        }
+        $("#mdImg").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        return false;
+    });
     $('.STATUS').dblclick(function () {
         $('.datepicker').hide();
         $('span').show();
@@ -92,7 +146,6 @@
         return false;
     });
     $('.HR_CMT, .MANAGER_CMT').dblclick(function () {
-      
         $('#frmCMT').attr('data-id', $(this).attr('data-did'));
         $('#frmCMT').attr('data-class', $(this).attr('class'));
         $('#frmCMT')[0].reset();
@@ -103,6 +156,15 @@
         });
         return false;
     });
+    $('.uploadfile').click(function () {
+        $('#hdUpload').val($(this).parent().attr('data-id'));
+        $("#mdUpload").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        return false;
+    });
+
     $('#frmCMT').submit(function () {
         var id = $(this).attr('data-id');
         var column = $(this).attr('data-class');
