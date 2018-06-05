@@ -14,7 +14,7 @@
     <meta name="author" content="Nguyen Nhon Duyen">
     <link rel="icon" href="@Url.Content("~/favicon.ico")">
 
-    <title>ON THE JOB TRAINING MANAGEMENT</title>
+    <title>@ViewRes.Resource.PrjName</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -46,12 +46,19 @@
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li id="lhome">
-                        <a href="@Url.Action("Index", "Home")">Main</a>
+                        <a href="@Url.Action("Index", "Home")">@ViewRes.Resource.Main</a>
                     </li>
                     <li id="lvisit">
-                        <a href="@Url.Action("Manage", "Home")">Manage</a>
+                        <a href="@Url.Action("Manage", "Home")">@ViewRes.Resource.Manage</a>
                     </li>
-                    
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">@ViewRes.Resource.Language
+        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("ChangeLanguage", "Home", new { lang = "en", returnUrl = Request.RawUrl })">English</a></li>
+                            <li><a href="@Url.Action("ChangeLanguage", "Home", new { lang = "vi", returnUrl = Request.RawUrl  })">Tiếng Việt</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 @if (Session["Username"] != null)
                 {
@@ -63,14 +70,14 @@
                                 <span class="glyphicon glyphicon-user"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-user">
-                                <li class="active"><a href="@Url.Action("ChangePassword", "Home")">Change Password</a></li>
+                                <li class="active"><a href="@Url.Action("ChangePassword", "Home")">@ViewRes.Resource.ChangePass</a></li>
                                 @if (@Session["Role"] != null && @Session["Role"].ToString() == "3")
                                 {
                                     <li>
-                                        <a href="@Url.Action("Index","Manage")">Management</a>
+                                        <a href="@Url.Action("Index", "Manage")">@ViewRes.Resource.Manage</a>
                                     </li>
                                 }
-                                <li><a href="@Url.Action("Logout", "Home")">Log out</a></li>
+                                <li><a href="@Url.Action("Logout", "Home")">@ViewRes.Resource.LogOut</a></li>
                             </ul>
                             <!-- /.dropdown-user -->
                         </li>
@@ -79,7 +86,7 @@
                 else
                 {
                     <ul class="nav navbar-nav navbar-right">
-                        <li data-toggle="modal" data-target="#mdLogin"><a href="@Url.Action("Login", "Home")"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a></li>
+                        <li data-toggle="modal" data-target="#mdLogin"><a href="@Url.Action("Login", "Home")"><span class="glyphicon glyphicon-log-in"></span>&nbsp;@ViewRes.Resource.Login</a></li>
                     </ul>
                 }
             </div>
@@ -88,14 +95,14 @@
 
     <header class="banner">
         <div class="container-fluid">
-            <h2 class="margin0"><span class="glyphicon glyphicon-education"></span>&nbsp;ON THE JOB TRAINING MANAGEMENT</h2>
+            <h2 class="margin0"><span class="glyphicon glyphicon-education"></span>&nbsp;@ViewRes.Resource.PrjName</h2>
         </div>
     </header>
     <div class="content container-fluid">
 
         @RenderBody()
 
-        <iframe id="txtArea1" style="display:none"></iframe>
+        <iframe id="txtArea1" style="display: none"></iframe>
     </div>
     <footer>
         <div class="container-fluid">

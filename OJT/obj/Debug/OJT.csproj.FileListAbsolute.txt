@@ -33,3 +33,8 @@ D:\Duyen\Project\OJT\OJT\bin\System.Web.WebPages.Razor.xml
 D:\Duyen\Project\OJT\OJT\obj\Debug\OJT.csprojResolveAssemblyReference.cache
 D:\Duyen\Project\OJT\OJT\obj\Debug\OJT.dll
 D:\Duyen\Project\OJT\OJT\obj\Debug\OJT.pdb
+D:\Duyen\Project\OJT\OJT\bin\Vi\OJT.resources.dll
+D:\Duyen\Project\OJT\OJT\obj\Debug\OJT.Lang.Resource.resources
+D:\Duyen\Project\OJT\OJT\obj\Debug\OJT.Lang.Resource.Vi.resources
+D:\Duyen\Project\OJT\OJT\obj\Debug\OJT.csproj.GenerateResource.Cache
+D:\Duyen\Project\OJT\OJT\obj\Debug\Vi\OJT.resources.dll

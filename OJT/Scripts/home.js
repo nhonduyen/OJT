@@ -9,7 +9,7 @@
      format: 'yyyy-mm-dd'
  }).on('changeDate', function (ev) {
      $(this).datepicker('hide');
-     var id = $(this).parent().attr('data-id');
+     var id = $(this).closest('tr').attr('data-id');
      var column = $(this).parent().attr('class');
      var value = $(this).val();
      saveDetail(id, column, value, $(this));
@@ -46,7 +46,7 @@
     });
 
     $('.activity').click(function () {
-        var id = $(this).parent().attr('data-id');
+        var id = $(this).closest('tr').attr('data-id');
         var num = $(this).find('.badge').text();
         var src = $('#img-content').attr('data-url') + id;
         $('#img-content').html('');
@@ -104,7 +104,7 @@
         $('.datepicker').hide();
         $('span').show();
         var emp_id = $('#username').val();
-        if (emp_id == $(this).attr('data-mentor')) {
+        if (emp_id == $(this).closest('tr').attr('data-mentor')) {
             updateVal($(this), $(this).text(), status);
         }
         return false;
@@ -113,7 +113,7 @@
         $('.datepicker').hide();
         $('span').show();
         var emp_id = $('#username').val();
-        if (emp_id == $(this).attr('data-mentor')) {
+        if (emp_id == $(this).closest('tr').attr('data-mentor')) {
             updateVal($(this), $(this).text(), subjects);
         }
         return false;
@@ -122,7 +122,7 @@
         $('.datepicker').hide();
         $('span').show();
         var emp_id = $('#username').val();
-        if (emp_id == $(this).attr('data-mentor')) {
+        if (emp_id == $(this).closest('tr').attr('data-mentor')) {
             updateVal($(this), $(this).text(), level);
         }
         return false;
@@ -132,7 +132,7 @@
         $('span').show();
         var dep = $('#username').attr('data-dept');
         var role = $('#username').attr('data-role');
-        if (role == 2 && dep == $(this).attr('data-dept')) {
+        if (role == 2 && dep == $(this).closest('tr').attr('data-dept')) {
             updateVal($(this), $(this).text(), approve);
         }
         return false;
@@ -142,7 +142,7 @@
         $('.datepicker').hide();
         $('span').show();
         var emp_id = $('#username').val();
-        if (emp_id == $(this).attr('data-mentor')) {
+        if (emp_id == $(this).closest('tr').attr('data-mentor')) {
             $(this).find('.datepicker').val($(this).find('span').text());
             $(this).find('.datepicker').show();
             $(this).find('span').hide();
@@ -153,7 +153,7 @@
         $('.datepicker').hide();
         $('span').show();
         var emp_id = $('#username').val();
-        if (emp_id == $(this).attr('data-emp')) {
+        if (emp_id == $(this).closest('tr').attr('data-emp')) {
             $(this).find('.datepicker').val($(this).find('span').text());
             $(this).find('.datepicker').show();
             $(this).find('span').hide();
@@ -165,7 +165,7 @@
         $('span').show();
         var dep = $('#username').attr('data-dept');
         var role = $('#username').attr('data-role');
-        if (role == 2 && dep == $(this).attr('data-dept')) {
+        if (role == 2 && dep == $(this).closest('tr').attr('data-dept')) {
             $(this).find('.datepicker').val($(this).find('span').text());
             $(this).find('.datepicker').show();
             $(this).find('span').hide();
@@ -177,7 +177,7 @@
         $('span').show();
         var dep = $('#username').attr('data-dept');
         var role = $('#username').attr('data-role');
-        if (role == 2 && dep == $(this).attr('data-dept')) {
+        if (role == 2 && dep == $(this).closest('tr').attr('data-dept')) {
             updateVal($(this), $(this).text(), status);
         }
         return false;
@@ -187,19 +187,19 @@
         $('span').show();
         var dep = $('#username').attr('data-dept');
         var role = $('#username').attr('data-role');
-        if (role == 2 && dep == $(this).attr('data-dept')) {
+        if (role == 2 && dep == $(this).closest('tr').attr('data-dept')) {
             updateVal1($(this), $(this).text(), status);
         }
         return false;
     });
     $('.HR_CMT, .MANAGER_CMT').dblclick(function () {
-        $('#frmCMT').attr('data-id', $(this).attr('data-did'));
+        $('#frmCMT').attr('data-id', $(this).closest('tr').attr('data-did'));
         $('#frmCMT').attr('data-class', $(this).attr('class'));
         $('#frmCMT')[0].reset();
         $('#txtCmt').val($(this).text());
         var dep = $('#username').attr('data-dept');
         var role = $('#username').attr('data-role');
-        if ($(this).attr('class') == 'MANAGER_CMT' && role == 2 && dep == $(this).attr('data-dept')) {
+        if ($(this).attr('class') == 'MANAGER_CMT' && role == 2 && dep == $(this).closest('tr').attr('data-dept')) {
             $("#mdCMT").modal({
                 backdrop: 'static',
                 keyboard: false
@@ -214,8 +214,8 @@
         return false;
     });
     $('.uploadfile').click(function () {
-        if ($(this).parent().attr('data-emp') == $('#username').val()) {
-            $('#hdUpload').val($(this).parent().attr('data-id'));
+        if ($(this).closest('tr').attr('data-emp') == $('#username').val()) {
+            $('#hdUpload').val($(this).closest('tr').attr('data-id'));
             $("#mdUpload").modal({
                 backdrop: 'static',
                 keyboard: false
@@ -245,7 +245,7 @@
                     if (data > 0) {
                         $("#mdCMT").modal('hide');
                         $('.' + column).each(function () {
-                            if ($(this).attr('data-did') == id) {
+                            if ($(this).closest('tr').attr('data-did') == id) {
                                 $(this).text(value);
                             }
                         });
@@ -270,7 +270,6 @@
                 for (var i = 0; i < subjects.length; i++) {
                     if (subjects[i].ID == id) {
                         $(this).text(subjects[i].NAME);
-                        console.log(subjects[id].NAME);
                     }
                 }
 
@@ -311,7 +310,8 @@
         $(".thVal").unbind('focusout').focusout(function () {
             var t = $(".thVal").val();
             $(currentEle).html($(".thVal").val());
-            saveDetail($(currentEle).attr('data-id'), $(currentEle).attr('class'), t, $(currentEle));
+            var id = $(currentEle).attr('class') == 'RESULT_LEVEL' ? $(currentEle).attr('data-id') : $(currentEle).closest('tr').attr('data-id');
+            saveDetail(id, $(currentEle).attr('class'), t, $(currentEle));
             if ($(currentEle).attr('class') == 'SUB_ID') {
                 changeSubject();
             }

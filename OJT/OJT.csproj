@@ -128,6 +128,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Lang\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Lang\Resource.vi1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.vi.resx</DependentUpon>
+    </Compile>
     <Compile Include="Models\ACTIVITY_IMG.cs" />
     <Compile Include="Models\ASSIGN.cs" />
     <Compile Include="Models\COURSE.cs" />
@@ -216,6 +226,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Upload\Template\OJT management system.pptx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Lang\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>ViewRes</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lang\Resource.vi.resx">
+      <CustomToolNamespace>ViewRes</CustomToolNamespace>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.vi1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

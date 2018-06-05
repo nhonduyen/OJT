@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -20,6 +21,7 @@ namespace OJT.Controllers
             HISTORY his = new HISTORY();
             COURSE course = new COURSE();
             EMPLOYEE em = new EMPLOYEE();
+     
             List<COURSE> courses = course.Select();
             if (COURSE_ID == -1)
             {
@@ -108,8 +110,9 @@ namespace OJT.Controllers
         }
 
         [HttpPost]
-        public ActionResult Signin(string username, string password)
+        public ActionResult Signin(string username, string password, string lang)
         {
+            Session["Culture"] = new CultureInfo(lang);
             EMPLOYEE em = new EMPLOYEE();
             password = em.Encode(password);
             bool login = em.Login(username, password);
@@ -193,5 +196,11 @@ namespace OJT.Controllers
             string fileName = Path.GetFileName(path);
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
+
+        public ActionResult ChangeLanguage(string lang, string returnUrl)
+        {
+            Session["Culture"] = new CultureInfo(lang);
+            return Redirect(returnUrl);
+        }  
     }
 }

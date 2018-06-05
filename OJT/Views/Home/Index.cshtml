@@ -11,12 +11,12 @@
 }
 @Html.Hidden("hdUrl", Url.Action("Action", "Ajax"))
 <input type="hidden" id="user" value="@Session["Username"]" data-role="@Session["Role"]" data-dept="@Session["Dept"]" />
-<h4 class="page-header" style="margin: 10px;"><strong>Main</strong></h4>
+<h4 class="page-header" style="margin: 10px;"><strong>@ViewRes.Resource.Main</strong></h4>
 <div class="row">
     <div class="col-sm-8">
         <form class="form-inline">
             <div class="form-group">
-                <label for="from">Mentor:</label>
+                <label for="from">@ViewRes.Resource.SearchMentor</label>
                 <select class="form-control" id="mentor" name="MENTOR">
                     <option></option>
                     @foreach (var item in ViewBag.MENTORS)
@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="to">Mentee:</label>
+                <label for="to">@ViewRes.Resource.SearchMentee</label>
                 <select class="form-control" id="mentee" name="EMP_ID">
                     <option></option>
                     @foreach (var item in ViewBag.MENTEES)
@@ -40,7 +40,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="to">Period:</label>
+                <label for="to">@ViewRes.Resource.SearchPeriod</label>
                 <select class="form-control" id="selPeriod" name="COURSE_ID">
                     @if (Session["Role"] != null && Convert.ToInt32(Session["Role"]) == 3)
                     {
@@ -54,8 +54,8 @@
                     }
                 </select>
             </div>
-            <button type="submit" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Search</button>
-            <button id="btnExport" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>Export</button>
+            <button type="submit" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>@ViewRes.Resource.Search</button>
+            <button id="btnExport" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>@ViewRes.Resource.Export</button>
         </form>
     </div>
 
@@ -71,31 +71,31 @@
     <table id="tbMainDefault" class="table table-bordered">
         <thead>
             <tr class="tbheader">
-                <th rowspan="2" style="vertical-align: middle;">Em ID</th>
-                <th rowspan="2" style="vertical-align: middle;">Picture</th>
-                <th rowspan="2" style="white-space: nowrap; vertical-align: middle;">Full Name</th>
-                <th rowspan="2" style="vertical-align: middle;">Workgroup</th>
-                <th rowspan="2" style="vertical-align: middle;">Period</th>
-                <th colspan="5" style="vertical-align: middle; text-align: center;">OJT Plan</th>
-                <th rowspan="2" style="vertical-align: middle;">Approval Status</th>
-                <th colspan="4" style="vertical-align: middle; text-align: center;">Training Record</th>
-                <th rowspan="2" style="vertical-align: middle;">Comment By Manager</th>
-                <th rowspan="2" style="vertical-align: middle;">Comment By HR</th>
-                <th colspan="3" style="vertical-align: middle; text-align: center;">Evaluation Result</th>
+                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.EmpId</th>
+                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.Picture</th>
+                <th rowspan="2" style="white-space: nowrap; vertical-align: middle;">@ViewRes.Resource.Name</th>
+                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.Workgroup</th>
+                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.SearchPeriod</th>
+                <th colspan="5" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Plan</th>
+                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.AppStatus</th>
+                <th colspan="4" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Record</th>
+                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.MngCmt</th>
+                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.HrCmt</th>
+                <th colspan="3" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Result</th>
             </tr>
             <tr>
-                <th style="vertical-align: middle;">Current Status</th>
-                <th style="vertical-align: middle;">Course Content</th>
-                <th style="vertical-align: middle;">Level</th>
-                <th style="vertical-align: middle;">Start Date</th>
-                <th style="vertical-align: middle;">End Date</th>
-                <th style="vertical-align: middle;">Learning Outcomes</th>
-                <th style="vertical-align: middle;">Activities Record</th>
-                <th style="vertical-align: middle;">Start Date</th>
-                <th style="vertical-align: middle;">End Date</th>
-                <th style="vertical-align: middle;">Testing Time</th>
-                <th style="vertical-align: middle;">Score</th>
-                <th style="vertical-align: middle;">Level</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.CurrentStatus</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.CourseContent</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Level</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.StartDt</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.EndDt</th>
+                <th style="vertical-align: middle; white-space:nowrap;">@ViewRes.Resource.Outcome</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Activity</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.StartDt</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.EndDt</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Test</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Score</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Level</th>
             </tr>
 
         </thead>
@@ -107,7 +107,7 @@
                 var cntCourse = ViewBag.HIS[i].CNT_COURSE;
                 var his = ViewBag.HIS[i];
                 <text>
-                <tr>
+                <tr data-id="@his.ID" data-mentor="@his.MENTOR" data-sid="@his.SUB_ID" data-dept="@his.DEPARTMENT.Trim()" data-emp="@his.EMP_ID" data-did="@his.ID">
                     <td rowspan="@his.CNT_EMP">@his.EMP_ID</td>
                     <td rowspan="@his.CNT_EMP">
                         <img src="@Url.Content("~/" + his.PICTURE.Trim())" class='img-rounded' height='100' width='100' alt='X' />
@@ -115,14 +115,14 @@
                     <td rowspan="@his.CNT_EMP">@his.EMP_NAME.Trim()</td>
                     <td rowspan="@his.CNT_EMP">@his.DEPARTMENT.Trim()</td>
                     <td rowspan="@his.CNT_COURSE">@his.PERIOD.Trim()</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="STATUS">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" data-sid="@his.SUB_ID" class="SUB_ID">@(his.SUBJECT == null ? "" : his.SUBJECT)</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="SUB_LEVEL">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="START_DT"><span>@(his.START_DT == null ? "" : his.START_DT.ToString("yyyy-MM-dd"))</span>
+                    <td class="STATUS">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
+                    <td class="SUB_ID">@(his.SUBJECT == null ? "" : his.SUBJECT)</td>
+                    <td class="SUB_LEVEL">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
+                    <td class="START_DT"><span>@(his.START_DT == null ? "" : his.START_DT.ToString("yyyy-MM-dd"))</span>
                         <input type="text" class="datepicker" value="@(his.START_DT == null ? now : his.START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his.ID" data-mentor="@his.MENTOR" class="END_DT"><span>@(his.END_DT == null ? "" : his.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.END_DT == null ? now : his.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his.ID" class="APPROVE" data-dept="@his.DEPARTMENT.Trim()">@his.APPROVE.Trim()</td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID">
+                    <td class="END_DT"><span>@(his.END_DT == null ? "" : his.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.END_DT == null ? now : his.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td class="APPROVE">@his.APPROVE.Trim()</td>
+                    <td>
                         <a href="@Url.Action("Download", "Home", new { url = his.OUTCOME_RESULT == null ? download : his.OUTCOME_RESULT })">
                             <span class="glyphicon glyphicon-download-alt"></span>
                         </a>
@@ -131,14 +131,14 @@
                             <span class="glyphicon glyphicon-cloud-upload"></span>
                         </a>
                     </td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID"><a href="#" class="activity"><span class="badge">@his.ACTIVITY</span></a></td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_START_DT"><span>@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_START_DT == null ? now : his.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his.ID" data-emp="@his.EMP_ID" class="REC_END_DT"><span>@(his.REC_END_DT == null ? "" : his.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_END_DT == null ? now : his.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his.HIS_ID" data-did="@his.ID" data-emp="@his.EMP_ID" data-dept="@his.DEPARTMENT.Trim()" class="MANAGER_CMT">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
-                    <td data-id="@his.HIS_ID" data-did="@his.ID" class="HR_CMT">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
-                    <td data-id="@his.ID" class="TEST_TIME" data-dept="@his.DEPARTMENT.Trim()"><span>@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.TEST_TIME == null ? now : his.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td rowspan="@his.CNT_EMP" class="SCORE" data-dept="@his.DEPARTMENT.Trim()" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
-                    <td rowspan="@his.CNT_EMP" class="RESULT_LEVEL" data-dept="@his.DEPARTMENT.Trim()" style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                    <td><a href="#" class="activity"><span class="badge">@his.ACTIVITY</span></a></td>
+                    <td class="REC_START_DT"><span>@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_START_DT == null ? now : his.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td class="REC_END_DT"><span>@(his.REC_END_DT == null ? "" : his.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_END_DT == null ? now : his.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td class="MANAGER_CMT">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
+                    <td class="HR_CMT">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
+                    <td class="TEST_TIME"><span>@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.TEST_TIME == null ? now : his.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td rowspan="@his.CNT_EMP" class="SCORE" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
+                    <td rowspan="@his.CNT_EMP" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                 </tr>
                 </text>
               
@@ -148,18 +148,18 @@
                     var his1 = ViewBag.HIS[step];
                        
                 <text>
-                <tr>
+                <tr data-id="@his1.ID" data-emp="@his1.EMP_ID" data-mentor="@his1.MENTOR" data-sid="@his1.SUB_ID" data-dept="@his1.DEPARTMENT.Trim()" data-did="@his1.ID">
                     @if (j % cntCourse == 0)
                     {
                         <td rowspan="@his1.CNT_COURSE">@his1.PERIOD.Trim()</td>
                     }
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="STATUS">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" data-sid="@his1.SUB_ID" class="SUB_ID">@(his1.SUBJECT == null ? "" : his1.SUBJECT)</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="SUB_LEVEL">@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="START_DT"><span>@(his1.START_DT == null ? "" : his1.START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.START_DT == null ? now : his1.START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his1.ID" data-emp="@his1.MENTOR" class="END_DT"><span>@(his1.END_DT == null ? "" : his1.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.END_DT == null ? now : his1.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his1.ID" class="APPROVE" data-dept="@his1.DEPARTMENT.Trim()">@his1.APPROVE.Trim()</td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID">
+                    <td class="STATUS">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
+                    <td class="SUB_ID">@(his1.SUBJECT == null ? "" : his1.SUBJECT)</td>
+                    <td class="SUB_LEVEL">@(his1.SUB_LEVEL == null ? "" : his1.SUB_LEVEL.Trim())</td>
+                    <td class="START_DT"><span>@(his1.START_DT == null ? "" : his1.START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.START_DT == null ? now : his1.START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td class="END_DT"><span>@(his1.END_DT == null ? "" : his1.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.END_DT == null ? now : his1.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td class="APPROVE">@his1.APPROVE.Trim()</td>
+                    <td>
                         <a href="@Url.Action("Download", "Home", new { url = his1.OUTCOME_RESULT == null ? download : his1.OUTCOME_RESULT })">
                             <span class="glyphicon glyphicon-download-alt"></span>
                         </a>
@@ -168,12 +168,12 @@
                             <span class="glyphicon glyphicon-cloud-upload"></span>
                         </a>
                     </td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID"><a href="#" class="activity"><span class="badge">@his1.ACTIVITY</span></a></td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_START_DT"><span>@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_START_DT == null ? now : his1.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his1.ID" data-emp="@his1.EMP_ID" class="REC_END_DT"><span>@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_END_DT == null ? now : his1.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td data-id="@his1.HIS_ID" data-did="@his1.ID" data-dept="@his1.DEPARTMENT.Trim()" class="MANAGER_CMT">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
-                    <td data-id="@his1.HIS_ID" data-did="@his1.ID" class="HR_CMT">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
-                    <td data-id="@his1.ID" class="TEST_TIME" data-dept="@his1.DEPARTMENT.Trim()"><span>@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.TEST_TIME == null ? now : his1.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td><a href="#" class="activity"><span class="badge">@his1.ACTIVITY</span></a></td>
+                    <td class="REC_START_DT"><span>@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_START_DT == null ? now : his1.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td class="REC_END_DT"><span>@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_END_DT == null ? now : his1.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    <td class="MANAGER_CMT">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
+                    <td class="HR_CMT">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
+                    <td class="TEST_TIME"><span>@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.TEST_TIME == null ? now : his1.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                 </tr>
                 </text>
                 
