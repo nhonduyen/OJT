@@ -15,7 +15,8 @@ namespace OJT.Controllers
         public ActionResult Index(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
         {
             if (Session["Username"] == null)
-               return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Home");
+            var dept = "";
             HISTORY his = new HISTORY();
             COURSE course = new COURSE();
             EMPLOYEE em = new EMPLOYEE();
@@ -50,9 +51,13 @@ namespace OJT.Controllers
                     MENTOR = "0";
                 }
             }
-           
-            var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID);
- 
+            if (Convert.ToInt32(Session["Role"].ToString()) == 2)
+            {
+                dept = Session["Dept"].ToString();
+            }
+
+            var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID, dept);
+
             ViewBag.COURSE = courses;
             ViewBag.HIS = lstHis;
 
@@ -144,7 +149,7 @@ namespace OJT.Controllers
             OUTCOME_RESULT.SaveAs(savedFileName);
             string fileName = Path.GetFileName(OUTCOME_RESULT.FileName);
 
-            var result = detail.Update(ID, "OUTCOME_RESULT", mypath+"/"+fileName);
+            var result = detail.Update(ID, "OUTCOME_RESULT", mypath + "/" + fileName);
             if (result > 0)
                 TempData["message"] = "Upload success";
             else
@@ -162,7 +167,7 @@ namespace OJT.Controllers
             var path = Server.MapPath(mypath);
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
-            for (int i = 0; i < Request.Files.Count; i++ )
+            for (int i = 0; i < Request.Files.Count; i++)
             {
                 HttpPostedFileBase file = Request.Files[i];
                 if (file.ContentLength == 0)

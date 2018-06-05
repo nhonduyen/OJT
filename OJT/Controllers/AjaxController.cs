@@ -79,7 +79,7 @@ namespace OJT.Controllers
         }
 
         [HttpPost]
-        public JsonResult Assign(string MENTOR, int COURSE_ID, List<string> IDS)
+        public JsonResult Assign(string MENTOR, int COURSE_ID, List<EMPLOYEE> IDS)
         {
             var result = 0;
             HISTORY his = new HISTORY();
@@ -87,19 +87,19 @@ namespace OJT.Controllers
             EMPLOYEE em = new EMPLOYEE();
             foreach (var id in IDS)
             {
-                HISTORY last = his.GetLastId(COURSE_ID, id, MENTOR);
-                int isMentor = em.IsMentor(COURSE_ID, id);
+                HISTORY last = his.GetLastId(COURSE_ID, id.ID, MENTOR);
+                int isMentor = em.IsMentor(COURSE_ID, id.ID);
                 if (last == null && isMentor == 0)
                 {
-                    result = his.Insert(COURSE_ID, id, MENTOR);
+                    result = his.Insert(COURSE_ID, id.ID, MENTOR);
                     if (result > 0)
                     {
-                        last = his.GetLastId(COURSE_ID, id, MENTOR);
+                        last = his.GetLastId(COURSE_ID, id.ID, MENTOR);
                         if (last != null)
                         {
                             for (int i = 0; i < 5; i++)
                             {
-                                result = detail.Insert(last.ID,COURSE_ID, id,MENTOR);
+                                result = detail.Insert(last.ID,COURSE_ID, id.ID,MENTOR,"Unconfirmed",id.DEPARTMENT);
                             }
                         }
                     }

@@ -50,8 +50,14 @@
         var MENTOR = $.trim($('#txtMentor').val());
         var COURSE_ID = $.trim($('#selPeriod').val());
         var ids = [];
+      
         $("input:checkbox:checked").each(function () {
-            ids.push($(this).attr('id'));
+            var dept = $.trim($(this).closest('tr').children("td:nth-child(5)").text());
+            var emp = {
+                ID: $(this).attr('id'),
+                DEPARTMENT: dept
+            };
+            ids.push(emp);
         });
         if (MENTOR && COURSE_ID && ids.length > 0) {
             $.ajax({

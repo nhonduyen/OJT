@@ -26,6 +26,7 @@ namespace OJT
         public DateTime TEST_TIME { get; set; }
         public string MANAGER_CMT { get; set; }
         public string HR_CMT { get; set; }
+        public string DEPT { get; set; }
 
         public HIS_DETAIL(int ID, string EMP_ID, int COURSE_ID, int SUB_ID, string STATUS, string SUB_CONTENT, string SUB_LEVEL, DateTime START_DT, DateTime END_DT, string APPROVE, string OUTCOME_TEMPLATE, string OUTCOME_RESULT, DateTime REC_START_DT, DateTime REC_END_DT, DateTime TEST_TIME)
         {
@@ -74,16 +75,17 @@ namespace OJT
             return DBManager<HIS_DETAIL>.Execute(sql, new { EMP_ID = EMP_ID, COURSE_ID = COURSE_ID, SUB_ID = SUB_ID, STATUS = STATUS, SUB_CONTENT = SUB_CONTENT, SUB_LEVEL = SUB_LEVEL, START_DT = START_DT, END_DT = END_DT, APPROVE = APPROVE, OUTCOME_TEMPLATE = OUTCOME_TEMPLATE, OUTCOME_RESULT = OUTCOME_RESULT, REC_START_DT = REC_START_DT, REC_END_DT = REC_END_DT, TEST_TIME = TEST_TIME });
         }
 
-        public virtual int Insert(int HIS_ID, int COURSE_ID, string EMP_ID, string MENTOR, string APPROVE = "Unconfirmed")
+        public virtual int Insert(int HIS_ID, int COURSE_ID, string EMP_ID, string MENTOR, string APPROVE = "Unconfirmed", string DEPT="")
         {
-            var sql = "INSERT INTO HIS_DETAIL(HIS_ID,APPROVE,COURSE_ID,EMP_ID,MENTOR) VALUES(@HIS_ID,@APPROVE,@COURSE_ID,@EMP_ID,@MENTOR)";
+            var sql = "INSERT INTO HIS_DETAIL(HIS_ID,APPROVE,COURSE_ID,EMP_ID,MENTOR,DEPT) VALUES(@HIS_ID,@APPROVE,@COURSE_ID,@EMP_ID,@MENTOR,@DEPT)";
             return DBManager<HIS_DETAIL>.Execute(sql, new
             {
                 HIS_ID = HIS_ID,
                 APPROVE = APPROVE,
                 COURSE_ID = COURSE_ID,
                 EMP_ID = EMP_ID,
-                MENTOR = MENTOR
+                MENTOR = MENTOR,
+                DEPT = DEPT
             });
         }
 

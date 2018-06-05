@@ -65,10 +65,10 @@
                     var html = '';
                     var row = "";
                     var count = 0;
-                    var remain = data.length;
+
                     for (var i = 0; i < data.length; i++) {
                         count++;
-                        remain--;
+
                         row += '<a href="#" class="col-sm-4">' +
                        '<img src="' + src + "/" + $.trim(data[i].IMG_URL) + '" width="280" height="300" class="img-fluid">' +
                    '</a>';
@@ -78,7 +78,7 @@
                             html = "";
                             row = "";
                         }
-                        else if (remain == 0) {
+                        else if (i == data.length - 1) {
                             html += '<div class="row" style="margin-top:5px;">' + row + '</div>';
                             $('#img-content').append(html);
                             html = "";
@@ -372,5 +372,41 @@
             },
         });
     }
+    $('#btnExport').click(function () {
+        fnExcelReport('tbMainDefault');
+        return false;
+    });
+    function fnExcelReport(ID) {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
+        tab = document.getElementById(ID); // id of table
 
+
+        for (j = 0 ; j < tab.rows.length ; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true,moment(new Date()).format("YYYYMMDDHHmmss") + ".xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,' + encodeURIComponent(tab_text));
+
+
+        return (sa);
+    }
 });
