@@ -404,12 +404,7 @@
             sa = txtArea1.document.execCommand("SaveAs", true, filename);
         }
         else {             //other browser not tested on IE 11
-            //sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
-            var a = document.createElement('a');
-            a.href = 'data:application/vnd.ms-excel,' + encodeURIComponent(tab_text);
-            a.download = filename;
-            a.click();
-            e.preventDefault();
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
         }
         return (sa);
     }
