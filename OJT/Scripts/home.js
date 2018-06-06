@@ -372,15 +372,15 @@
             },
         });
     }
-    $('#btnExport').click(function () {
-        fnExcelReport('tbMainDefault');
+    $('#btnExport').click(function (e) {
+        fnExcelReport('tbMainDefault', e);
         return false;
     });
-    function fnExcelReport(ID) {
+    function fnExcelReport(ID, e) {
         var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
         var textRange; var j = 0;
         tab = document.getElementById(ID); // id of table
-
+        var filename = moment(new Date()).format("YYYYMMDDHHmmss") + ".xls";
 
         for (j = 0 ; j < tab.rows.length ; j++) {
             tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
@@ -401,12 +401,16 @@
             txtArea1.document.write(tab_text);
             txtArea1.document.close();
             txtArea1.focus();
-            sa = txtArea1.document.execCommand("SaveAs", true,moment(new Date()).format("YYYYMMDDHHmmss") + ".xls");
+            sa = txtArea1.document.execCommand("SaveAs", true, filename);
         }
-        else                 //other browser not tested on IE 11
-            sa = window.open('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,' + encodeURIComponent(tab_text));
-
-
+        else {             //other browser not tested on IE 11
+            //sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+            var a = document.createElement('a');
+            a.href = 'data:application/vnd.ms-excel,' + encodeURIComponent(tab_text);
+            a.download = filename;
+            a.click();
+            e.preventDefault();
+        }
         return (sa);
     }
 });
