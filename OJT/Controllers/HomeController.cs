@@ -76,19 +76,134 @@ namespace OJT.Controllers
             return View();
         }
 
-        public ActionResult Manage(int COURSE_ID = 0, string MENTOR = "", string EMP_ID = "")
+        public ActionResult Manage(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
         {
             if (Session["Username"] == null)
                 RedirectToAction("Login", "Home");
+            HISTORY his = new HISTORY();
             EMPLOYEE em = new EMPLOYEE();
             COURSE course = new COURSE();
             List<COURSE> courses = course.Select();
             ViewBag.COURSE = courses;
+
+            if (COURSE_ID == -1)
+            {
+                if (course != null && courses.Count > 0)
+                {
+                    COURSE_ID = courses[0].ID;
+                }
+                else
+                {
+                    COURSE_ID = 0;
+                }
+            }
+            if (Convert.ToInt32(Session["Role"].ToString()) == 0)
+            {
+                var isMentee = em.IsMentee(COURSE_ID, Session["Username"].ToString());
+                var isMentor = em.IsMentor(COURSE_ID, Session["Username"].ToString());
+                if (isMentee == 1 && string.IsNullOrWhiteSpace(EMP_ID))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (isMentor == 1 && string.IsNullOrWhiteSpace(MENTOR))
+                {
+                    MENTOR = Session["Username"].ToString();
+                }
+                else
+                {
+                    EMP_ID = "0";
+                    MENTOR = "0";
+                }
+            }
+
+            var lstHis = his.GetHistorySimple(MENTOR, EMP_ID, COURSE_ID);
+            ViewBag.HIS = lstHis;
             ViewBag.MENTORS = em.GetListMentor(COURSE_ID);
             ViewBag.MENTEES = em.GetListMentee(COURSE_ID, MENTOR);
             return View();
         }
+        public ActionResult ExportCourse(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
+        {
+            if (Session["Username"] == null)
+                RedirectToAction("Login", "Home");
+            var fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
+            var template = Server.MapPath("~/Upload/Template/Export/OJT_EXP2.xlsx");
+            HISTORY his = new HISTORY();
+            EMPLOYEE em = new EMPLOYEE();
+            COURSE course = new COURSE();
+            List<COURSE> courses = course.Select();
 
+            if (COURSE_ID == -1)
+            {
+                if (course != null && courses.Count > 0)
+                {
+                    COURSE_ID = courses[0].ID;
+                }
+                else
+                {
+                    COURSE_ID = 0;
+                }
+            }
+            if (Convert.ToInt32(Session["Role"].ToString()) == 0)
+            {
+                var isMentee = em.IsMentee(COURSE_ID, Session["Username"].ToString());
+                var isMentor = em.IsMentor(COURSE_ID, Session["Username"].ToString());
+                if (isMentee == 1 && string.IsNullOrWhiteSpace(EMP_ID))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (isMentor == 1 && string.IsNullOrWhiteSpace(MENTOR))
+                {
+                    MENTOR = Session["Username"].ToString();
+                }
+                else
+                {
+                    EMP_ID = "0";
+                    MENTOR = "0";
+                }
+            }
+
+            var lstHis = his.GetHistorySimple(MENTOR, EMP_ID, COURSE_ID);
+            using (ExcelPackage package = new ExcelPackage(new FileInfo(template)))
+            {
+                ExcelWorksheet ws = package.Workbook.Worksheets.FirstOrDefault();
+                for (int i = 0; i < lstHis.Count; i++)
+                {
+
+                    int count = lstHis[i].CNT_EMP;
+
+                    var history = lstHis[i];
+                    var startIndex = i + 3;
+                    ws.Cells["B" + startIndex].Value = history.ROWNUM;
+                    ws.Cells["C" + startIndex].Value = history.COURSE;
+                    ws.Cells["D" + startIndex].Value = history.ID;
+                    ws.Cells["E" + startIndex].Value = history.DEPARTMENT;
+                    ws.Cells["F" + startIndex].Value = history.NAME;
+                    ws.Cells["G" + startIndex].Value = history.RESULT_LEVEL;
+
+                }
+                for (int i = 0; i < lstHis.Count; i++)
+                {
+                    int count = lstHis[i].CNT_EMP;
+
+                    var history = lstHis[i];
+                    var startIndex = i + 3;
+
+                    ws.Cells["C" + startIndex + ":C" + (startIndex + count - 1).ToString()].Merge = true;
+                    ws.Cells["C" + startIndex].Value = history.COURSE;
+
+                    i += count - 1;
+                }
+                Byte[] fileBytes = package.GetAsByteArray();
+                Response.ClearContent();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;  filename=" + fileName);
+                Response.BinaryWrite(fileBytes);
+                Response.Flush();
+                Response.End();
+            }
+            return RedirectToAction("Manage", "Home");
+        }
         public ActionResult ChangePassword()
         {
             if (Session["Username"] == null)
@@ -304,7 +419,7 @@ namespace OJT.Controllers
                     var cntCourse = lstHis[i].CNT_COURSE;
                     var history = lstHis[i];
                     var startIndex = i + 4;
-                    ws.Cells["E" + startIndex + ":E" + (startIndex + cntCourse-1).ToString()].Merge = true;
+                    ws.Cells["E" + startIndex + ":E" + (startIndex + cntCourse - 1).ToString()].Merge = true;
                     ws.Cells["E" + startIndex].Value = history.PERIOD;
                     ws.Cells["Q" + startIndex + ":Q" + (startIndex + cntCourse - 1).ToString()].Merge = true;
                     ws.Cells["Q" + startIndex].Value = history.SCORE;

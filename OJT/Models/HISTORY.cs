@@ -116,6 +116,24 @@ AND (@DEPT='' OR DEPARTMENT LIKE '%'+DEPT+'%')
             });
         }
 
+        public List<dynamic> GetHistorySimple(string mentor = "", string mentee = "", int course_id = 0)
+        {
+
+            var sql = string.Format(@"
+SELECT ROW_NUMBER() OVER (order by COURSE_ID desc) AS ROWNUM,C.NAME AS COURSE,H.COURSE_ID,E.ID,E.DEPARTMENT,E.NAME,H.RESULT_LEVEL,
+(SELECT COUNT(1) from HISTORY where (COURSE_ID = h.COURSE_ID) and (@MENTOR='' OR MENTOR=h.MENTOR) AND (@EMP_ID='' OR EMP_ID=h.EMP_ID) group by COURSE_ID)  AS CNT_EMP 
+FROM COURSE AS C
+INNER JOIN HISTORY AS H ON C.ID=H.COURSE_ID
+INNER JOIN EMPLOYEE AS E ON E.ID=H.EMP_ID
+WHERE (@MENTOR='' OR H.MENTOR=@MENTOR) AND (@EMP_ID='' OR H.EMP_ID=@EMP_ID) AND (@COURSE_ID=0 OR H.COURSE_ID=@COURSE_ID)");
+            return DBManager<HISTORY>.ExecuteDynamic(sql, new
+            {
+                MENTOR = mentor,
+                COURSE_ID = course_id,
+                EMP_ID = mentee
+            });
+        }
+
         public int CountHistory(string mentor = "", string mentee = "", int course_id = 0, string dept = "")
         {
             var sql = string.Format(@"

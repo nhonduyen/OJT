@@ -156,5 +156,15 @@ namespace OJT.Controllers
             var result = act.Select(ID);
             return Json(result);
         }
+
+        [HttpPost]
+        public JsonResult GetListByCourse(int ID, string MENTOR)
+        {
+            EMPLOYEE em = new EMPLOYEE();
+            var mentor = em.GetListMentor(ID);
+            var mentee = em.GetListMentee(ID, MENTOR);
+            var result = new { MENTOR = mentor, MENTEE = mentee };
+            return Json(result);
+        }
     }
 }

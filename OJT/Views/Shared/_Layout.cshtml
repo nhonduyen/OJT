@@ -48,7 +48,7 @@
                     <li id="lhome">
                         <a href="@Url.Action("Index", "Home")">@ViewRes.Resource.Main</a>
                     </li>
-                    <li id="lvisit">
+                    <li id="lmanage">
                         <a href="@Url.Action("Manage", "Home")">@ViewRes.Resource.Manage</a>
                     </li>
                     <li class="dropdown">
@@ -106,7 +106,7 @@
     </div>
     <footer>
         <div class="container-fluid">
-            <span>Copyright &copy; 2018 - POSCO VST</span>
+            <span>@ViewRes.Resource.Copyright &copy; 2018 - POSCO VST</span>
         </div>
     </footer>
     <script src="@Url.Content("~/Scripts/Include/modernizr-3.5.0.min.js")"></script>
