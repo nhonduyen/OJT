@@ -55,7 +55,7 @@
                 </select>
             </div>
             <button type="submit" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>@ViewRes.Resource.Search</button>
-            <button id="btnExport" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>@ViewRes.Resource.Export</button>
+            <button id="btnExport" type="button" data-url="@Url.Action("Export", "Home")" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>@ViewRes.Resource.Export</button>
         </form>
     </div>
 
@@ -89,7 +89,7 @@
                 <th style="vertical-align: middle;">@ViewRes.Resource.Level</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.StartDt</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.EndDt</th>
-                <th style="vertical-align: middle; white-space:nowrap;">@ViewRes.Resource.Outcome</th>
+                <th style="vertical-align: middle; white-space: nowrap;">@ViewRes.Resource.Outcome</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.Activity</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.StartDt</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.EndDt</th>
