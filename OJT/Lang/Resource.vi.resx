@@ -222,4 +222,7 @@
   <data name="Mng" xml:space="preserve">
     <value>Quản lý</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Stt</value>
+  </data>
 </root>

@@ -63,12 +63,12 @@
     <table id="tbMainDefault" class="table table-bordered">
         <thead>
             <tr class="tbheader">
-                <th style="vertical-align: middle;">No.</th>
-                <th style="vertical-align: middle;">Period</th>
-                <th style="vertical-align: middle;">Em ID</th>
-                <th style="vertical-align: middle;">Workgroup</th>
-                <th style="vertical-align: middle;">Full Name</th>
-                <th style="vertical-align: middle;">Status</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.No</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.SearchPeriod</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.EmpId</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Workgroup</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Name</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Status</th>
 
             </tr>
 
@@ -77,10 +77,9 @@
         <tbody>
             @for (int i = 0; i < ViewBag.HIS.Count; i++)
             {
-                var j = i + 1;
                 <text>
                 <tr>
-                    <td>@j</td>
+                    <td>@ViewBag.HIS[i].ROWNUM</td>
 
                     @if (ViewBag.HIS[i].COURSE != COURSE_ID && ViewBag.HIS[i].CNT_EMP > 1)
                     {
