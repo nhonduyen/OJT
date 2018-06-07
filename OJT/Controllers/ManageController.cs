@@ -14,6 +14,8 @@ namespace OJT.Controllers
 
         public ActionResult Index()
         {
+            if (Session["Username"] == null)
+                return RedirectToAction("Login", "Home");
             EMPLOYEE EM = new EMPLOYEE();
             var dept = EM.GetDepartment();
             ViewBag.DEPT = dept;

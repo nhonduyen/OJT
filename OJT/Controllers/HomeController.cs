@@ -79,7 +79,7 @@ namespace OJT.Controllers
         public ActionResult Manage(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
         {
             if (Session["Username"] == null)
-                RedirectToAction("Login", "Home");
+               return RedirectToAction("Login", "Home");
             HISTORY his = new HISTORY();
             EMPLOYEE em = new EMPLOYEE();
             COURSE course = new COURSE();
@@ -125,7 +125,7 @@ namespace OJT.Controllers
         public ActionResult ExportCourse(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
         {
             if (Session["Username"] == null)
-                RedirectToAction("Login", "Home");
+               return RedirectToAction("Login", "Home");
             var fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
             var template = Server.MapPath("~/Upload/Template/Export/OJT_EXP2.xlsx");
             HISTORY his = new HISTORY();
@@ -227,9 +227,8 @@ namespace OJT.Controllers
         }
 
         [HttpPost]
-        public ActionResult Signin(string username, string password, string lang)
+        public ActionResult Signin(string username, string password)
         {
-            Session["Culture"] = new CultureInfo(lang);
             EMPLOYEE em = new EMPLOYEE();
             password = em.Encode(password);
             bool login = em.Login(username, password);
