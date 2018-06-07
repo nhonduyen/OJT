@@ -241,7 +241,10 @@ namespace OJT.Controllers
 
         public ActionResult Logout()
         {
-            Session.Abandon();
+            Session.Remove("Username");
+            Session.Remove("Name");
+            Session.Remove("Dept");
+            Session.Remove("Role");
             return RedirectToAction("Login", "Home");
         }
 
