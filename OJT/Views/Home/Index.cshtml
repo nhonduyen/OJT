@@ -103,18 +103,36 @@
             @for (int i = 0; i < ViewBag.HIS.Count; i++)
             {
                 var step = i;
-                int count = ViewBag.HIS[i].CNT_EMP;
-                var cntCourse = ViewBag.HIS[i].CNT_COURSE;
+                int count = 0;
+                var cntCourse = 0;
                 var his = ViewBag.HIS[i];
+                foreach (var item in ViewBag.CNT_EMP)
+                {
+                    if (his.EMP_ID.Equals(item.EMP_ID))
+                    {
+                        count = item.CNT_EMP;
+                        break;
+                    }
+                }
+
+                foreach (var item in ViewBag.CNT_COURSE)
+                {
+                    if (his.COURSE_ID.Equals(item.CID))
+                    {
+                        cntCourse = item.CNT_COURSE;
+                        break;
+                    }
+                }
+              
                 <text>
                 <tr data-id="@his.ID" data-mentor="@his.MENTOR" data-sid="@his.SUB_ID" data-dept="@his.DEPARTMENT.Trim()" data-emp="@his.EMP_ID" data-did="@his.ID">
-                    <td rowspan="@his.CNT_EMP">@his.EMP_ID</td>
-                    <td rowspan="@his.CNT_EMP">
+                    <td rowspan="@count">@his.EMP_ID</td>
+                    <td rowspan="@count">
                         <img src="@Url.Content("~/" + his.PICTURE.Trim())" class='img-rounded' height='100' width='100' alt='X' />
                     </td>
-                    <td rowspan="@his.CNT_EMP">@his.EMP_NAME.Trim()</td>
-                    <td rowspan="@his.CNT_EMP">@his.DEPARTMENT.Trim()</td>
-                    <td rowspan="@his.CNT_COURSE">@his.PERIOD.Trim()</td>
+                    <td rowspan="@count">@his.EMP_NAME.Trim()</td>
+                    <td rowspan="@count">@his.DEPARTMENT.Trim()</td>
+                    <td rowspan="@cntCourse">@his.PERIOD.Trim()</td>
                     <td class="STATUS">@(his.STATUS == null ? "" : his.STATUS.Trim())</td>
                     <td class="SUB_ID">@(his.SUBJECT == null ? "" : his.SUBJECT)</td>
                     <td class="SUB_LEVEL">@(his.SUB_LEVEL == null ? "" : his.SUB_LEVEL.Trim())</td>
@@ -137,8 +155,8 @@
                     <td class="MANAGER_CMT">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
                     <td class="HR_CMT">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
                     <td class="TEST_TIME"><span>@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.TEST_TIME == null ? now : his.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td rowspan="@his.CNT_EMP" class="SCORE" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
-                    <td rowspan="@his.CNT_EMP" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                    <td rowspan="@cntCourse" class="SCORE" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
+                    <td rowspan="@cntCourse" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                 </tr>
                 </text>
               
@@ -151,7 +169,7 @@
                 <tr data-id="@his1.ID" data-emp="@his1.EMP_ID" data-mentor="@his1.MENTOR" data-sid="@his1.SUB_ID" data-dept="@his1.DEPARTMENT.Trim()" data-did="@his1.ID">
                     @if (j % cntCourse == 0)
                     {
-                        <td rowspan="@his1.CNT_COURSE">@his1.PERIOD.Trim()</td>
+                        <td rowspan="@cntCourse">@his1.PERIOD.Trim()</td>
                     }
                     <td class="STATUS">@(his1.STATUS == null ? "" : his1.STATUS.Trim())</td>
                     <td class="SUB_ID">@(his1.SUBJECT == null ? "" : his1.SUBJECT)</td>
@@ -174,6 +192,11 @@
                     <td class="MANAGER_CMT">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
                     <td class="HR_CMT">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
                     <td class="TEST_TIME"><span>@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.TEST_TIME == null ? now : his1.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
+                    @if (j % cntCourse == 0)
+                    {
+                         <td rowspan="@cntCourse" class="SCORE" style="border-left-width:1px;" data-id="@his1.HIS_ID">@his.SCORE</td>
+                    <td rowspan="@cntCourse" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his1.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                    }
                 </tr>
                 </text>
                 
