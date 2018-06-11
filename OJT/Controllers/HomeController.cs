@@ -61,7 +61,7 @@ namespace OJT.Controllers
                 dept = Session["Dept"].ToString();
             }
 
-            var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID, dept);
+            var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID, dept, PAGE);
             var lstCntEm = new DataTable();
             var listCntCourse = new DataTable();
             lstCntEm.Columns.Add("EMP_ID");
