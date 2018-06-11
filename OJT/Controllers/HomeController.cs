@@ -441,7 +441,7 @@ namespace OJT.Controllers
                     var startIndex = i + 4;
                     foreach (var item in countCourse)
                     {
-                        if (history.COURSE_ID.Equals(item.CID))
+                        if (history.COURSE_ID.Equals(item.COURSE_ID))
                         {
                             cntCourse = item.CNT_COURSE;
                             break;

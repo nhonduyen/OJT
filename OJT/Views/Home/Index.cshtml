@@ -114,10 +114,9 @@
                         break;
                     }
                 }
-
                 foreach (var item in ViewBag.CNT_COURSE)
                 {
-                    if (his.COURSE_ID.Equals(item.CID))
+                    if (his.EMP_ID.Equals(item.EMP_ID) && his.COURSE_ID == item.COURSE_ID)
                     {
                         cntCourse = item.CNT_COURSE;
                         break;
@@ -164,7 +163,7 @@
                 {
                     step++;
                     var his1 = ViewBag.HIS[step];
-                       
+                   
                 <text>
                 <tr data-id="@his1.ID" data-emp="@his1.EMP_ID" data-mentor="@his1.MENTOR" data-sid="@his1.SUB_ID" data-dept="@his1.DEPARTMENT.Trim()" data-did="@his1.ID">
                     @if (j % cntCourse == 0)
@@ -201,7 +200,7 @@
                 </text>
                 
                 }
-
+              
                 i += count - 1;
             }
 
