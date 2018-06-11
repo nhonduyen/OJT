@@ -2,8 +2,10 @@
     ViewBag.Title = "MAIN";
     var MENTOR = Request.QueryString["MENTOR"];
     var EMP_ID = Request.QueryString["EMP_ID"];
+    var COURSE_ID = Request.QueryString["COURSE_ID"];
     var now = DateTime.Now.ToString();
     var download = Url.Content("~/Upload/Template/OJT management system.pptx");
+    int page = Request.QueryString["page"] == null ? 1 : Convert.ToInt32(Request.QueryString["PAGE"].ToString());
 }
 @section Scripts
 {
@@ -42,10 +44,7 @@
             <div class="form-group">
                 <label for="to">@ViewRes.Resource.SearchPeriod</label>
                 <select class="form-control" id="selPeriod" name="COURSE_ID">
-                    @if (Session["Role"] != null && Convert.ToInt32(Session["Role"]) == 3)
-                    {
-                        <option value="0"></option>
-                    }
+                    <option value="0"></option>
                     @foreach (var item in ViewBag.COURSE)
                     {
                         <text>
@@ -106,19 +105,19 @@
                 int count = 0;
                 var cntCourse = 0;
                 var his = ViewBag.HIS[i];
-                foreach (var item in ViewBag.CNT_EMP)
+                foreach (var item in ViewBag.CNT_EMP.Rows)
                 {
-                    if (his.EMP_ID.Equals(item.EMP_ID))
+                    if (his.EMP_ID.Equals(item["EMP_ID"]))
                     {
-                        count = item.CNT_EMP;
+                        count = Convert.ToInt32(item["CNT_EMP"]);
                         break;
                     }
                 }
-                foreach (var item in ViewBag.CNT_COURSE)
+                foreach (var item in ViewBag.CNT_COURSE.Rows)
                 {
-                    if (his.EMP_ID.Equals(item.EMP_ID) && his.COURSE_ID == item.COURSE_ID)
+                    if (his.EMP_ID.Equals(item["EMP_ID"]) && his.COURSE_ID.ToString() == item["COURSE_ID"])
                     {
-                        cntCourse = item.CNT_COURSE;
+                        cntCourse = Convert.ToInt32(item["CNT_COURSE"]);
                         break;
                     }
                 }
@@ -193,20 +192,26 @@
                     <td class="TEST_TIME"><span>@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.TEST_TIME == null ? now : his1.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     @if (j % cntCourse == 0)
                     {
-                         <td rowspan="@cntCourse" class="SCORE" style="border-left-width:1px;" data-id="@his1.HIS_ID">@his.SCORE</td>
-                    <td rowspan="@cntCourse" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his1.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                        <td rowspan="@cntCourse" class="SCORE" style="border-left-width:1px;" data-id="@his1.HIS_ID">@his.SCORE</td>
+                        <td rowspan="@cntCourse" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his1.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
                     }
                 </tr>
                 </text>
                 
                 }
-              
+
                 i += count - 1;
             }
 
         </tbody>
     </table>
 </div>
+<ul class="pagination" style="margin: 5px 0px;">
+    @for (int i = 1; i <= (ViewBag.Total + 10 - 1) / 10; i++)
+    {
+        <li class="@(page == i ? "active" : "")"><a href="@Url.Action("Index", "Home", new { MENTOR = MENTOR, EMP_ID = EMP_ID, COURSE_ID = COURSE_ID, page = i })">@(i)</a></li>
+    }
+</ul>
 <div id="mdCMT" class="modal fade" role="dialog">
     <div class="modal-dialog">
 

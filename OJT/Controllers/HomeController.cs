@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Data;
 using System.Web;
 using System.Web.Mvc;
 
@@ -15,7 +16,7 @@ namespace OJT.Controllers
         //
         // GET: /Home/
 
-        public ActionResult Index(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
+        public ActionResult Index(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "", int PAGE = 1)
         {
             if (Session["Username"] == null)
                 return RedirectToAction("Login", "Home");
@@ -61,14 +62,79 @@ namespace OJT.Controllers
             }
 
             var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID, dept);
-            var countEmp = his.GetCountByEmp(MENTOR, EMP_ID, COURSE_ID, dept);
-            var countCourse = his.GetCountByCourse(MENTOR, EMP_ID, COURSE_ID, dept);
+            var lstCntEm = new DataTable();
+            var listCntCourse = new DataTable();
+            lstCntEm.Columns.Add("EMP_ID");
+            lstCntEm.Columns.Add("CNT_EMP");
+            listCntCourse.Columns.Add("EMP_ID");
+            listCntCourse.Columns.Add("COURSE_ID");
+            listCntCourse.Columns.Add("CNT_COURSE");
+            foreach (var item in lstHis)
+            {
+                var count1 = 0;
+                var count2 = 0;
+                foreach (var item1 in lstHis)
+                {
+                    if (item.EMP_ID.Equals(item1.EMP_ID))
+                    {
+                        count1++;
+                        if (item.COURSE_ID.Equals(item1.COURSE_ID))
+                        {
+                            count2++;
+                        }
+
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                bool exists1 = lstCntEm.Select().ToList().Exists(row => row["EMP_ID"].ToString().ToUpper() == item.EMP_ID);
+                bool exists2 = listCntCourse.Select().ToList().Exists(row => row["EMP_ID"].ToString().ToUpper() == item.EMP_ID
+                    && Convert.ToInt32(row["COURSE_ID"].ToString()) == item.COURSE_ID);
+                if (exists1)
+                {
+                    var rowsToUpdate = lstCntEm.AsEnumerable().Where(r => r.Field<string>("EMP_ID") == item.EMP_ID);
+
+                    foreach (var row in rowsToUpdate)
+                    {
+                        row.SetField("CNT_EMP", count1);
+                    }
+                }
+                else
+                {
+                    DataRow r = lstCntEm.NewRow();
+                    r[0] = item.EMP_ID;
+                    r[1] = count1;
+                    lstCntEm.Rows.Add(r);
+                }
+                if (exists2)
+                {
+                    var rowsToUpdate = listCntCourse.AsEnumerable().Where(r => r.Field<string>("EMP_ID") == item.EMP_ID
+                        && r.Field<string>("COURSE_ID") == item.COURSE_ID.ToString());
+
+                    foreach (var row in rowsToUpdate)
+                    {
+                        row.SetField("CNT_COURSE", count2);
+                    }
+                }
+                else
+                {
+                    DataRow r = listCntCourse.NewRow();
+                    r[0] = item.EMP_ID;
+                    r[1] = item.COURSE_ID;
+                    r[2] = count2;
+                    listCntCourse.Rows.Add(r);
+                }
+            }
+            // var countEmp = his.GetCountByEmp(MENTOR, EMP_ID, COURSE_ID, dept);
+            //var countCourse = his.GetCountByCourse(MENTOR, EMP_ID, COURSE_ID, dept);
 
             ViewBag.COURSE = courses;
             ViewBag.HIS = lstHis;
-            ViewBag.CNT_EMP = countEmp;
-            ViewBag.CNT_COURSE = countCourse;
-
+            ViewBag.CNT_EMP = lstCntEm;
+            ViewBag.CNT_COURSE = listCntCourse;
+            ViewBag.TOTAL = his.CountHistory(MENTOR, EMP_ID, COURSE_ID, dept);
             ViewBag.MENTORS = em.GetListMentor(COURSE_ID);
             ViewBag.MENTEES = em.GetListMentee(COURSE_ID, MENTOR);
             ViewBag.SELECT_COURSE = COURSE_ID;
@@ -80,7 +146,7 @@ namespace OJT.Controllers
             return View();
         }
 
-        public ActionResult Manage(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
+        public ActionResult Manage(int COURSE_ID = 0, string MENTOR = "", string EMP_ID = "", int PAGE = 1)
         {
             if (Session["Username"] == null)
                 return RedirectToAction("Login", "Home");
@@ -89,18 +155,8 @@ namespace OJT.Controllers
             COURSE course = new COURSE();
             List<COURSE> courses = course.Select();
             ViewBag.COURSE = courses;
-
-            if (COURSE_ID == -1)
-            {
-                if (course != null && courses.Count > 0)
-                {
-                    COURSE_ID = courses[0].ID;
-                }
-                else
-                {
-                    COURSE_ID = 0;
-                }
-            }
+            var DEPARTMENT = "";
+            
             if (Convert.ToInt32(Session["Role"].ToString()) == 0)
             {
                 var isMentee = em.IsMentee(COURSE_ID, Session["Username"].ToString());
@@ -119,11 +175,51 @@ namespace OJT.Controllers
                     MENTOR = "0";
                 }
             }
+            if (Convert.ToInt32(Session["Role"].ToString()) == 2)
+            {
+                DEPARTMENT = Session["Dept"].ToString();
+            }
+            var lstHis = his.GetHistorySimple(MENTOR, EMP_ID, COURSE_ID, DEPARTMENT, PAGE);
+            var cnt = his.CountHistorySimpleTotal(MENTOR, EMP_ID, DEPARTMENT, COURSE_ID);
+            var listCntCourse = new DataTable();
+            listCntCourse.Columns.Add("COURSE_ID");
+            listCntCourse.Columns.Add("CNT_COURSE");
+            foreach (var item in lstHis)
+            {
+                var count1 = 0;
+                foreach (var item1 in lstHis)
+                {
+                    if (item.COURSE_ID.Equals(item1.COURSE_ID))
+                    {
+                        count1++;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                bool exists2 = listCntCourse.Select().ToList().Exists(row => Convert.ToInt32(row["COURSE_ID"].ToString()) == item.COURSE_ID);
+               
+                if (exists2)
+                {
+                    var rowsToUpdate = listCntCourse.AsEnumerable().Where(r => r.Field<string>("COURSE_ID") == item.COURSE_ID.ToString());
 
-            var lstHis = his.GetHistorySimple(MENTOR, EMP_ID, COURSE_ID);
-            var cnt = his.CountHistorySimple(MENTOR, EMP_ID, COURSE_ID);
+                    foreach (var row in rowsToUpdate)
+                    {
+                        row.SetField("CNT_COURSE", count1);
+                    }
+                }
+                else
+                {
+                    DataRow r = listCntCourse.NewRow();
+                    r[0] = item.COURSE_ID;
+                    r[1] = count1;
+                    listCntCourse.Rows.Add(r);
+                }
+            }
             ViewBag.HIS = lstHis;
-            ViewBag.CNT = cnt;
+            ViewBag.Total = cnt;
+            ViewBag.CNT = listCntCourse;
             ViewBag.MENTORS = em.GetListMentor(COURSE_ID);
             ViewBag.MENTEES = em.GetListMentee(COURSE_ID, MENTOR);
             return View();
@@ -138,18 +234,8 @@ namespace OJT.Controllers
             EMPLOYEE em = new EMPLOYEE();
             COURSE course = new COURSE();
             List<COURSE> courses = course.Select();
-
-            if (COURSE_ID == -1)
-            {
-                if (course != null && courses.Count > 0)
-                {
-                    COURSE_ID = courses[0].ID;
-                }
-                else
-                {
-                    COURSE_ID = 0;
-                }
-            }
+            var DEPARTMENT = "";
+           
             if (Convert.ToInt32(Session["Role"].ToString()) == 0)
             {
                 var isMentee = em.IsMentee(COURSE_ID, Session["Username"].ToString());
@@ -168,9 +254,12 @@ namespace OJT.Controllers
                     MENTOR = "0";
                 }
             }
-
-            var lstHis = his.GetHistorySimple(MENTOR, EMP_ID, COURSE_ID);
-            var cnt = his.CountHistorySimple(MENTOR, EMP_ID, COURSE_ID);
+            if (Convert.ToInt32(Session["Role"].ToString()) == 2)
+            {
+                DEPARTMENT = Session["Dept"].ToString();
+            }
+            var lstHis = his.GetHistorySimpleExport(MENTOR, EMP_ID, COURSE_ID, DEPARTMENT);
+            var cnt = his.CountHistorySimple(MENTOR, EMP_ID, DEPARTMENT, COURSE_ID);
             using (ExcelPackage package = new ExcelPackage(new FileInfo(template)))
             {
                 ExcelWorksheet ws = package.Workbook.Worksheets.FirstOrDefault();
@@ -333,7 +422,7 @@ namespace OJT.Controllers
             return Redirect(returnUrl);
         }
 
-        public ActionResult Export(int COURSE_ID = -1, string MENTOR = "", string EMP_ID = "")
+        public ActionResult Export(int COURSE_ID = 0, string MENTOR = "", string EMP_ID = "")
         {
             if (Session["Username"] == null)
                 return RedirectToAction("Login", "Home");
@@ -345,17 +434,7 @@ namespace OJT.Controllers
             EMPLOYEE em = new EMPLOYEE();
 
             List<COURSE> courses = course.Select();
-            if (COURSE_ID == -1)
-            {
-                if (course != null && courses.Count > 0)
-                {
-                    COURSE_ID = courses[0].ID;
-                }
-                else
-                {
-                    COURSE_ID = 0;
-                }
-            }
+           
             if (Convert.ToInt32(Session["Role"].ToString()) == 0)
             {
                 var isMentee = em.IsMentee(COURSE_ID, Session["Username"].ToString());
@@ -381,14 +460,14 @@ namespace OJT.Controllers
             }
             var countEmp = his.GetCountByEmp(MENTOR, EMP_ID, COURSE_ID, dept);
             var countCourse = his.GetCountByCourse(MENTOR, EMP_ID, COURSE_ID, dept);
-            var lstHis = his.GetHistory(MENTOR, EMP_ID, COURSE_ID, dept);
+            var lstHis = his.GetHistoryExport(MENTOR, EMP_ID, COURSE_ID, dept);
             using (ExcelPackage package = new ExcelPackage(new FileInfo(template)))
             {
                 ExcelWorksheet ws = package.Workbook.Worksheets.FirstOrDefault();
                 for (int i = 0; i < lstHis.Count; i++)
                 {
                     var step = i;
-                  
+
                     var history = lstHis[i];
                     var startIndex = i + 4;
                     ws.Cells["B" + startIndex].Value = history.EMP_ID;
@@ -423,7 +502,7 @@ namespace OJT.Controllers
                             break;
                         }
                     }
-                   
+
                     var startIndex = i + 4;
                     ws.Cells["B" + startIndex + ":B" + (startIndex + count - 1).ToString()].Merge = true;
                     ws.Cells["B" + startIndex].Value = history.EMP_ID;
