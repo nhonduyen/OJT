@@ -199,7 +199,7 @@ WHERE ROWNUM BETWEEN @start AND @end ORDER BY ROWNUM");
                 EMP_ID = mentee,
                 DEPARTMENT = dept,
                 start = start,
-                end=end
+                end = end
             });
         }
         public List<dynamic> GetHistorySimpleExport(string mentor = "", string mentee = "", int course_id = 0, string dept = "")
@@ -247,7 +247,7 @@ GROUP BY COURSE_ID
 SELECT COUNT(1) AS CNT
 FROM HISTORY AS H 
 INNER JOIN EMPLOYEE AS  E ON E.ID=H.EMP_ID
-WHERE (@MENTOR='' OR H.MENTOR=@MENTOR) AND (@EMP_ID='' OR H.EMP_ID=@EMP_ID) AND (@DEPARTMENT='' OR DEPARTMENT LIKE '%'+@DEPARTMENT+'%')
+WHERE (@COURSE_ID='' OR H.COURSE_ID=@COURSE_ID) AND (@MENTOR='' OR H.MENTOR=@MENTOR) AND (@EMP_ID='' OR H.EMP_ID=@EMP_ID) AND (@DEPARTMENT='' OR DEPARTMENT LIKE '%'+@DEPARTMENT+'%')
 
 ");
             return (int)DBManager<HISTORY>.ExecuteScalar(sql, new

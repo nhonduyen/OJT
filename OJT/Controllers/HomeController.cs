@@ -259,7 +259,7 @@ namespace OJT.Controllers
                 DEPARTMENT = Session["Dept"].ToString();
             }
             var lstHis = his.GetHistorySimpleExport(MENTOR, EMP_ID, COURSE_ID, DEPARTMENT);
-            var cnt = his.CountHistorySimple(MENTOR, EMP_ID, DEPARTMENT, COURSE_ID);
+           
             using (ExcelPackage package = new ExcelPackage(new FileInfo(template)))
             {
                 ExcelWorksheet ws = package.Workbook.Worksheets.FirstOrDefault();
@@ -273,25 +273,22 @@ namespace OJT.Controllers
                     ws.Cells["E" + startIndex].Value = history.DEPARTMENT;
                     ws.Cells["F" + startIndex].Value = history.NAME;
                     ws.Cells["G" + startIndex].Value = history.RESULT_LEVEL;
-
+                    
                 }
                 for (int i = 0; i < lstHis.Count; i++)
                 {
                     int count = 0;
-
                     var history = lstHis[i];
                     var startIndex = i + 3;
-                    foreach (var item in cnt)
+                    for (int j = i; j < lstHis.Count; j++)
                     {
-                        if (history.COURSE_ID == item.COURSE_ID)
+                        if (history.COURSE_ID == lstHis[j].COURSE_ID)
                         {
-                            count = item.CNT;
-                            break;
+                            count++;
                         }
                     }
                     ws.Cells["C" + startIndex + ":C" + (startIndex + count - 1).ToString()].Merge = true;
                     ws.Cells["C" + startIndex].Value = history.COURSE;
-
                     i += count - 1;
                 }
                 Byte[] fileBytes = package.GetAsByteArray();
@@ -430,10 +427,7 @@ namespace OJT.Controllers
             var template = Server.MapPath("~/Upload/Template/Export/OJT_EXP1.xlsx");
             var dept = "";
             HISTORY his = new HISTORY();
-            COURSE course = new COURSE();
             EMPLOYEE em = new EMPLOYEE();
-
-            List<COURSE> courses = course.Select();
            
             if (Convert.ToInt32(Session["Role"].ToString()) == 0)
             {
@@ -458,8 +452,7 @@ namespace OJT.Controllers
             {
                 dept = Session["Dept"].ToString();
             }
-            var countEmp = his.GetCountByEmp(MENTOR, EMP_ID, COURSE_ID, dept);
-            var countCourse = his.GetCountByCourse(MENTOR, EMP_ID, COURSE_ID, dept);
+      
             var lstHis = his.GetHistoryExport(MENTOR, EMP_ID, COURSE_ID, dept);
             using (ExcelPackage package = new ExcelPackage(new FileInfo(template)))
             {
@@ -491,18 +484,16 @@ namespace OJT.Controllers
                 }
                 for (int i = 0; i < lstHis.Count; i++)
                 {
-                    var step = i;
                     int count = 0;
                     var history = lstHis[i];
-                    foreach (var item in countEmp)
+                    for (int j = 0; j < lstHis.Count; j++)
                     {
-                        if (history.EMP_ID.Equals(item.EMP_ID))
+                        if (history.EMP_ID.Equals(lstHis[j].EMP_ID))
                         {
-                            count = item.CNT_EMP;
-                            break;
+                            count++;
                         }
                     }
-
+                   
                     var startIndex = i + 4;
                     ws.Cells["B" + startIndex + ":B" + (startIndex + count - 1).ToString()].Merge = true;
                     ws.Cells["B" + startIndex].Value = history.EMP_ID;
@@ -514,16 +505,15 @@ namespace OJT.Controllers
                 }
                 for (int i = 0; i < lstHis.Count; i++)
                 {
-                    var step = i;
                     var cntCourse = 0;
                     var history = lstHis[i];
                     var startIndex = i + 4;
-                    foreach (var item in countCourse)
+
+                    for (int j = 0; j < lstHis.Count; j++)
                     {
-                        if (history.COURSE_ID.Equals(item.COURSE_ID))
+                        if (history.COURSE_ID.Equals(lstHis[j].COURSE_ID) && history.EMP_ID.Equals(lstHis[j].EMP_ID))
                         {
-                            cntCourse = item.CNT_COURSE;
-                            break;
+                            cntCourse++;
                         }
                     }
                     ws.Cells["E" + startIndex + ":E" + (startIndex + cntCourse - 1).ToString()].Merge = true;
