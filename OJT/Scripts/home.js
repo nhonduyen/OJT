@@ -1,8 +1,9 @@
 ﻿$(document).ready(function () {
     $('#lhome').addClass('active');
     var approve = ["Unconfirmed", "Confirmed"];
-    var status = ["Low", "High", "Medium"];
-    var level = ["Beginer", "Intermediate", "Advanced"];
+    var status = ["", "B", "A", "S"];
+    var level = ["", "B", "A", "S"];
+    var grade = ["0", "1", "2", "3"];
     var subjects = [];
     $('.datepicker')
  .datepicker({
@@ -17,6 +18,7 @@
      $('span').show();
      $('.datepicker').hide();
  });
+    $("[data-toggle='tooltip']").tooltip();
     $.ajax({
         url: $('#hdUrl').val().replace("Action", "GetSubject"),
         data: JSON.stringify({
@@ -192,6 +194,13 @@
         }
         return false;
     });
+    $('.ARCHIEVEMENT').dblclick(function () {
+        var role = $('#username').attr('data-role');
+        if (role == 3) {
+            updateVal($(this), $(this).text(), grade);
+        }
+        return false;
+    });
     $('.HR_CMT, .MANAGER_CMT').dblclick(function () {
         $('#frmCMT').attr('data-id', $(this).closest('tr').attr('data-did'));
         $('#frmCMT').attr('data-class', $(this).attr('class'));
@@ -310,7 +319,7 @@
         $(".thVal").unbind('focusout').focusout(function () {
             var t = $(".thVal").val();
             $(currentEle).html($(".thVal").val());
-            var id = $(currentEle).attr('class') == 'RESULT_LEVEL' ? $(currentEle).attr('data-id') : $(currentEle).closest('tr').attr('data-id');
+            var id = ($(currentEle).attr('class') == 'RESULT_LEVEL' || $(currentEle).attr('class') == 'ARCHIEVEMENT') ? $(currentEle).attr('data-id') : $(currentEle).closest('tr').attr('data-id');
             saveDetail(id, $(currentEle).attr('class'), t, $(currentEle));
             if ($(currentEle).attr('class') == 'SUB_ID') {
                 changeSubject();
@@ -335,7 +344,7 @@
     }
     function saveDetail(ID, COLUMN, VALUE, element) {
         var url = $('#hdUrl').val().replace("Action", "UpdateDetail");
-        if (element.attr('class') == 'RESULT_LEVEL' || element.attr('class') == 'SCORE') {
+        if (element.attr('class') == 'RESULT_LEVEL' || element.attr('class') == 'SCORE' || element.attr('class') == 'ARCHIEVEMENT') {
             url = $('#hdUrl').val().replace("Action", "UpdateHistory");
         }
         $.ajax({
@@ -350,6 +359,7 @@
             contentType: 'application/json; charset=utf-8',
             crossBrowser: true,
             success: function (data, status) {
+                console.log(data);
                 if (data > 0) {
                     $('#noti').hide();
                     $('#message').text("Save " + status);

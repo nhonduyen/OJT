@@ -121,7 +121,7 @@
     <value>Hoạt động</value>
   </data>
   <data name="AppStatus" xml:space="preserve">
-    <value>Trạng thái chấp thuận</value>
+    <value>Trạng thái</value>
   </data>
   <data name="ChangePass" xml:space="preserve">
     <value>Đổi password</value>
@@ -130,13 +130,13 @@
     <value>Bản Quyền</value>
   </data>
   <data name="CourseContent" xml:space="preserve">
-    <value>Môn</value>
+    <value>Nội dung đào tạo</value>
   </data>
   <data name="CurrentStatus" xml:space="preserve">
-    <value>Trạng thái hiện tại</value>
+    <value>Trình độ hiện tại</value>
   </data>
   <data name="EmpId" xml:space="preserve">
-    <value>Mã NV</value>
+    <value>MSNV</value>
   </data>
   <data name="EndDt" xml:space="preserve">
     <value>Ngày kết thúc</value>
@@ -151,7 +151,7 @@
     <value>Tiếng Việt</value>
   </data>
   <data name="Level" xml:space="preserve">
-    <value>Cấp</value>
+    <value>Mức độ</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Đăng Nhập</value>
@@ -172,19 +172,19 @@
     <value>Tên</value>
   </data>
   <data name="Outcome" xml:space="preserve">
-    <value>Kết quả</value>
+    <value>Kết quả học tập</value>
   </data>
   <data name="Picture" xml:space="preserve">
     <value>Hình</value>
   </data>
   <data name="Plan" xml:space="preserve">
-    <value>Kế hoạch giảng dạy</value>
+    <value>Kế hoạch đào tạo</value>
   </data>
   <data name="PrjName" xml:space="preserve">
-    <value>HỆ THỐNG QUẢN LÝ ĐÀO TẠO</value>
+    <value>HỆ THỐNG QUẢN LÝ ĐÀO TẠO OJT</value>
   </data>
   <data name="Record" xml:space="preserve">
-    <value>Kết quả giảng dạy</value>
+    <value>Kết quả đào tạo</value>
   </data>
   <data name="Result" xml:space="preserve">
     <value>Kết quả đánh giá</value>
@@ -214,7 +214,7 @@
     <value>Ngày thi</value>
   </data>
   <data name="Workgroup" xml:space="preserve">
-    <value>Phòng</value>
+    <value>Bộ phận</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Ngôn Ngữ</value>
@@ -224,5 +224,23 @@
   </data>
   <data name="No" xml:space="preserve">
     <value>Stt</value>
+  </data>
+  <data name="Achievement" xml:space="preserve">
+    <value>Thành tích</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="Intro_HR" xml:space="preserve">
+    <value>Vui lòng click chuột để điền vào khung trống vài lời bình dành cho Mentee-Mentor</value>
+  </data>
+  <data name="Intro_Mng" xml:space="preserve">
+    <value>Vui lòng click chuột để điền vào khung trống vài lời bình dành cho Mentee của bạn (Ví dụ: điểm mạnh, điểm yếu của họ trong quá trình học, một vài lưu ý/mẹo khi học...</value>
+  </data>
+  <data name="Intro_Outcome" xml:space="preserve">
+    <value>Vui lòng click vào nút tải về để tải file về, điền file và tải lên bằng biểu tượng upload</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
   </data>
 </root>

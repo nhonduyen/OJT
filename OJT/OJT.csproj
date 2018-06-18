@@ -158,6 +158,7 @@
     <Content Include="Content\bt\dataTables.bootstrap.css" />
     <Content Include="Content\bt\datepicker.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\img\1.jpg" />
     <Content Include="Content\img\bg.png" />
     <Content Include="Content\login.css" />
     <Content Include="Content\site.css" />

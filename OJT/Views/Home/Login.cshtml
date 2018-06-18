@@ -1,13 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Login";
+    ViewBag.Title = @ViewRes.Resource.Login;
 }
 @section Scripts
 {
     <script src="@Url.Content("~/Scripts/login.js")"></script>
 }
-<div class="container">
+<div class="container" id="login">
     <div id="loginbox" style="margin-top: 10px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <div class="panel panel-info">
+        <div class="panel panel-success">
             <div class="panel-heading">
                 <div class="panel-title">@ViewRes.Resource.Login</div>
             </div>
@@ -22,12 +22,12 @@
 
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="login-username" maxlength="6" type="text" class="form-control" name="username" value="" placeholder="employee id" required="required">
+                        <input id="login-username" maxlength="6" type="text" class="form-control" name="username" value="" placeholder="@ViewRes.Resource.EmpId" required="required">
                     </div>
 
                     <div style="margin-bottom: 15px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="login-password" type="password" class="form-control" name="password" placeholder="password" required="required">
+                        <input id="login-password" type="password" class="form-control" name="password" placeholder="@ViewRes.Resource.Password" required="required">
                     </div>
                  
                     <div style="margin-top: 10px" class="form-group">

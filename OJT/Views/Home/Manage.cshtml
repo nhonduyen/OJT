@@ -1,129 +1,137 @@
 ﻿@{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = @ViewRes.Resource.Manage;
     var MENTOR = Request.QueryString["MENTOR"];
     var EMP_ID = Request.QueryString["EMP_ID"];
     var COURSE_ID = Request.QueryString["COURSE_ID"] == null ? 0 : Convert.ToInt32(Request.QueryString["COURSE_ID"]);
     int page = Request.QueryString["page"] == null ? 1 : Convert.ToInt32(Request.QueryString["PAGE"].ToString());
+    var numPage = (ViewBag.Total + 10 - 1) / 10;
 }
 @section Scripts
 {
     <script src="@Url.Content("~/Scripts/manage.js")"></script>
 }
-@Html.Hidden("hdUrl", Url.Action("Action", "Ajax"))
-<h4 class="page-header" style="margin: 10px;"><strong>@ViewRes.Resource.Manage</strong></h4>
-<div class="row">
-    <div class="col-sm-8">
-        <form class="form-inline">
-            <div class="form-group">
-                <label for="from">@ViewRes.Resource.SearchMentor</label>
-                <select class="form-control" id="mentor" name="MENTOR">
-                    <option></option>
-                    @foreach (var item in ViewBag.MENTORS)
-                    {
-                        <text>
-                        <option value="@item.ID" @(MENTOR == item.ID ? "selected" : "")>@item.NAME.Trim()</option>
-                        </text>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="to">@ViewRes.Resource.SearchMentee</label>
-                <select class="form-control" id="mentee" name="EMP_ID">
-                    <option></option>
-                    @foreach (var item in ViewBag.MENTEES)
-                    {
-                        <text>
-                        <option value="@item.ID" @(EMP_ID == item.ID ? "selected" : "")>@item.NAME.Trim()</option>
-                        </text>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="to">@ViewRes.Resource.SearchPeriod</label>
-                <select class="form-control" id="selPeriod" name="COURSE_ID">
-                    <option value="0"></option>
-                    @foreach (var item in ViewBag.COURSE)
-                    {
-                        <text>
-                        <option value="@item.ID" @((COURSE_ID != null && Convert.ToInt32(COURSE_ID) == item.ID) ? "selected" : "")>@item.NAME.Trim()</option>
-                        </text>
-                    }
-                </select>
-            </div>
-            <button type="submit" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>@ViewRes.Resource.Search</button>
-            <button id="btnExport" type="button" class="btn btn-primary" data-url="@Url.Action("ExportCourse", "Home")"><span class="glyphicon glyphicon-export"></span>@ViewRes.Resource.Export</button>
-        </form>
+<div class="container">
+    @Html.Hidden("hdUrl", Url.Action("Action", "Ajax"))
+    <h4 class="page-header" style="margin: 10px;"><strong>@ViewRes.Resource.Manage</strong></h4>
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="from">@ViewRes.Resource.SearchMentor</label>
+                    <select class="form-control" id="mentor" name="MENTOR">
+                        <option value="">@ViewRes.Resource.All</option>
+                        @foreach (var item in ViewBag.MENTORS)
+                        {
+                            <text>
+                            <option value="@item.ID" @(MENTOR == item.ID ? "selected" : "")>@item.NAME.Trim()</option>
+                            </text>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="to">@ViewRes.Resource.SearchMentee</label>
+                    <select class="form-control" id="mentee" name="EMP_ID">
+                        <option value="">@ViewRes.Resource.All</option>
+                        @foreach (var item in ViewBag.MENTEES)
+                        {
+                            <text>
+                            <option value="@item.ID" @(EMP_ID == item.ID ? "selected" : "")>@item.NAME.Trim()</option>
+                            </text>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="to">@ViewRes.Resource.SearchPeriod</label>
+                    <select class="form-control" id="selPeriod" name="COURSE_ID">
+                        <option value="0">@ViewRes.Resource.All</option>
+                        @foreach (var item in ViewBag.COURSE)
+                        {
+                            <text>
+                            <option value="@item.ID" @((COURSE_ID != null && Convert.ToInt32(COURSE_ID) == item.ID) ? "selected" : "")>@item.NAME.Trim()</option>
+                            </text>
+                        }
+                    </select>
+                </div>
+                <button type="submit" id="btnSearch" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>@ViewRes.Resource.Search</button>
+                <button id="btnExport" type="button" class="btn btn-success" data-url="@Url.Action("ExportCourse", "Home")"><span class="glyphicon glyphicon-export"></span>@ViewRes.Resource.Export</button>
+            </form>
+        </div>
+
+
     </div>
+    <div class="table-responsive">
+        <table id="tbMainDefault" class="table table-bordered">
+            <thead>
+                <tr class="tbheader">
+                    <th style="vertical-align: middle;">@ViewRes.Resource.No</th>
+                    <th style="vertical-align: middle;">@ViewRes.Resource.SearchPeriod</th>
+                    <th style="vertical-align: middle;">@ViewRes.Resource.EmpId</th>
+                    <th style="vertical-align: middle;">@ViewRes.Resource.Workgroup</th>
+                    <th style="vertical-align: middle;">@ViewRes.Resource.Name</th>
+                    <th style="vertical-align: middle;">@ViewRes.Resource.Status</th>
+                    <th style="vertical-align: middle;">@ViewRes.Resource.Score</th>
+                </tr>
 
 
-</div>
-<div class="table-responsive">
-    <table id="tbMainDefault" class="table table-bordered">
-        <thead>
-            <tr class="tbheader">
-                <th style="vertical-align: middle;">@ViewRes.Resource.No</th>
-                <th style="vertical-align: middle;">@ViewRes.Resource.SearchPeriod</th>
-                <th style="vertical-align: middle;">@ViewRes.Resource.EmpId</th>
-                <th style="vertical-align: middle;">@ViewRes.Resource.Workgroup</th>
-                <th style="vertical-align: middle;">@ViewRes.Resource.Name</th>
-                <th style="vertical-align: middle;">@ViewRes.Resource.Status</th>
-
-            </tr>
-
-
-        </thead>
-        <tbody>
-            @for (int i = 0; i < ViewBag.HIS.Count; i++)
-            {
-                var step = i;
-                var count = 0;
-                foreach (var item in ViewBag.CNT.Rows)
+            </thead>
+            <tbody>
+                @for (int i = 0; i < ViewBag.HIS.Count; i++)
                 {
-                    if (ViewBag.HIS[i].COURSE_ID == Convert.ToInt32(item["COURSE_ID"]))
+                    var step = i;
+                    var count = 0;
+                    foreach (var item in ViewBag.CNT.Rows)
                     {
-                        count = Convert.ToInt32(item["CNT_COURSE"]);
-                        break;
+                        if (ViewBag.HIS[i].COURSE_ID == Convert.ToInt32(item["COURSE_ID"]))
+                        {
+                            count = Convert.ToInt32(item["CNT_COURSE"]);
+                            break;
+                        }
                     }
-                }
-                <text>
-                <tr>
-                    <td>@ViewBag.HIS[i].ROWNUM</td>
+                    <text>
+                    <tr>
+                        <td>@ViewBag.HIS[i].ROWNUM</td>
 
-                    @if (count > 1)
-                    {
-                        <td rowspan="@count">@(ViewBag.HIS[i].COURSE == null ? "" : ViewBag.HIS[i].COURSE)</td>
-                    }
-                    else if (count == 1)
-                    {
-                        <td>@(ViewBag.HIS[i].COURSE == null ? "" : ViewBag.HIS[i].COURSE)</td>                    
-                    }
-                    <td>@ViewBag.HIS[i].ID</td>
-                    <td>@ViewBag.HIS[i].DEPARTMENT</td>
-                    <td>@ViewBag.HIS[i].NAME</td>
-                    <td>@ViewBag.HIS[i].RESULT_LEVEL</td>
-                </tr>
-                </text>
-                    for (int j = 1; j < count; j++)
-                    {
-                        step++;
-                <text>
-                <tr>
-                    <td>@ViewBag.HIS[step].ROWNUM</td>
-                    <td>@ViewBag.HIS[step].ID</td>
-                    <td>@ViewBag.HIS[step].DEPARTMENT</td>
-                    <td>@ViewBag.HIS[step].NAME</td>
-                    <td>@ViewBag.HIS[step].RESULT_LEVEL</td>
-                </tr>
-                </text>
-                    }
-                i += count - 1;
-            }
-        </tbody>
-    </table>
-</div>
-<ul class="pagination" style="margin: 5px 0px;">
-    @for (int i = 1; i <= (ViewBag.Total + 10 - 1) / 10; i++)
+                        @if (count > 1)
+                        {
+                            <td rowspan="@count">@(ViewBag.HIS[i].COURSE == null ? "" : ViewBag.HIS[i].COURSE)</td>
+                        }
+                        else if (count == 1)
+                        {
+                            <td>@(ViewBag.HIS[i].COURSE == null ? "" : ViewBag.HIS[i].COURSE)</td>                    
+                        }
+                        <td>@ViewBag.HIS[i].ID</td>
+                        <td>@ViewBag.HIS[i].DEPARTMENT</td>
+                        <td>@ViewBag.HIS[i].NAME</td>
+                        <td>@ViewBag.HIS[i].RESULT_LEVEL</td>
+                        <td>@ViewBag.HIS[i].SCORE</td>
+                    </tr>
+                    </text>
+                        for (int j = 1; j < count; j++)
+                        {
+                            step++;
+                    <text>
+                    <tr>
+                        <td>@ViewBag.HIS[step].ROWNUM</td>
+                        <td>@ViewBag.HIS[step].ID</td>
+                        <td>@ViewBag.HIS[step].DEPARTMENT</td>
+                        <td>@ViewBag.HIS[step].NAME</td>
+                        <td>@ViewBag.HIS[step].RESULT_LEVEL</td>
+                        <td>@ViewBag.HIS[i].SCORE</td>
+                    </tr>
+                    </text>
+                        }
+                        i += count - 1;
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (numPage > 1)
     {
-        <li class="@(page == i ? "active" : "")"><a href="@Url.Action("Manage", "Home", new { MENTOR = MENTOR, EMP_ID = EMP_ID, COURSE_ID = COURSE_ID, page = i })">@(i)</a></li>
+        <ul class="pagination" style="margin: 5px 0px;">
+            @for (int i = 1; i <= numPage; i++)
+            {
+                <li class="@(page == i ? "active" : "")"><a href="@Url.Action("Manage", "Home", new { MENTOR = MENTOR, EMP_ID = EMP_ID, COURSE_ID = COURSE_ID, page = i })">@i</a></li>
+            }
+        </ul>
     }
-</ul>
+</div>

@@ -232,8 +232,6 @@ namespace OJT.Controllers
             var template = Server.MapPath("~/Upload/Template/Export/OJT_EXP2.xlsx");
             HISTORY his = new HISTORY();
             EMPLOYEE em = new EMPLOYEE();
-            COURSE course = new COURSE();
-            List<COURSE> courses = course.Select();
             var DEPARTMENT = "";
            
             if (Convert.ToInt32(Session["Role"].ToString()) == 0)
@@ -273,7 +271,7 @@ namespace OJT.Controllers
                     ws.Cells["E" + startIndex].Value = history.DEPARTMENT;
                     ws.Cells["F" + startIndex].Value = history.NAME;
                     ws.Cells["G" + startIndex].Value = history.RESULT_LEVEL;
-                    
+                    ws.Cells["H" + startIndex].Value = history.SCORE;
                 }
                 for (int i = 0; i < lstHis.Count; i++)
                 {
@@ -480,6 +478,7 @@ namespace OJT.Controllers
                     ws.Cells["P" + startIndex].Value = history.TEST_TIME == null ? "" : history.TEST_TIME.ToString("yyyy-MM-dd");
                     ws.Cells["Q" + startIndex].Value = history.SCORE;
                     ws.Cells["R" + startIndex].Value = history.RESULT_LEVEL;
+                    ws.Cells["S" + startIndex].Value = history.ARCHIEVEMENT;
 
                 }
                 for (int i = 0; i < lstHis.Count; i++)
@@ -501,6 +500,8 @@ namespace OJT.Controllers
                     ws.Cells["C" + startIndex].Value = history.EMP_NAME;
                     ws.Cells["D" + startIndex + ":D" + (startIndex + count - 1).ToString()].Merge = true;
                     ws.Cells["D" + startIndex].Value = history.DEPARTMENT;
+                    ws.Cells["S" + startIndex + ":S" + (startIndex + count - 1).ToString()].Merge = true;
+                    ws.Cells["S" + startIndex].Value = history.ARCHIEVEMENT;
                     i += count - 1;
                 }
                 for (int i = 0; i < lstHis.Count; i++)

@@ -12,6 +12,7 @@ namespace OJT
         public string EMP_ID { get; set; }
         public string MENTOR { get; set; }
         public int SCORE { get; set; }
+        public int ARCHIEVEMENT { get; set; }
         public string RESULT_LEVEL { get; set; }
 
         public HISTORY(int ID, int COURSE_ID, string EMP_ID, int APPROVE, int SCORE, string RESULT_LEVEL)
@@ -88,44 +89,6 @@ namespace OJT
             return DBManager<HISTORY>.Execute(sql, new { ID = ID });
         }
 
-        public List<dynamic> GetCountByEmp(string mentor = "", string mentee = "", int course_id = 0, string dept = "")
-        {
-            var sql = string.Format(@"
-SELECT COUNT(1) AS CNT_EMP,EMP_ID 
-FROM HIS_DETAIL AS D 
-INNER JOIN EMPLOYEE AS E ON E.ID=D.EMP_ID
-WHERE (@MENTOR='' OR MENTOR=@MENTOR) AND (@EMP_ID='' OR EMP_ID=@EMP_ID) AND (@COURSE_ID=0 OR COURSE_ID=@COURSE_ID) 
-AND (@DEPT='' OR DEPARTMENT LIKE '%'+@DEPT+'%')
-GROUP BY EMP_ID
-");
-            return DBManager<HISTORY>.ExecuteDynamic(sql, new
-            {
-                MENTOR = mentor,
-                COURSE_ID = course_id,
-                EMP_ID = mentee,
-                DEPT = dept
-            });
-        }
-
-        public List<dynamic> GetCountByCourse(string mentor = "", string mentee = "", int course_id = 0, string dept = "")
-        {
-            var sql = string.Format(@"
-SELECT EMP_ID,COURSE_ID, COUNT(1) AS CNT_COURSE 
-FROM HIS_DETAIL AS D 
-INNER JOIN EMPLOYEE AS E ON E.ID=D.EMP_ID
-WHERE (@MENTOR='' OR D.MENTOR=@MENTOR) AND (@EMP_ID='' OR D.EMP_ID=@EMP_ID) AND (@COURSE_ID=0 OR D.COURSE_ID=@COURSE_ID) 
-AND (@DEPT='' OR DEPARTMENT LIKE '%'+@DEPT+'%')
-GROUP BY COURSE_ID,EMP_ID 
-");
-            return DBManager<HISTORY>.ExecuteDynamic(sql, new
-            {
-                MENTOR = mentor,
-                COURSE_ID = course_id,
-                EMP_ID = mentee,
-                DEPT = dept
-            });
-        }
-
         public List<dynamic> GetHistory(string mentor = "", string mentee = "", int course_id = 0, string dept = "", int page = 1)
         {
             var start = (page - 1) * 10 + 1;
@@ -133,7 +96,7 @@ GROUP BY COURSE_ID,EMP_ID
             var sql = string.Format(@"
 SELECT * FROM (
 SELECT ROW_NUMBER() OVER (ORDER BY H.EMP_ID) AS ROWNUM,
-E.NAME AS EMP_NAME, PICTURE,DEPARTMENT,H.MENTOR AS MENTOR1,S.NAME AS SUBJECT,
+E.NAME AS EMP_NAME, PICTURE,DEPARTMENT,ARCHIEVEMENT,H.MENTOR AS MENTOR1,S.NAME AS SUBJECT,
 C.NAME AS PERIOD, SCORE,RESULT_LEVEL,D.*,
 (SELECT COUNT(1) FROM ACTIVITY_IMG AS IMG WHERE D.ID=IMG.DETAIL_ID) AS ACTIVITY
 FROM COURSE AS C
@@ -160,9 +123,8 @@ AND (@DEPT='' OR DEPARTMENT LIKE '%'+@DEPT+'%')) AS U
 
             var sql = string.Format(@"
 SELECT 
-E.NAME AS EMP_NAME, PICTURE,DEPARTMENT,H.MENTOR AS MENTOR1,S.NAME AS SUBJECT,
-C.NAME AS PERIOD, SCORE,RESULT_LEVEL,D.*,
-(SELECT COUNT(1) FROM ACTIVITY_IMG AS IMG WHERE D.ID=IMG.DETAIL_ID) AS ACTIVITY
+E.NAME AS EMP_NAME, PICTURE,DEPARTMENT,H.MENTOR AS MENTOR1,S.NAME AS SUBJECT,ARCHIEVEMENT,
+C.NAME AS PERIOD, SCORE,RESULT_LEVEL,D.*
 FROM COURSE AS C
 INNER JOIN HISTORY AS H ON C.ID=H.COURSE_ID
 INNER JOIN HIS_DETAIL AS D ON H.ID=D.HIS_ID
@@ -185,7 +147,7 @@ AND (@DEPT='' OR DEPARTMENT LIKE '%'+@DEPT+'%')
             var end = start + 10 - 1;
             var sql = string.Format(@"
 SELECT * FROM (
-SELECT ROW_NUMBER() OVER (order by COURSE_ID desc) AS ROWNUM,C.NAME AS COURSE,H.COURSE_ID,E.ID,E.DEPARTMENT,E.NAME,H.RESULT_LEVEL
+SELECT ROW_NUMBER() OVER (order by COURSE_ID desc) AS ROWNUM,C.NAME AS COURSE,H.COURSE_ID,E.ID,E.DEPARTMENT,E.NAME,H.RESULT_LEVEL,SCORE
 FROM COURSE AS C
 INNER JOIN HISTORY AS H ON C.ID=H.COURSE_ID
 INNER JOIN EMPLOYEE AS E ON E.ID=H.EMP_ID
@@ -206,7 +168,7 @@ WHERE ROWNUM BETWEEN @start AND @end ORDER BY ROWNUM");
         {
 
             var sql = string.Format(@"
-SELECT ROW_NUMBER() OVER (order by COURSE_ID desc) AS ROWNUM,C.NAME AS COURSE,H.COURSE_ID,E.ID,E.DEPARTMENT,E.NAME,H.RESULT_LEVEL
+SELECT ROW_NUMBER() OVER (order by COURSE_ID desc) AS ROWNUM,C.NAME AS COURSE,H.COURSE_ID,E.ID,E.DEPARTMENT,E.NAME,H.RESULT_LEVEL,SCORE
 FROM COURSE AS C
 INNER JOIN HISTORY AS H ON C.ID=H.COURSE_ID
 INNER JOIN EMPLOYEE AS E ON E.ID=H.EMP_ID
@@ -222,24 +184,6 @@ AND (@DEPARTMENT='' OR DEPARTMENT LIKE '%'+@DEPARTMENT+'%')
             });
         }
 
-        public List<dynamic> CountHistorySimple(string mentor = "", string mentee = "", string dept = "", int course_id = 0)
-        {
-
-            var sql = string.Format(@"
-SELECT COUNT(1) AS CNT,COURSE_ID
-FROM HISTORY AS H 
-INNER JOIN EMPLOYEE AS  E ON E.ID=H.EMP_ID
-WHERE (@MENTOR='' OR H.MENTOR=@MENTOR) AND (@EMP_ID='' OR H.EMP_ID=@EMP_ID) AND (@DEPARTMENT='' OR DEPARTMENT LIKE '%'+@DEPARTMENT+'%')
-GROUP BY COURSE_ID
-");
-            return DBManager<HISTORY>.ExecuteDynamic(sql, new
-            {
-                MENTOR = mentor,
-                COURSE_ID = course_id,
-                EMP_ID = mentee,
-                DEPARTMENT = dept
-            });
-        }
         public int CountHistorySimpleTotal(string mentor = "", string mentee = "", string dept = "", int course_id = 0)
         {
 

@@ -1,11 +1,12 @@
 ﻿@{
-    ViewBag.Title = "MAIN";
+    ViewBag.Title = @ViewRes.Resource.Main;
     var MENTOR = Request.QueryString["MENTOR"];
     var EMP_ID = Request.QueryString["EMP_ID"];
     var COURSE_ID = Request.QueryString["COURSE_ID"];
     var now = DateTime.Now.ToString();
     var download = Url.Content("~/Upload/Template/OJT management system.pptx");
     int page = Request.QueryString["page"] == null ? 1 : Convert.ToInt32(Request.QueryString["PAGE"].ToString());
+    var numPage = (ViewBag.Total + 10 - 1) / 10;
 }
 @section Scripts
 {
@@ -20,7 +21,7 @@
             <div class="form-group">
                 <label for="from">@ViewRes.Resource.SearchMentor</label>
                 <select class="form-control" id="mentor" name="MENTOR">
-                    <option></option>
+                    <option value="">@ViewRes.Resource.All</option>
                     @foreach (var item in ViewBag.MENTORS)
                     {
                         <text>
@@ -32,7 +33,7 @@
             <div class="form-group">
                 <label for="to">@ViewRes.Resource.SearchMentee</label>
                 <select class="form-control" id="mentee" name="EMP_ID">
-                    <option></option>
+                    <option value="">@ViewRes.Resource.All</option>
                     @foreach (var item in ViewBag.MENTEES)
                     {
                         <text>
@@ -44,7 +45,7 @@
             <div class="form-group">
                 <label for="to">@ViewRes.Resource.SearchPeriod</label>
                 <select class="form-control" id="selPeriod" name="COURSE_ID">
-                    <option value="0"></option>
+                    <option value="0">@ViewRes.Resource.All</option>
                     @foreach (var item in ViewBag.COURSE)
                     {
                         <text>
@@ -53,8 +54,8 @@
                     }
                 </select>
             </div>
-            <button type="submit" id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>@ViewRes.Resource.Search</button>
-            <button id="btnExport" type="button" data-url="@Url.Action("Export", "Home")" class="btn btn-primary"><span class="glyphicon glyphicon-export"></span>@ViewRes.Resource.Export</button>
+            <button type="submit" id="btnSearch" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>@ViewRes.Resource.Search</button>
+            <button id="btnExport" type="button" data-url="@Url.Action("Export", "Home")" class="btn btn-success"><span class="glyphicon glyphicon-export"></span>@ViewRes.Resource.Export</button>
         </form>
     </div>
 
@@ -78,9 +79,9 @@
                 <th colspan="5" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Plan</th>
                 <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.AppStatus</th>
                 <th colspan="4" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Record</th>
-                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.MngCmt</th>
-                <th rowspan="2" style="vertical-align: middle;">@ViewRes.Resource.HrCmt</th>
-                <th colspan="3" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Result</th>
+                <th rowspan="2" style="vertical-align: middle; white-space: nowrap;">@ViewRes.Resource.MngCmt</th>
+                <th rowspan="2" style="vertical-align: middle; white-space: nowrap;">@ViewRes.Resource.HrCmt</th>
+                <th colspan="4" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Result</th>
             </tr>
             <tr>
                 <th style="vertical-align: middle;">@ViewRes.Resource.CurrentStatus</th>
@@ -88,13 +89,14 @@
                 <th style="vertical-align: middle;">@ViewRes.Resource.Level</th>
                 <th style="vertical-align: middle; min-width: 91px;">@ViewRes.Resource.StartDt</th>
                 <th style="vertical-align: middle; min-width: 91px;">@ViewRes.Resource.EndDt</th>
-                <th style="vertical-align: middle; white-space: nowrap;">@ViewRes.Resource.Outcome</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Outcome</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.Activity</th>
                 <th style="vertical-align: middle; min-width: 91px;">@ViewRes.Resource.StartDt</th>
                 <th style="vertical-align: middle; min-width: 91px;">@ViewRes.Resource.EndDt</th>
                 <th style="vertical-align: middle; min-width: 91px;">@ViewRes.Resource.Test</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.Score</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.Level</th>
+                <th style="vertical-align: middle;">@ViewRes.Resource.Achievement</th>
             </tr>
 
         </thead>
@@ -138,11 +140,11 @@
                         <input type="text" class="datepicker" value="@(his.START_DT == null ? now : his.START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td class="END_DT"><span>@(his.END_DT == null ? "" : his.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.END_DT == null ? now : his.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td class="APPROVE">@his.APPROVE.Trim()</td>
-                    <td>
+                    <td data-original-title="@ViewRes.Resource.Intro_Outcome" data-container="body"
+ data-toggle="tooltip" data-placement="bottom" title="">
                         <a href="@Url.Action("Download", "Home", new { url = his.OUTCOME_RESULT == null ? download : his.OUTCOME_RESULT })">
                             <span class="glyphicon glyphicon-download-alt"></span>
                         </a>
-                        &nbsp;
                         <a href="#" class="uploadfile">
                             <span class="glyphicon glyphicon-cloud-upload"></span>
                         </a>
@@ -150,11 +152,14 @@
                     <td><a href="#" class="activity"><span class="badge">@his.ACTIVITY</span></a></td>
                     <td class="REC_START_DT"><span>@(his.REC_START_DT == null ? "" : his.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_START_DT == null ? now : his.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td class="REC_END_DT"><span>@(his.REC_END_DT == null ? "" : his.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.REC_END_DT == null ? now : his.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td class="MANAGER_CMT">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
-                    <td class="HR_CMT">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
+                    <td class="MANAGER_CMT" data-original-title="@ViewRes.Resource.Intro_Mng" data-container="body"
+ data-toggle="tooltip" data-placement="bottom" title="">@(his.MANAGER_CMT == null ? "" : his.MANAGER_CMT.Trim())</td>
+                    <td class="HR_CMT" data-original-title="@ViewRes.Resource.Intro_HR" data-container="body"
+ data-toggle="tooltip" data-placement="bottom" title="">@(his.HR_CMT == null ? "" : his.HR_CMT.Trim())</td>
                     <td class="TEST_TIME"><span>@(his.TEST_TIME == null ? "" : his.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his.TEST_TIME == null ? now : his.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td rowspan="@cntCourse" class="SCORE" style="border-left-width:1px;" data-id="@his.HIS_ID">@his.SCORE</td>
                     <td rowspan="@cntCourse" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                    <td rowspan="@cntCourse" class="ARCHIEVEMENT"  style="border-left-width:1px;" data-id="@his.HIS_ID">@his.ARCHIEVEMENT</td>
                 </tr>
                 </text>
               
@@ -175,11 +180,11 @@
                     <td class="START_DT"><span>@(his1.START_DT == null ? "" : his1.START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.START_DT == null ? now : his1.START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td class="END_DT"><span>@(his1.END_DT == null ? "" : his1.END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.END_DT == null ? now : his1.END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td class="APPROVE">@his1.APPROVE.Trim()</td>
-                    <td>
+                    <td data-original-title="@ViewRes.Resource.Intro_Outcome" data-container="body"
+ data-toggle="tooltip" data-placement="bottom" title="">
                         <a href="@Url.Action("Download", "Home", new { url = his1.OUTCOME_RESULT == null ? download : his1.OUTCOME_RESULT })">
                             <span class="glyphicon glyphicon-download-alt"></span>
                         </a>
-                        &nbsp;
                         <a href="#" class="uploadfile">
                             <span class="glyphicon glyphicon-cloud-upload"></span>
                         </a>
@@ -187,8 +192,10 @@
                     <td><a href="#" class="activity"><span class="badge">@his1.ACTIVITY</span></a></td>
                     <td class="REC_START_DT"><span>@(his1.REC_START_DT == null ? "" : his1.REC_START_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_START_DT == null ? now : his1.REC_START_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     <td class="REC_END_DT"><span>@(his1.REC_END_DT == null ? "" : his1.REC_END_DT.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.REC_END_DT == null ? now : his1.REC_END_DT.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
-                    <td class="MANAGER_CMT">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
-                    <td class="HR_CMT">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
+                    <td class="MANAGER_CMT" data-original-title="@ViewRes.Resource.Intro_Mng" data-container="body"
+ data-toggle="tooltip" data-placement="bottom" title="">@(his1.MANAGER_CMT == null ? "" : his1.MANAGER_CMT.Trim())</td>
+                    <td class="HR_CMT" data-original-title="@ViewRes.Resource.Intro_HR" data-container="body"
+ data-toggle="tooltip" data-placement="bottom" title="">@(his1.HR_CMT == null ? "" : his1.HR_CMT.Trim())</td>
                     <td class="TEST_TIME"><span>@(his1.TEST_TIME == null ? "" : his1.TEST_TIME.ToString("yyyy-MM-dd"))</span><input type="text" class="datepicker" value="@(his1.TEST_TIME == null ? now : his1.TEST_TIME.ToString("yyyy-MM-dd"))" style="display: none;" /></td>
                     @if (j % cntCourse == 0)
                     {
@@ -206,12 +213,15 @@
         </tbody>
     </table>
 </div>
-<ul class="pagination" style="margin: 5px 0px;">
-    @for (int i = 1; i <= (ViewBag.Total + 10 - 1) / 10; i++)
-    {
-        <li class="@(page == i ? "active" : "")"><a href="@Url.Action("Index", "Home", new { MENTOR = MENTOR, EMP_ID = EMP_ID, COURSE_ID = COURSE_ID, page = i })">@(i)</a></li>
-    }
-</ul>
+@if (numPage > 1)
+{
+    <ul class="pagination" style="margin: 5px 0px;">
+        @for (int i = 1; i <= numPage; i++)
+        {
+            <li class="@(page == i ? "active" : "")"><a href="@Url.Action("Index", "Home", new { MENTOR = MENTOR, EMP_ID = EMP_ID, COURSE_ID = COURSE_ID, page = i })">@i</a></li>
+        }
+    </ul>
+}
 <div id="mdCMT" class="modal fade" role="dialog">
     <div class="modal-dialog">
 

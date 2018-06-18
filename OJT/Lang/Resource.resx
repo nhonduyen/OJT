@@ -130,13 +130,13 @@
     <value>Copyright</value>
   </data>
   <data name="CourseContent" xml:space="preserve">
-    <value>Course Content</value>
+    <value>Training Content</value>
   </data>
   <data name="CurrentStatus" xml:space="preserve">
     <value>Current Status</value>
   </data>
   <data name="EmpId" xml:space="preserve">
-    <value>Em Id</value>
+    <value>Em ID</value>
   </data>
   <data name="EndDt" xml:space="preserve">
     <value>End Date</value>
@@ -145,7 +145,7 @@
     <value>Export</value>
   </data>
   <data name="HrCmt" xml:space="preserve">
-    <value>Comment By HR</value>
+    <value>HR's comment</value>
   </data>
   <data name="LangName" xml:space="preserve">
     <value>English</value>
@@ -166,7 +166,7 @@
     <value>Manage</value>
   </data>
   <data name="MngCmt" xml:space="preserve">
-    <value>Comment By Manager</value>
+    <value>Manager's comment</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Full Name</value>
@@ -214,12 +214,30 @@
     <value>Testing Time</value>
   </data>
   <data name="Workgroup" xml:space="preserve">
-    <value>Workgroup</value>
+    <value>W-group</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No.</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="Achievement" xml:space="preserve">
+    <value>Achievement</value>
+  </data>
+  <data name="Intro_HR" xml:space="preserve">
+    <value>Please click to fill in the text box some comments for mentor-mentee to improve</value>
+  </data>
+  <data name="Intro_Mng" xml:space="preserve">
+    <value>Please click to fill in the text box some comments for your mentee to improve (Ex: their weakness, strengths, tips to learn,...</value>
+  </data>
+  <data name="Intro_Outcome" xml:space="preserve">
+    <value>Please click to button to download the file then fill in it then upload by button</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
   </data>
 </root>

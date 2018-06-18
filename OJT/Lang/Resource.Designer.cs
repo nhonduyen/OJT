@@ -61,11 +61,29 @@ namespace ViewRes {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Achievement.
+        /// </summary>
+        public static string Achievement {
+            get {
+                return ResourceManager.GetString("Achievement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activities Record.
         /// </summary>
         public static string Activity {
             get {
                 return ResourceManager.GetString("Activity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
             }
         }
         
@@ -97,7 +115,7 @@ namespace ViewRes {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course Content.
+        ///   Looks up a localized string similar to Training Content.
         /// </summary>
         public static string CourseContent {
             get {
@@ -115,7 +133,7 @@ namespace ViewRes {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Em Id.
+        ///   Looks up a localized string similar to Em ID.
         /// </summary>
         public static string EmpId {
             get {
@@ -142,11 +160,38 @@ namespace ViewRes {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comment By HR.
+        ///   Looks up a localized string similar to HR&apos;s comment.
         /// </summary>
         public static string HrCmt {
             get {
                 return ResourceManager.GetString("HrCmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please click to fill in the text box some comments for mentor-mentee to improve.
+        /// </summary>
+        public static string Intro_HR {
+            get {
+                return ResourceManager.GetString("Intro_HR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please click to fill in the text box some comments for your mentee to improve (Ex: their weakness, strengths, tips to learn,....
+        /// </summary>
+        public static string Intro_Mng {
+            get {
+                return ResourceManager.GetString("Intro_Mng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please click to button to download the file then fill in it then upload by button.
+        /// </summary>
+        public static string Intro_Outcome {
+            get {
+                return ResourceManager.GetString("Intro_Outcome", resourceCulture);
             }
         }
         
@@ -214,7 +259,7 @@ namespace ViewRes {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comment By Manager.
+        ///   Looks up a localized string similar to Manager&apos;s comment.
         /// </summary>
         public static string MngCmt {
             get {
@@ -246,6 +291,15 @@ namespace ViewRes {
         public static string Outcome {
             get {
                 return ResourceManager.GetString("Outcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -367,7 +421,7 @@ namespace ViewRes {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Workgroup.
+        ///   Looks up a localized string similar to W-group.
         /// </summary>
         public static string Workgroup {
             get {
