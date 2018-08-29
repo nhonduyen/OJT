@@ -83,7 +83,7 @@
                 <th rowspan="2" style="vertical-align: middle; white-space: nowrap;">@ViewRes.Resource.HrCmt</th>
                 <th colspan="4" style="vertical-align: middle; text-align: center;">@ViewRes.Resource.Result</th>
             </tr>
-            <tr>
+            <tr class="tbheader">
                 <th style="vertical-align: middle;">@ViewRes.Resource.CurrentStatus</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.CourseContent</th>
                 <th style="vertical-align: middle;">@ViewRes.Resource.Level</th>
@@ -200,7 +200,8 @@
                     @if (j % cntCourse == 0)
                     {
                         <td rowspan="@cntCourse" class="SCORE" style="border-left-width:1px;" data-id="@his1.HIS_ID">@his.SCORE</td>
-                        <td rowspan="@cntCourse" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his1.HIS_ID">@(his.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                        <td rowspan="@cntCourse" class="RESULT_LEVEL"  style="border-left-width:1px;" data-id="@his1.HIS_ID">@(his1.RESULT_LEVEL == null ? "" : his.RESULT_LEVEL)</td>
+                        <td rowspan="@cntCourse" class="ARCHIEVEMENT"  style="border-left-width:1px;" data-id="@his1.HIS_ID">@his1.ARCHIEVEMENT</td>
                     }
                 </tr>
                 </text>

@@ -235,7 +235,7 @@
     <value>Please click to fill in the text box some comments for your mentee to improve (Ex: their weakness, strengths, tips to learn,...</value>
   </data>
   <data name="Intro_Outcome" xml:space="preserve">
-    <value>Please click to button to download the file then fill in it then upload by button</value>
+    <value>Upload/Download</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>

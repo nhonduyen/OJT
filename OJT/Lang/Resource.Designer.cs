@@ -187,7 +187,7 @@ namespace ViewRes {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please click to button to download the file then fill in it then upload by button.
+        ///   Looks up a localized string similar to Upload/Download.
         /// </summary>
         public static string Intro_Outcome {
             get {

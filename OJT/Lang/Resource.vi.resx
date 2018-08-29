@@ -238,7 +238,7 @@
     <value>Vui lòng click chuột để điền vào khung trống vài lời bình dành cho Mentee của bạn (Ví dụ: điểm mạnh, điểm yếu của họ trong quá trình học, một vài lưu ý/mẹo khi học...</value>
   </data>
   <data name="Intro_Outcome" xml:space="preserve">
-    <value>Vui lòng click vào nút tải về để tải file về, điền file và tải lên bằng biểu tượng upload</value>
+    <value>Tải lên/Tải xuống</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Mật khẩu</value>
